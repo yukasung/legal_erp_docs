@@ -59,7 +59,6 @@ const navbar = (
     logo={
       <span className="x:font-semibold x:tracking-normal">Legal ERP Docs</span>
     }
-    projectLink="https://github.com/yukasung/legal_erp_docs"
   />
 )
 
@@ -78,8 +77,8 @@ const RootLayout: FC<LayoutProps<'/'>> = async ({ children }) => {
         <Layout
           navbar={navbar}
           pageMap={pageMap}
-          docsRepositoryBase="https://github.com/yukasung/legal_erp_docs/tree/main/docs"
-          editLink="Edit this page on GitHub"
+          docsRepositoryBase="https://legal-erp-docs.invalid"
+          editLink={null}
           feedback={{ content: null }}
           sidebar={{ defaultMenuCollapseLevel: 1 }}
           footer={footer}

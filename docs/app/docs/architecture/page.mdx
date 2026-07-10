@@ -34,6 +34,22 @@ model เดียวกัน
 
 ## Application Layers
 
+```mermaid
+flowchart TB
+  User["User via Browser"]
+  Frontend["Frontend Layer<br/>React + Tailwind CSS"]
+  Backend["Backend Layer<br/>Django API / Business Logic"]
+  Database["Data Layer<br/>PostgreSQL"]
+  FileStorage["File Storage Boundary<br/>Document files / templates / exports"]
+  Integration["Integration Boundary<br/>External systems"]
+
+  User --> Frontend
+  Frontend --> Backend
+  Backend --> Database
+  Backend --> FileStorage
+  Backend --> Integration
+```
+
 - **Frontend Layer**: React และ Tailwind CSS สำหรับสร้าง web interface ที่ผู้ใช้
   ทำงานผ่าน browser
 - **Backend Layer**: Django สำหรับจัดการ business logic, permission, validation,

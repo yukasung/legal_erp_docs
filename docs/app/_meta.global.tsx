@@ -20,10 +20,6 @@ export default {
       scope: 'Scope',
       architecture: 'Architecture',
       'domain-language': 'Domain Language',
-      _access: {
-        type: 'separator',
-        title: <Section>Access</Section>
-      },
       roles: {
         title: 'Roles',
         items: {
@@ -31,10 +27,6 @@ export default {
           roles: 'User Roles',
           permissions: 'Permissions'
         }
-      },
-      _modules: {
-        type: 'separator',
-        title: <Section>Modules</Section>
       },
       modules: {
         title: 'Modules',
@@ -47,10 +39,6 @@ export default {
           billing: 'Billing',
           finance: 'Finance'
         }
-      },
-      _process: {
-        type: 'separator',
-        title: <Section>Process</Section>
       },
       flows: {
         title: 'Flows'
@@ -67,10 +55,6 @@ export default {
       },
       ui: {
         title: 'UI'
-      },
-      _changes: {
-        type: 'separator',
-        title: <Section>Changes</Section>
       },
       changelog: {
         title: 'Changelog'

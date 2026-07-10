@@ -13,37 +13,32 @@ export default {
   },
   docs: {
     type: 'page',
-    title: 'Documentation',
+    title: 'Legal ERP Platform',
     items: {
-      _start: {
+      _overview: {
         type: 'separator',
-        title: <Section>Start Here</Section>
+        title: <Section>Overview</Section>
       },
-      index: 'Overview',
-      'getting-started': 'Getting Started',
-      _foundation: {
-        type: 'separator',
-        title: <Section>Foundation</Section>
-      },
-      concepts: {
-        title: 'Concepts',
+      index: 'Documentation Home',
+      overview: {
+        title: 'Overview',
         items: {
           index: 'Overview',
-          glossary: 'Glossary'
+          introduction: 'Introduction',
+          scope: 'Scope',
+          architecture: 'Architecture'
         }
       },
-      _workflows: {
+      _access: {
         type: 'separator',
-        title: <Section>Workflows</Section>
+        title: <Section>Access</Section>
       },
-      workflows: {
-        title: 'Workflows',
+      roles: {
+        title: 'Roles',
         items: {
           index: 'Overview',
-          intake: 'Intake',
-          'matter-lifecycle': 'Matter Lifecycle',
-          documents: 'Documents',
-          billing: 'Billing'
+          roles: 'User Roles',
+          permissions: 'Permissions'
         }
       },
       _modules: {
@@ -56,35 +51,38 @@ export default {
           index: 'Overview',
           clients: 'Clients',
           matters: 'Matters',
+          tasks: 'Tasks',
           documents: 'Documents',
-          finance: 'Finance',
-          reports: 'Reports'
+          billing: 'Billing',
+          finance: 'Finance'
         }
       },
-      _administration: {
+      _process: {
         type: 'separator',
-        title: <Section>Administration</Section>
+        title: <Section>Process</Section>
       },
-      administration: {
-        title: 'Administration',
-        items: {
-          index: 'Overview',
-          'users-roles': 'Users & Roles',
-          permissions: 'Permissions',
-          settings: 'Settings'
-        }
+      flows: {
+        title: 'Flows'
       },
-      _reference: {
+      _technical: {
         type: 'separator',
-        title: <Section>Reference</Section>
+        title: <Section>Technical</Section>
       },
-      reference: {
-        title: 'Reference',
-        items: {
-          index: 'Overview',
-          faq: 'FAQ',
-          changelog: 'Changelog'
-        }
+      database: {
+        title: 'Database'
+      },
+      api: {
+        title: 'API'
+      },
+      ui: {
+        title: 'UI'
+      },
+      _changes: {
+        type: 'separator',
+        title: <Section>Changes</Section>
+      },
+      changelog: {
+        title: 'Changelog'
       }
     }
   }

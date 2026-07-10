@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 
-export default function DocsIndexPage() {
-  redirect('/docs/overview')
+export default function OverviewRedirectPage() {
+  redirect('/docs')
 
   return <main hidden />
 }

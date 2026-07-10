@@ -14,14 +14,9 @@ export default {
   docs: {
     type: 'page',
     title: 'Legal ERP Platform',
-    href: '/docs/overview',
+    href: '/docs',
     items: {
-      index: {
-        type: 'page',
-        display: 'hidden',
-        title: 'Documentation Home'
-      },
-      overview: 'Overview',
+      index: 'Overview',
       scope: 'Scope',
       architecture: 'Architecture',
       _access: {

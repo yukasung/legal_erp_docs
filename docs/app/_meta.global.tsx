@@ -19,7 +19,6 @@ export default {
       index: 'Overview',
       scope: 'Scope',
       architecture: 'Architecture',
-      'domain-language': 'Domain Language',
       roles: {
         title: 'Roles',
         items: {
@@ -58,6 +57,9 @@ export default {
       },
       changelog: {
         title: 'Changelog'
+      },
+      overview: {
+        display: 'hidden'
       }
     }
   }

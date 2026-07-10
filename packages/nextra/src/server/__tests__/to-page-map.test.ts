@@ -86,9 +86,29 @@ describe('generatePageMap()', () => {
     const { pageMap, mdxPages } = convertToPageMap({ filePaths })
     expect(filePaths).toMatchInlineSnapshot(`
       [
-        "app/_meta.global.ts",
+        "app/_meta.global.tsx",
+        "app/docs/administration/page.mdx",
+        "app/docs/administration/permissions/page.mdx",
+        "app/docs/administration/settings/page.mdx",
+        "app/docs/administration/users-roles/page.mdx",
+        "app/docs/concepts/glossary/page.mdx",
+        "app/docs/concepts/page.mdx",
         "app/docs/getting-started/page.mdx",
+        "app/docs/modules/clients/page.mdx",
+        "app/docs/modules/documents/page.mdx",
+        "app/docs/modules/finance/page.mdx",
+        "app/docs/modules/matters/page.mdx",
+        "app/docs/modules/page.mdx",
+        "app/docs/modules/reports/page.mdx",
         "app/docs/page.mdx",
+        "app/docs/reference/changelog/page.mdx",
+        "app/docs/reference/faq/page.mdx",
+        "app/docs/reference/page.mdx",
+        "app/docs/workflows/billing/page.mdx",
+        "app/docs/workflows/documents/page.mdx",
+        "app/docs/workflows/intake/page.mdx",
+        "app/docs/workflows/matter-lifecycle/page.mdx",
+        "app/docs/workflows/page.mdx",
         "app/page.tsx",
       ]
     `)
@@ -97,14 +117,144 @@ describe('generatePageMap()', () => {
         {
           "children": [
             {
+              "children": [
+                {
+                  "__pagePath": "app/docs/administration/page.mdx",
+                  "name": "index",
+                  "route": "/docs/administration",
+                },
+                {
+                  "__pagePath": "app/docs/administration/permissions/page.mdx",
+                  "name": "permissions",
+                  "route": "/docs/administration/permissions",
+                },
+                {
+                  "__pagePath": "app/docs/administration/settings/page.mdx",
+                  "name": "settings",
+                  "route": "/docs/administration/settings",
+                },
+                {
+                  "__pagePath": "app/docs/administration/users-roles/page.mdx",
+                  "name": "users-roles",
+                  "route": "/docs/administration/users-roles",
+                },
+              ],
+              "name": "administration",
+              "route": "/docs/administration",
+            },
+            {
+              "children": [
+                {
+                  "__pagePath": "app/docs/concepts/glossary/page.mdx",
+                  "name": "glossary",
+                  "route": "/docs/concepts/glossary",
+                },
+                {
+                  "__pagePath": "app/docs/concepts/page.mdx",
+                  "name": "index",
+                  "route": "/docs/concepts",
+                },
+              ],
+              "name": "concepts",
+              "route": "/docs/concepts",
+            },
+            {
               "__pagePath": "app/docs/getting-started/page.mdx",
               "name": "getting-started",
               "route": "/docs/getting-started",
             },
             {
+              "children": [
+                {
+                  "__pagePath": "app/docs/modules/clients/page.mdx",
+                  "name": "clients",
+                  "route": "/docs/modules/clients",
+                },
+                {
+                  "__pagePath": "app/docs/modules/documents/page.mdx",
+                  "name": "documents",
+                  "route": "/docs/modules/documents",
+                },
+                {
+                  "__pagePath": "app/docs/modules/finance/page.mdx",
+                  "name": "finance",
+                  "route": "/docs/modules/finance",
+                },
+                {
+                  "__pagePath": "app/docs/modules/matters/page.mdx",
+                  "name": "matters",
+                  "route": "/docs/modules/matters",
+                },
+                {
+                  "__pagePath": "app/docs/modules/page.mdx",
+                  "name": "index",
+                  "route": "/docs/modules",
+                },
+                {
+                  "__pagePath": "app/docs/modules/reports/page.mdx",
+                  "name": "reports",
+                  "route": "/docs/modules/reports",
+                },
+              ],
+              "name": "modules",
+              "route": "/docs/modules",
+            },
+            {
               "__pagePath": "app/docs/page.mdx",
               "name": "index",
               "route": "/docs",
+            },
+            {
+              "children": [
+                {
+                  "__pagePath": "app/docs/reference/changelog/page.mdx",
+                  "name": "changelog",
+                  "route": "/docs/reference/changelog",
+                },
+                {
+                  "__pagePath": "app/docs/reference/faq/page.mdx",
+                  "name": "faq",
+                  "route": "/docs/reference/faq",
+                },
+                {
+                  "__pagePath": "app/docs/reference/page.mdx",
+                  "name": "index",
+                  "route": "/docs/reference",
+                },
+              ],
+              "name": "reference",
+              "route": "/docs/reference",
+            },
+            {
+              "children": [
+                {
+                  "__pagePath": "app/docs/workflows/billing/page.mdx",
+                  "name": "billing",
+                  "route": "/docs/workflows/billing",
+                },
+                {
+                  "__pagePath": "app/docs/workflows/documents/page.mdx",
+                  "name": "documents",
+                  "route": "/docs/workflows/documents",
+                },
+                {
+                  "__pagePath": "app/docs/workflows/intake/page.mdx",
+                  "name": "intake",
+                  "route": "/docs/workflows/intake",
+                },
+                {
+                  "__pagePath": "app/docs/workflows/matter-lifecycle/page.mdx",
+                  "name": "matter-lifecycle",
+                  "route": "/docs/workflows/matter-lifecycle",
+                },
+                {
+                  "__pagePath": "app/docs/workflows/page.mdx",
+                  "name": "index",
+                  "route": "/docs/workflows",
+                },
+              ],
+              "name": "workflows",
+              "route": "/docs/workflows",
             },
           ],
           "name": "docs",
@@ -125,22 +275,142 @@ describe('generatePageMap()', () => {
     expect(convertPageMapToJs({ pageMap, mdxPages, globalMetaPath }))
       .toMatchInlineSnapshot(`
         "import { normalizePageMap, mergeMetaWithPageMap, getMetadata } from 'nextra/page-map'
-        import globalMeta from 'private-next-root-dir/app/_meta.global.ts'
+        import globalMeta from 'private-next-root-dir/app/_meta.global.tsx'
+        import {metadata as app_docs_administration_page} from "private-next-root-dir/app/docs/administration/page.mdx?metadata";
+        import {metadata as app_docs_administration_permissions_page} from "private-next-root-dir/app/docs/administration/permissions/page.mdx?metadata";
+        import {metadata as app_docs_administration_settings_page} from "private-next-root-dir/app/docs/administration/settings/page.mdx?metadata";
+        import {metadata as app_docs_administration_users_roles_page} from "private-next-root-dir/app/docs/administration/users-roles/page.mdx?metadata";
+        import {metadata as app_docs_concepts_glossary_page} from "private-next-root-dir/app/docs/concepts/glossary/page.mdx?metadata";
+        import {metadata as app_docs_concepts_page} from "private-next-root-dir/app/docs/concepts/page.mdx?metadata";
         import {metadata as app_docs_getting_started_page} from "private-next-root-dir/app/docs/getting-started/page.mdx?metadata";
+        import {metadata as app_docs_modules_clients_page} from "private-next-root-dir/app/docs/modules/clients/page.mdx?metadata";
+        import {metadata as app_docs_modules_documents_page} from "private-next-root-dir/app/docs/modules/documents/page.mdx?metadata";
+        import {metadata as app_docs_modules_finance_page} from "private-next-root-dir/app/docs/modules/finance/page.mdx?metadata";
+        import {metadata as app_docs_modules_matters_page} from "private-next-root-dir/app/docs/modules/matters/page.mdx?metadata";
+        import {metadata as app_docs_modules_page} from "private-next-root-dir/app/docs/modules/page.mdx?metadata";
+        import {metadata as app_docs_modules_reports_page} from "private-next-root-dir/app/docs/modules/reports/page.mdx?metadata";
         import {metadata as app_docs_page} from "private-next-root-dir/app/docs/page.mdx?metadata";
+        import {metadata as app_docs_reference_changelog_page} from "private-next-root-dir/app/docs/reference/changelog/page.mdx?metadata";
+        import {metadata as app_docs_reference_faq_page} from "private-next-root-dir/app/docs/reference/faq/page.mdx?metadata";
+        import {metadata as app_docs_reference_page} from "private-next-root-dir/app/docs/reference/page.mdx?metadata";
+        import {metadata as app_docs_workflows_billing_page} from "private-next-root-dir/app/docs/workflows/billing/page.mdx?metadata";
+        import {metadata as app_docs_workflows_documents_page} from "private-next-root-dir/app/docs/workflows/documents/page.mdx?metadata";
+        import {metadata as app_docs_workflows_intake_page} from "private-next-root-dir/app/docs/workflows/intake/page.mdx?metadata";
+        import {metadata as app_docs_workflows_matter_lifecycle_page} from "private-next-root-dir/app/docs/workflows/matter-lifecycle/page.mdx?metadata";
+        import {metadata as app_docs_workflows_page} from "private-next-root-dir/app/docs/workflows/page.mdx?metadata";
         import * as app_page from "private-next-root-dir/app/page.tsx";
 
         export const pageMap = normalizePageMap(mergeMetaWithPageMap([{
           name: "docs",
           route: "/docs",
           children: [{
+            name: "administration",
+            route: "/docs/administration",
+            children: [{
+              name: "index",
+              route: "/docs/administration",
+              frontMatter: app_docs_administration_page
+            }, {
+              name: "permissions",
+              route: "/docs/administration/permissions",
+              frontMatter: app_docs_administration_permissions_page
+            }, {
+              name: "settings",
+              route: "/docs/administration/settings",
+              frontMatter: app_docs_administration_settings_page
+            }, {
+              name: "users-roles",
+              route: "/docs/administration/users-roles",
+              frontMatter: app_docs_administration_users_roles_page
+            }]
+          }, {
+            name: "concepts",
+            route: "/docs/concepts",
+            children: [{
+              name: "glossary",
+              route: "/docs/concepts/glossary",
+              frontMatter: app_docs_concepts_glossary_page
+            }, {
+              name: "index",
+              route: "/docs/concepts",
+              frontMatter: app_docs_concepts_page
+            }]
+          }, {
             name: "getting-started",
             route: "/docs/getting-started",
             frontMatter: app_docs_getting_started_page
           }, {
+            name: "modules",
+            route: "/docs/modules",
+            children: [{
+              name: "clients",
+              route: "/docs/modules/clients",
+              frontMatter: app_docs_modules_clients_page
+            }, {
+              name: "documents",
+              route: "/docs/modules/documents",
+              frontMatter: app_docs_modules_documents_page
+            }, {
+              name: "finance",
+              route: "/docs/modules/finance",
+              frontMatter: app_docs_modules_finance_page
+            }, {
+              name: "matters",
+              route: "/docs/modules/matters",
+              frontMatter: app_docs_modules_matters_page
+            }, {
+              name: "index",
+              route: "/docs/modules",
+              frontMatter: app_docs_modules_page
+            }, {
+              name: "reports",
+              route: "/docs/modules/reports",
+              frontMatter: app_docs_modules_reports_page
+            }]
+          }, {
             name: "index",
             route: "/docs",
             frontMatter: app_docs_page
+          }, {
+            name: "reference",
+            route: "/docs/reference",
+            children: [{
+              name: "changelog",
+              route: "/docs/reference/changelog",
+              frontMatter: app_docs_reference_changelog_page
+            }, {
+              name: "faq",
+              route: "/docs/reference/faq",
+              frontMatter: app_docs_reference_faq_page
+            }, {
+              name: "index",
+              route: "/docs/reference",
+              frontMatter: app_docs_reference_page
+            }]
+          }, {
+            name: "workflows",
+            route: "/docs/workflows",
+            children: [{
+              name: "billing",
+              route: "/docs/workflows/billing",
+              frontMatter: app_docs_workflows_billing_page
+            }, {
+              name: "documents",
+              route: "/docs/workflows/documents",
+              frontMatter: app_docs_workflows_documents_page
+            }, {
+              name: "intake",
+              route: "/docs/workflows/intake",
+              frontMatter: app_docs_workflows_intake_page
+            }, {
+              name: "matter-lifecycle",
+              route: "/docs/workflows/matter-lifecycle",
+              frontMatter: app_docs_workflows_matter_lifecycle_page
+            }, {
+              name: "index",
+              route: "/docs/workflows",
+              frontMatter: app_docs_workflows_page
+            }]
           }]
         }, {
           name: "index",

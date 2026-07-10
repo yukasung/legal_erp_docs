@@ -10,9 +10,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@inkeep/cxkit-react": "^0.5.98",
     "clsx": "^2.1.0",
-    "framer-motion": "^12.0.0",
     "next": "^16.0.7",
     "nextra": "workspace:*",
     "nextra-theme-docs": "workspace:*",

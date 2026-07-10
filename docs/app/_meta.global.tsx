@@ -19,12 +19,15 @@ export default {
         type: 'separator',
         title: <Section>Overview</Section>
       },
-      index: 'Documentation Home',
+      index: {
+        type: 'page',
+        display: 'hidden',
+        title: 'Documentation Home'
+      },
       overview: {
         title: 'Overview',
         items: {
           index: 'Overview',
-          introduction: 'Introduction',
           scope: 'Scope',
           architecture: 'Architecture'
         }

@@ -22,6 +22,23 @@ lawyer, finance หรือ assistant _Avoid_: Position, job title
 **Permission**: สิทธิ์ในการทำงานกับข้อมูล เช่น ดู เพิ่ม แก้ไข อนุมัติ ส่งออก
 หรือลบข้อมูล _Avoid_: Access flag
 
+**Admin**: ผู้ดูแลระบบที่รับผิดชอบการตั้งค่า tenant, user, role, permission,
+master data, security และ audit _Avoid_: ใช้ Admin เพื่อหมายถึงผู้บริหารธุรกิจ
+
+**Lawyer**: ผู้ทำงานกฎหมายหลัก เช่น ทนาย พนักงานกฎหมาย หรือทนายอาวุโสที่ทำงานกับ
+`Matter`, document, task และ calendar _Avoid_: Legal user แบบกว้างเกินไป
+
+**Assistant**: ผู้ช่วยปฏิบัติการของทีมกฎหมายที่ช่วยเตรียมข้อมูล เอกสาร นัดหมาย
+และติดตามงานใน `Matter` _Avoid_: Secretary เมื่อบทบาทรวมงาน case coordination
+
+**Finance**: ผู้ดูแลงาน quotation, billing, invoice, payment และข้อมูลการเงินที่
+เกี่ยวข้องกับ `Matter` หรือ `Client` _Avoid_: Accounting เมื่อหมายถึงบทบาทใช้งาน
+ระบบการเงินเบื้องต้น
+
+**Manager**: ผู้บริหาร หุ้นส่วน ทนายอาวุโส หรือ practice manager ที่ดูภาพรวม
+อนุมัติรายการสำคัญ และตัดสินใจจาก dashboard/report _Avoid_: Supervisor
+เมื่อไม่ได้มีสิทธิ์อนุมัติหรือดูภาพรวม
+
 **Client (ลูกความ/ผู้รับบริการ)**: บุคคลหรือองค์กรที่รับบริการทางกฎหมาย และ
 สามารถมีหลาย `Matter` ได้ _Avoid_: Customer
 

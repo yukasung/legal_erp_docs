@@ -1,67 +1,80 @@
 # Legal ERP Platform
 
 ไฟล์นี้กำหนดภาษากลางและคำศัพท์หลักสำหรับ Legal ERP Platform เพื่อใช้อ้างอิงเมื่อ
-แปลง requirement source files เป็นเอกสารเผยแพร่
+แปลง requirement source files เป็นเอกสารเผยแพร่ คำศัพท์ควรอ่านเข้าใจได้ทั้งทีม
+ธุรกิจ ทีมเอกสาร ทีมออกแบบ และทีมพัฒนา
 
 ## Language
 
-**Legal ERP Platform**: ชื่อระบบอย่างเป็นทางการสำหรับ platform บริหารงานกฎหมาย
-_Avoid_: MatterSolv, MatterSlov, Legal ERP, End-to-End Digital Legal Practice
-Management Platform
+**Legal ERP Platform (ระบบ Legal ERP)**: ชื่อระบบอย่างเป็นทางการสำหรับระบบ
+บริหารงานกฎหมาย โดยมี `Matter` เป็นแฟ้มงานหลัก _Avoid_: MatterSolv, MatterSlov,
+Legal ERP, End-to-End Digital Legal Practice Management Platform
 
-**Tenant**: หนึ่งสำนักงานกฎหมายหรือองค์กรที่ใช้งาน Legal ERP Platform ใน
-environment แบบ SaaS ที่แยกข้อมูลออกจาก tenant อื่น _Avoid_: BU, office account
+**Tenant (องค์กรผู้ใช้งาน)**: สำนักงานกฎหมายหรือองค์กรหนึ่งแห่งที่ใช้ระบบ
+ข้อมูลขององค์กรนี้ต้องแยกจากองค์กรอื่น _Avoid_: BU, office account
 
-**User**: บุคคลที่เข้าใช้งานระบบภายใต้ tenant ใด tenant หนึ่ง และได้รับสิทธิ์ตาม
-role หรือ permission ที่กำหนด _Avoid_: Staff account, employee account
+**User (ผู้ใช้งาน)**: คนที่เข้าใช้งานระบบภายใต้ `Tenant` ใด `Tenant` หนึ่ง
+และได้รับสิทธิ์ตามงานที่รับผิดชอบ _Avoid_: Staff account, employee account
 
-**Role**: กลุ่มหน้าที่ของ user ที่ใช้กำหนดชุด permission พื้นฐาน เช่น
-administrator, lawyer, finance หรือ assistant _Avoid_: Position, job title
+**Role (บทบาทผู้ใช้งาน)**: กลุ่มหน้าที่ของ `User` ที่ช่วยกำหนดสิทธิ์เริ่มต้น
+เช่น administrator, lawyer, finance หรือ assistant _Avoid_: Position, job title
 
-**Permission**: สิทธิ์เฉพาะสำหรับการดู สร้าง แก้ไข อนุมัติ ส่งออก
-หรือลบข้อมูลในระบบ _Avoid_: Access flag
+**Permission (สิทธิ์การใช้งาน)**: สิทธิ์ในการทำงานกับข้อมูล เช่น ดู เพิ่ม แก้ไข
+อนุมัติ ส่งออก หรือลบข้อมูล _Avoid_: Access flag
 
-**Client**: บุคคลหรือองค์กรที่รับบริการทางกฎหมาย และสามารถเชื่อมโยงกับหลาย
-matter ได้ _Avoid_: Customer
+**Client (ลูกความ/ผู้รับบริการ)**: บุคคลหรือองค์กรที่รับบริการทางกฎหมาย และ
+สามารถมีหลาย `Matter` ได้ _Avoid_: Customer
 
-**Matter**: แฟ้มงานกฎหมายหรือรายการงานหลักที่เชื่อมโยง client, document, task,
-calendar activity, quotation, invoice, payment และ profitability analysis
-ไว้ด้วยกัน _Avoid_: ใช้ Case เมื่อกล่าวถึงแฟ้มงานแบบ matter-centered
+**Matter (แฟ้มงานกฎหมาย)**: งานกฎหมายหนึ่งเรื่องที่ระบบใช้เป็นแฟ้มหลัก
+รวมข้อมูลลูกความ เอกสาร งานย่อย นัดหมาย ใบเสนอราคา การวางบิล การรับเงิน
+และผลการทำงานไว้ด้วยกัน _Avoid_: ใช้ Case เมื่อกล่าวถึงแฟ้มงานหลักของระบบ
 
-**Matter Workspace**: พื้นที่ทำงานของ matter ที่รวมข้อมูลและกิจกรรมทั้งหมดของ
-งานกฎหมายเรื่องนั้น _Avoid_: Case file screen
+**Matter Workspace (หน้ารวมงานกฎหมาย)**: พื้นที่ทำงานของ `Matter` ที่รวมข้อมูล
+และกิจกรรมทั้งหมดของงานกฎหมายเรื่องนั้น _Avoid_: Case file screen
 
-**Document**: เอกสารที่สร้าง อัปโหลด หรือจัดเก็บในระบบและเชื่อมกับ matter หรือ
-client _Avoid_: File เฉพาะเมื่อต้องการสื่อถึง metadata และ workflow ของเอกสาร
+**Document (เอกสาร)**: เอกสารที่สร้าง อัปโหลด หรือจัดเก็บในระบบ และเชื่อมกับ
+`Matter` หรือ `Client` _Avoid_: File เฉพาะเมื่อต้องการสื่อถึงเอกสารที่มีสถานะ
+หรือขั้นตอนการอนุมัติ
 
-**Document Template**: แม่แบบเอกสารที่ใช้สร้าง document โดยเติมข้อมูลจาก matter,
-client หรือข้อมูลอื่นในระบบ _Avoid_: Form file
+**Document Template (แม่แบบเอกสาร)**: แบบฟอร์มหรือแม่แบบที่ระบบใช้สร้าง
+`Document` ใหม่ โดยดึงข้อมูลจาก `Matter`, `Client` หรือข้อมูลอื่นที่บันทึกไว้
+_Avoid_: Form file
 
-**Task**: งานย่อยที่มอบหมายให้ user หรือทีมรับผิดชอบภายใต้ matter หรือ workflow
-ที่เกี่ยวข้อง _Avoid_: To-do
+**Task (งานย่อย)**: งานที่มอบหมายให้ `User` หรือทีมรับผิดชอบ ภายใน `Matter`
+หรือขั้นตอนการทำงานที่เกี่ยวข้อง _Avoid_: To-do
 
-**Calendar Activity**: กิจกรรม วันนัด หรือ deadline ที่ผูกกับ matter, task หรือ
-user _Avoid_: Appointment เมื่อหมายถึงกิจกรรมทุกประเภท
+**Calendar Activity (นัดหมาย/กำหนดเวลา)**: กิจกรรม วันนัด หรือกำหนดส่งงาน
+ที่ผูกกับ `Matter`, `Task` หรือ `User` _Avoid_: Appointment เมื่อหมายถึงกิจกรรม
+ทุกประเภท
 
-**Quotation**: ใบเสนอราคาหรือข้อเสนอค่าบริการสำหรับ matter หรือ service package
-_Avoid_: Quote
+**Quotation (ใบเสนอราคา)**: ใบเสนอราคาหรือข้อเสนอค่าบริการสำหรับ `Matter`
+หรือชุดบริการ _Avoid_: Quote
 
-**Invoice**: เอกสารเรียกเก็บเงินที่ออกหลังจาก quotation หรือ billing condition
-พร้อมเรียกชำระ _Avoid_: Bill เมื่อหมายถึงเอกสาร invoice อย่างเป็นทางการ
+**Invoice (ใบแจ้งหนี้)**: เอกสารเรียกเก็บเงินที่พร้อมให้ `Client` ชำระ _Avoid_:
+Bill เมื่อหมายถึงเอกสาร invoice อย่างเป็นทางการ
 
-**Payment**: ข้อมูลการรับชำระเงินที่เชื่อมกับ invoice, matter หรือ client
-_Avoid_: Collection record เมื่อหมายถึงรายการชำระเงินจริง
+**Payment (การรับชำระเงิน)**: ข้อมูลการรับเงินที่เชื่อมกับ `Invoice`, `Matter`
+หรือ `Client` _Avoid_: Collection record เมื่อหมายถึงรายการชำระเงินจริง
 
-**Billing**: กระบวนการติดตามการวางบิล เงื่อนไขการชำระ invoice และสถานะ
-collection _Avoid_: Accounting
+**Billing (การวางบิลและติดตามชำระ)**: การติดตามใบแจ้งหนี้ เงื่อนไขการชำระ
+และสถานะการรับเงิน _Avoid_: Accounting
 
-**Finance Foundation**: ข้อมูลพื้นฐานด้านการเงินที่เตรียมไว้สำหรับ receivable,
-payable, tax-related setup และ financial reporting _Avoid_: Full accounting
-module
+**Finance Foundation (ข้อมูลตั้งต้นด้านการเงิน)**: ข้อมูลพื้นฐานที่ช่วยต่อยอด
+งานวางบิล รับเงิน จ่ายเงิน ภาษี และรายงานการเงินเบื้องต้น _Avoid_: Full
+accounting module
 
-**Audit Log**: ประวัติการเปลี่ยนแปลงข้อมูลสำคัญที่บันทึก user, tenant, action,
-target record และเวลาเกิดเหตุการณ์ _Avoid_: Activity feed เมื่อหมายถึงหลักฐาน
-audit
+**Audit Log (ประวัติการเปลี่ยนแปลง)**: ประวัติว่าใครทำอะไร กับข้อมูลใด
+ในองค์กรใด และทำเมื่อไร _Avoid_: Activity feed เมื่อหมายถึงหลักฐาน audit
 
-**External Integration**: จุดเชื่อมต่อกับระบบภายนอก เช่น e-signature, payment
-gateway, accounting system หรือ government service _Avoid_: Plugin
+**External Integration (การเชื่อมต่อระบบภายนอก)**: จุดที่ Legal ERP Platform
+เชื่อมกับระบบอื่น เช่น e-signature, payment gateway, accounting system หรือ
+government service _Avoid_: Plugin
+
+**Workflow (ขั้นตอนการทำงาน)**: ลำดับการทำงานตั้งแต่เริ่มเรื่อง ส่งต่อ อนุมัติ
+จนจบงาน
+
+**Master Data (ข้อมูลตั้งต้น)**: ข้อมูลพื้นฐานที่ระบบใช้ซ้ำ เช่น ประเภทงาน
+ประเภทเอกสาร สถานะงาน หรือรายการค่าบริการ
+
+**Dashboard (หน้าสรุปสถานะ)**: หน้าจอที่รวมตัวเลข สถานะ หรือรายการสำคัญ
+เพื่อช่วยติดตามงานและตัดสินใจ

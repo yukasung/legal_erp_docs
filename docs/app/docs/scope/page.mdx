@@ -1,58 +1,64 @@
 # Scope
 
-หน้านี้กำหนดว่า baseline ของ Legal ERP Platform รวมอะไร ไม่รวมอะไร และมีคำถาม
-ใดที่ต้องตัดสินใจต่อก่อนลงรายละเอียด module, workflow, database, API และ UI
+หน้านี้ตอบ 3 เรื่องหลักของ Legal ERP Platform: ขอบเขตเริ่มต้นรวมอะไร
+ยังไม่รวมอะไร และมีคำถามใดที่ต้องตัดสินใจต่อ ก่อนลงรายละเอียด module
+(ส่วนงานระบบ), workflow (ขั้นตอนการทำงาน), database (ฐานข้อมูล), API
+(ช่องทางที่หน้าจอใช้คุยกับระบบหลังบ้าน) และ UI (หน้าจอผู้ใช้งาน)
 
 เอกสารต้นทางบางส่วนใช้คำว่า `Case Management` แต่ในเอกสารนี้จะใช้คำว่า `Matter`
-เป็นหลัก เพื่อให้ตรงกับ [Domain Language](/docs/domain-language) ของ Legal ERP
-Platform
+(แฟ้มงานกฎหมาย) เป็นหลัก เพื่อให้ตรงกับ [Domain Language](/docs/domain-language)
+ของ Legal ERP Platform
 
 ## In Scope
 
-- **Client & Matter Management**: บริหารข้อมูล `Client`, `Matter`,
-  ประวัติการติดต่อ เอกสารที่เกี่ยวข้อง ทีมผู้รับผิดชอบ และสถานะของงาน
-- **Document Automation Management**: สร้าง `Document` จาก `Document Template`,
-  auto-fill fields, conditional content, upload, version control, `Audit Log`,
-  approval workflow, e-signature, export และ share document
-- **Quotation & Service Fee Definition**: สร้าง `Quotation`, กำหนดขอบเขตบริการ,
-  pricing model, payment terms, approval workflow, revision history, export,
-  print และ dashboard สำหรับติดตาม quotation
-- **Calendar & Scheduling**: จัดการนัดหมาย กำหนดเวลาสำคัญ และ reminder ที่ผูกกับ
-  `Matter` หรือ `Task`
-- **Task & Team Management**: มอบหมาย `Task` ให้ทีม ติดตามความคืบหน้า
-  และจัดการผู้รับผิดชอบในแต่ละ `Matter`
-- **Billing & Payment Collection**: ติดตามการวางบิล เงื่อนไขการชำระ การรับชำระ
-  และสถานะ collection ที่เกี่ยวข้องกับ `Quotation` หรือ `Matter`
-- **Finance Foundation**: วางรากฐานข้อมูลการเงิน เช่น chart of accounts,
-  receivable, payable, `Invoice`, `Payment`, tax-related setup และ financial
-  reporting ที่จำเป็นต่อการต่อยอด module การเงิน
-- **Administration & SaaS Management**: จัดการ `Tenant`, `User`, `Role`,
-  `Permission`, RBAC, `Audit Log`, security setting, master data และ
-  configuration ที่รองรับ multi-tenant
+- **Client & Matter Management**: บริหารข้อมูล `Client` (ลูกความ/ผู้รับบริการ),
+  `Matter` (แฟ้มงานกฎหมาย), ประวัติการติดต่อ เอกสารที่เกี่ยวข้อง ทีมผู้รับผิดชอบ
+  และสถานะของงาน
+- **Document Automation Management**: สร้าง `Document` (เอกสาร) จาก
+  `Document Template` (แม่แบบเอกสาร), ให้ระบบช่วยเติมข้อมูล, เลือกข้อความตาม
+  เงื่อนไข, อัปโหลดไฟล์, เก็บเวอร์ชัน, บันทึกประวัติการเปลี่ยนแปลง, ส่งอนุมัติ,
+  ลงนามอิเล็กทรอนิกส์, ส่งออก และแชร์เอกสาร
+- **Quotation & Service Fee Definition**: สร้าง `Quotation` (ใบเสนอราคา),
+  กำหนดขอบเขตบริการ รูปแบบค่าบริการ เงื่อนไขการชำระ ขั้นตอนอนุมัติ
+  ประวัติการแก้ไข การส่งออก การพิมพ์ และหน้าสรุปสถานะใบเสนอราคา
+- **Calendar & Scheduling**: จัดการนัดหมาย กำหนดเวลาสำคัญ
+  และการแจ้งเตือนที่ผูกกับ `Matter` (แฟ้มงานกฎหมาย) หรือ `Task` (งานย่อย)
+- **Task & Team Management**: มอบหมาย `Task` (งานย่อย) ให้ทีม ติดตามความคืบหน้า
+  และจัดการผู้รับผิดชอบในแต่ละ `Matter` (แฟ้มงานกฎหมาย)
+- **Billing & Payment Collection**: ติดตามการวางบิล เงื่อนไขการชำระ การรับเงิน
+  และสถานะการติดตามชำระที่เกี่ยวข้องกับใบเสนอราคาหรือแฟ้มงานกฎหมาย
+- **Finance Foundation**: วางข้อมูลตั้งต้นด้านการเงิน เช่น ผังบัญชีเบื้องต้น
+  รายการรับเงิน รายการจ่ายเงิน `Invoice` (ใบแจ้งหนี้), `Payment`
+  (การรับชำระเงิน), ข้อมูลภาษี และรายงานการเงินเบื้องต้นที่จำเป็นต่อการต่อยอด
+  module (ส่วนงานระบบ) การเงิน
+- **Administration & SaaS Management**: จัดการ `Tenant` (องค์กรผู้ใช้งาน),
+  `User` (ผู้ใช้งาน), `Role` (บทบาทผู้ใช้งาน), `Permission` (สิทธิ์การใช้งาน),
+  ประวัติการเปลี่ยนแปลง, ความปลอดภัย, `Master Data` (ข้อมูลตั้งต้น)
+  และค่าตั้งต้นที่รองรับหลายองค์กรในระบบเดียว
 
 ## Out of Scope
 
-รายการต่อไปนี้ยังไม่ถือเป็นขอบเขตหลักของ baseline ปัจจุบัน เว้นแต่จะมี decision
-หรือ requirement เพิ่มเติมในภายหลัง:
+รายการต่อไปนี้ยังไม่ถือเป็นขอบเขตหลักของรอบเริ่มต้น เว้นแต่จะมีข้อตัดสินใจหรือ
+requirement เพิ่มเติมในภายหลัง:
 
-- Native mobile application
-- Production integration กับระบบภายนอก เช่น e-Filing, CIOS, bank, tax system,
+- แอปมือถือแบบ native
+- การเชื่อมต่อระบบภายนอกแบบใช้งานจริง เช่น e-Filing, CIOS, bank, tax system,
   payment gateway, external ERP หรือ external CRM
-- Payment gateway workflow แบบเต็มรูปแบบสำหรับรับชำระเงินจริง
-- Data migration เต็มรูปแบบจากระบบเดิม ยกเว้นการเตรียม master data import
+- ขั้นตอนรับชำระเงินจริงผ่าน payment gateway แบบเต็มรูปแบบ
+- การย้ายข้อมูลจากระบบเดิมแบบเต็มรูปแบบ ยกเว้นการเตรียมนำเข้าข้อมูลตั้งต้น
   ที่ตกลงเพิ่มเติม
-- Cloud hosting cost, license cost และ third-party service subscription
-- Formal security certification, penetration test หรือ external audit โดยผู้ให้
-  บริการภายนอก
-- End-user training และ change management สำหรับการ rollout ใช้งานจริง
+- ค่าใช้จ่าย cloud hosting, license และบริการภายนอก
+- ใบรับรองความปลอดภัยอย่างเป็นทางการ penetration test หรือ external audit
+  โดยผู้ให้บริการภายนอก
+- การอบรมผู้ใช้ปลายทางและ change management สำหรับการ rollout ใช้งานจริง
 
 ## Open Questions
 
-- Finance module ใน phase แรกต้องครอบคลุมเพียง foundation และ reporting
-  เบื้องต้น หรือรวม accounting workflow แบบเต็มรูปแบบ
-- HRM/payroll requirement จะอยู่ใน phase เดียวกับ core legal workflow
+- งานการเงินใน phase (ช่วงงาน) แรกต้องจบที่ข้อมูลตั้งต้นและรายงานเบื้องต้น
+  หรือรวมขั้นตอนบัญชีเต็มรูปแบบด้วย
+- requirement ด้าน HRM/payroll จะอยู่ใน phase (ช่วงงาน) เดียวกับงานกฎหมายหลัก
   หรือแยกเป็น phase ถัดไป
-- Payment collection ต้องจบที่การติดตามสถานะการรับชำระ หรือรวมการเชื่อมต่อ
-  payment gateway ด้วย
-- External integrations ใดต้องเป็น mock/prototype และ integration
-  ใดต้องใช้งานจริงใน production
+- การติดตามรับชำระต้องจบที่สถานะการรับเงิน หรือรวมการเชื่อมต่อ payment gateway
+  ด้วย
+- การเชื่อมต่อระบบภายนอกใดต้องเป็น mock/prototype (จำลองหรือต้นแบบ)
+  และการเชื่อมต่อใดต้องใช้งานจริงใน production

@@ -1,15 +1,13 @@
 # Overview
 
 Legal ERP Platform คือระบบบริหารจัดการงานกฎหมายแบบ matter-centered สำหรับ
-สำนักงานกฎหมายและองค์กรที่ให้บริการด้านกฎหมาย ระบบนี้รวมข้อมูล client, matter,
-task, document, calendar activity, quotation, billing และข้อมูลด้านการเงินไว้ใน
-พื้นที่ทำงานเดียวกัน
+สำนักงานกฎหมายและทีมกฎหมายในองค์กร โดยให้ `Matter` เป็น record กลางสำหรับรวม
+client, document, task, calendar activity, quotation, billing และข้อมูลด้าน
+การเงินที่เกี่ยวข้องไว้ในพื้นที่ทำงานเดียวกัน
 
-เป้าหมายของ platform คือช่วยลดงานธุรการที่ต้องทำซ้ำ ลดความผิดพลาดของข้อมูล
-client และ matter และทำให้ทีมเห็นสถานะงานตั้งแต่รับเรื่องจนถึงส่งมอบงานและเรียก
-เก็บเงินได้ชัดเจนขึ้น โดยให้ matter เป็นแฟ้มงานหลักที่เชื่อมโยงบุคคล เอกสาร งาน
-นัดหมาย ใบเสนอราคา ใบแจ้งหนี้ การรับชำระเงิน และข้อมูล profitability ไว้ใน
-record เดียวกัน
+เป้าหมายของระบบคือช่วยให้ทีมเห็นสถานะงานตั้งแต่รับเรื่อง สร้างเอกสาร มอบหมายงาน
+นัดหมาย ออกใบเสนอราคา วางบิล รับชำระเงิน และติดตามผลการทำงานได้จากข้อมูลชุด
+เดียว ลดการทำงานซ้ำและลดความคลาดเคลื่อนของข้อมูลระหว่างทีม
 
 ## Who It Serves
 
@@ -21,69 +19,9 @@ record เดียวกัน
 
 ## Core Capabilities
 
-- บริหารข้อมูล client และ matter
-- สร้างและจัดเก็บ document จากศูนย์กลาง
-- จัดการ task, team และ calendar
-- ติดตาม quotation, billing และข้อมูลทางการเงิน
-- จัดการ user, role, permission และ tenant setting
-- วางรากฐานรายงานสำหรับวิเคราะห์การดำเนินงานและ profitability
-
-## Operating Model
-
-แต่ละ tenant หมายถึงหนึ่งสำนักงานกฎหมายหรือหนึ่งองค์กรที่ใช้งาน platform ใน
-environment แบบ SaaS ที่แยกข้อมูลออกจาก tenant อื่น ผู้ใช้แต่ละคนทำงานผ่าน
-permission ตามบทบาท เพื่อให้มองเห็นข้อมูลและทำรายการได้เฉพาะส่วนที่เกี่ยวข้องกับ
-หน้าที่ของตน
-
-matter เป็นศูนย์กลางของงานประจำวัน ข้อมูล client, document, task, calendar
-event, quotation, invoice, payment และ performance data ควรถูกย้อนดูได้จาก
-matter
-เพื่อให้ทีมเข้าใจสถานะปัจจุบันของงานโดยไม่ต้องค้นหาข้อมูลจากหลายเครื่องมือ
-ที่แยกจากกัน
-
-## Technical Foundation
-
-stack ที่ยึดเป็นทางการสำหรับ Legal ERP Platform มีดังนี้:
-
-- **Backend**: Django
-- **Frontend**: React และ Tailwind CSS
-- **Database**: PostgreSQL
-
-## Documentation Map
-
-- [Scope](/docs/scope): กำหนดขอบเขต baseline ของระบบ สิ่งที่อยู่ใน scope
-  สิ่งที่ยังอยู่นอก scope และคำถามที่ต้องตัดสินใจต่อ
-- [Architecture](/docs/architecture): พื้นที่สำหรับสรุปสถาปัตยกรรมระบบ component
-  สำคัญ และแนวทางเชื่อมต่อระหว่าง frontend, backend และ database
-
-## Platform Summary
-
-ระบบนี้ออกแบบให้ทีมกฎหมายทำงานจากข้อมูลชุดเดียวกัน ลดการกระจายของข้อมูลระหว่าง
-file, spreadsheet, chat และระบบบัญชีแยกส่วน ผู้ใช้ควรสามารถเห็นสถานะของ matter
-ตั้งแต่เริ่มรับเรื่อง สร้างเอกสาร มอบหมายงาน นัดหมาย ออกใบเสนอราคา วางบิล
-รับชำระเงิน และวิเคราะห์ผลการทำงานได้จากพื้นที่เดียวกัน
-
-## Core Areas
-
-- **Client & Matter Management**: จัดการข้อมูล client, matter, relationship,
-  contact history, status และทีมผู้รับผิดชอบ
-- **Document Automation Management**: จัดการ template, document generation,
-  upload, version control, approval และ audit trail
-- **Quotation & Service Fee Definition**: สร้างและติดตาม quotation, service
-  package, pricing model, approval, revision และ export
-- **Calendar & Scheduling**: จัดการนัดหมาย deadline reminder และ activity
-  ที่เกี่ยวข้องกับ matter หรือ task
-- **Task & Team Management**: มอบหมายงาน ติดตามความคืบหน้า และจัดการผู้รับผิดชอบ
-  ในแต่ละ matter
-- **Billing & Payment Collection**: ติดตาม invoice, payment term, collection
-  status และข้อมูลการรับชำระที่เกี่ยวข้อง
-- **Finance Foundation**: เตรียมโครงสร้างข้อมูลด้านบัญชีและรายงานการเงินพื้นฐาน
-  สำหรับต่อยอด workflow ด้าน finance
-- **Administration & SaaS Management**: จัดการ tenant, user, role, permission,
-  RBAC, master data, audit log และ system configuration
-
-## Current Documentation Status
-
-- เริ่มต้นแล้ว: Overview, Scope และ Architecture
-- ลำดับถัดไป: Roles, Permissions และรายละเอียด Modules
-- รอขยายรายละเอียด: Flows, Database, API, UI และ Changelog
+- **Client & Matter Management**: จัดการข้อมูล client, matter และทีมผู้รับผิดชอบ
+- **Document Management**: สร้าง จัดเก็บ และติดตามเอกสารที่เกี่ยวข้องกับ matter
+- **Task & Calendar**: มอบหมายงาน ติดตาม deadline และจัดการนัดหมาย
+- **Quotation & Billing**: ดูแลใบเสนอราคา การวางบิล และสถานะการรับชำระ
+- **Finance Foundation**: เตรียมข้อมูลพื้นฐานสำหรับรายงานและงานการเงินต่อเนื่อง
+- **Administration**: จัดการ tenant, user, role, permission และ configuration

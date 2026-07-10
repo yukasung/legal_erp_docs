@@ -1,7 +1,8 @@
-# Use Django, React, Tailwind CSS, and PostgreSQL
+# ใช้ Django, React, Tailwind CSS และ PostgreSQL
 
-The source requirements mention conflicting implementation stacks, so the
-accepted stack for the Legal ERP Platform is Django for the backend, React with
-Tailwind CSS for the frontend, and PostgreSQL for the database. Documentation
-and architecture pages should treat other stack references in source files as
-superseded unless a later decision changes this.
+เอกสาร requirement ต้นทางมีการกล่าวถึง stack ที่ไม่ตรงกัน ดังนั้น stack
+ที่ยึดเป็นทางการสำหรับ Legal ERP Platform คือ Django สำหรับ backend, React
+ร่วมกับ Tailwind CSS สำหรับ frontend และ PostgreSQL สำหรับ database
+
+เอกสารและหน้า architecture ต้องถือว่า stack อื่นที่ปรากฏใน source requirement
+ถูกแทนที่ด้วย decision นี้ เว้นแต่จะมี architecture decision ใหม่ในภายหลัง

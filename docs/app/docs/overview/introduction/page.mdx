@@ -1,47 +1,49 @@
-# Introduction
+# บทนำ
 
-Legal ERP Platform is a matter-centered practice management platform for law
-firms and legal service organizations. It brings clients, matters, tasks,
-documents, calendar activities, quotations, billing, and financial visibility
-into one operating system.
+Legal ERP Platform คือระบบบริหารจัดการงานกฎหมายแบบ matter-centered สำหรับ
+สำนักงานกฎหมายและองค์กรที่ให้บริการด้านกฎหมาย ระบบนี้รวมข้อมูล client, matter,
+task, document, calendar activity, quotation, billing และข้อมูลด้านการเงินไว้ใน
+พื้นที่ทำงานเดียวกัน
 
-The platform is designed to reduce manual administration, improve accuracy
-across client and matter records, and give teams clearer visibility from intake
-through delivery and collection. Each matter acts as the primary work container:
-users can connect people, documents, assignments, appointments, quotations,
-invoices, and profitability signals to the same operational record.
+เป้าหมายของ platform คือช่วยลดงานธุรการที่ต้องทำซ้ำ ลดความผิดพลาดของข้อมูล
+client และ matter และทำให้ทีมเห็นสถานะงานตั้งแต่รับเรื่องจนถึงส่งมอบงานและเรียก
+เก็บเงินได้ชัดเจนขึ้น โดยให้ matter เป็นแฟ้มงานหลักที่เชื่อมโยงบุคคล เอกสาร งาน
+นัดหมาย ใบเสนอราคา ใบแจ้งหนี้ การรับชำระเงิน และข้อมูล profitability ไว้ใน
+record เดียวกัน
 
-## Who It Serves
+## กลุ่มผู้ใช้งาน
 
-- Law firms that need a shared workspace for legal operations
-- Legal service teams that manage multiple clients, matters, and documents
-- Administrators who need role-based access, tenant configuration, and reporting
-- Finance and operations users who need visibility into quotation, billing, and
-  collection status
+- สำนักงานกฎหมายที่ต้องการพื้นที่ทำงานร่วมกันสำหรับบริหารงานกฎหมาย
+- ทีมกฎหมายที่ต้องดูแล client, matter และ document จำนวนมาก
+- ผู้ดูแลระบบที่ต้องจัดการ role, permission, tenant setting และรายงาน
+- ทีมการเงินหรือทีมปฏิบัติการที่ต้องติดตามสถานะ quotation, billing และ
+  collection
 
-## Core Capabilities
+## ความสามารถหลัก
 
-- Client and matter management
-- Document automation and centralized document handling
-- Task, team, and calendar coordination
-- Quotation, billing, and financial visibility
-- Role-based administration for users, permissions, and tenant settings
-- Reporting foundations for operational and profitability analysis
+- บริหารข้อมูล client และ matter
+- สร้างและจัดเก็บ document จากศูนย์กลาง
+- จัดการ task, team และ calendar
+- ติดตาม quotation, billing และข้อมูลทางการเงิน
+- จัดการ user, role, permission และ tenant setting
+- วางรากฐานรายงานสำหรับวิเคราะห์การดำเนินงานและ profitability
 
-## Operating Model
+## รูปแบบการทำงาน
 
-Each tenant represents one organization using the platform in an isolated SaaS
-environment. Users work through role-based permissions so each team member only
-sees and performs the actions appropriate to their responsibility.
+แต่ละ tenant หมายถึงหนึ่งสำนักงานกฎหมายหรือหนึ่งองค์กรที่ใช้งาน platform ใน
+environment แบบ SaaS ที่แยกข้อมูลออกจาก tenant อื่น ผู้ใช้แต่ละคนทำงานผ่าน
+permission ตามบทบาท เพื่อให้มองเห็นข้อมูลและทำรายการได้เฉพาะส่วนที่เกี่ยวข้องกับ
+หน้าที่ของตน
 
-The matter record is the center of daily work. Related clients, documents,
-tasks, calendar events, quotations, invoices, payments, and performance data
-should be traceable from the matter so teams can understand the current status
-without searching across disconnected tools.
+matter เป็นศูนย์กลางของงานประจำวัน ข้อมูล client, document, task, calendar
+event, quotation, invoice, payment และ performance data ควรถูกย้อนดูได้จาก
+matter
+เพื่อให้ทีมเข้าใจสถานะปัจจุบันของงานโดยไม่ต้องค้นหาข้อมูลจากหลายเครื่องมือ
+ที่แยกจากกัน
 
-## Technical Foundation
+## พื้นฐานทางเทคนิค
 
-The accepted implementation stack for the Legal ERP Platform is Django for the
-backend, React with Tailwind CSS for the frontend, and PostgreSQL for the
-database. Other stack references in source requirement files are treated as
-superseded unless a later architecture decision changes this.
+stack ที่ยึดเป็นทางการสำหรับ Legal ERP Platform คือ Django สำหรับ backend, React
+ร่วมกับ Tailwind CSS สำหรับ frontend และ PostgreSQL สำหรับ database หาก source
+requirement กล่าวถึง stack อื่น ให้ถือว่า stack นั้นถูกแทนที่ด้วย decision นี้
+เว้นแต่จะมี architecture decision ใหม่ในภายหลัง

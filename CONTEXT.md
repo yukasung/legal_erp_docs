@@ -1,22 +1,26 @@
 # Legal ERP Platform
 
-This context defines the canonical language for the Legal ERP Platform
-documentation. Use these terms when turning source requirements into published
-docs.
+ไฟล์นี้กำหนดภาษากลางและคำศัพท์หลักสำหรับเอกสาร Legal ERP Platform
+เพื่อใช้อ้างอิง เมื่อต้องแปลง requirement source files เป็นเอกสารเผยแพร่
 
-## Language
+## ภาษาหลักของเอกสาร
 
-**Legal ERP Platform**: The canonical product/system name for the legal practice
-management platform. _Avoid_: MatterSolv, MatterSlov, Legal ERP, End-to-End
-Digital Legal Practice Management Platform
+เอกสารที่เผยแพร่ต้องใช้ภาษาไทยเป็นหลัก โดยคงชื่อ product, module, stack และ
+domain term เป็นภาษาอังกฤษเฉพาะกรณีที่เป็นคำมาตรฐานของระบบ พร้อมอธิบายความหมาย
+เป็นภาษาไทยเมื่อจำเป็น
 
-**Matter**: A legal work item or case file that acts as the center of related
-clients, documents, tasks, time records, appointments, quotations, invoices, and
-profitability analysis. _Avoid_: Case when referring to the wider matter-centric
-container
+## คำศัพท์หลัก
 
-**Client**: A person or organization receiving legal services and linked to one
-or more matters. _Avoid_: Customer, ลูกความ when writing English docs
+**Legal ERP Platform**: ชื่อระบบอย่างเป็นทางการสำหรับ platform บริหารงานกฎหมาย
+_Avoid_: MatterSolv, MatterSlov, Legal ERP, End-to-End Digital Legal Practice
+Management Platform
 
-**Tenant**: One law firm or organization using the Legal ERP Platform in an
-isolated SaaS environment. _Avoid_: BU, office account
+**Matter**: แฟ้มงานกฎหมายหรือรายการงานหลักที่เชื่อมโยง client, document, task,
+time record, appointment, quotation, invoice และ profitability analysis ไว้ด้วย
+กัน _Avoid_: ใช้ Case เมื่อกล่าวถึงแฟ้มงานแบบ matter-centered
+
+**Client**: บุคคลหรือองค์กรที่รับบริการทางกฎหมาย และสามารถเชื่อมโยงกับ matter
+ได้มากกว่าหนึ่งรายการ _Avoid_: Customer
+
+**Tenant**: หนึ่งสำนักงานกฎหมายหรือองค์กรที่ใช้งาน Legal ERP Platform ใน
+environment แบบ SaaS ที่แยกข้อมูลออกจาก tenant อื่น _Avoid_: BU, office account

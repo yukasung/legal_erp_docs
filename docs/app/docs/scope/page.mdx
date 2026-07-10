@@ -4,30 +4,31 @@
 ใดที่ต้องตัดสินใจต่อก่อนลงรายละเอียด module, workflow, database, API และ UI
 
 เอกสารต้นทางบางส่วนใช้คำว่า `Case Management` แต่ในเอกสารนี้จะใช้คำว่า `Matter`
-เป็นหลัก เพื่อให้ตรงกับ domain language ของ Legal ERP Platform
+เป็นหลัก เพื่อให้ตรงกับ [Domain Language](/docs/domain-language) ของ Legal ERP
+Platform
 
 ## In Scope
 
-- **Client & Matter Management**: บริหารข้อมูล client, matter, ประวัติการติดต่อ,
-  เอกสารที่เกี่ยวข้อง, ทีมผู้รับผิดชอบ และสถานะของงาน
-- **Document Automation Management**: สร้างเอกสารจาก template, auto-fill fields,
-  conditional content, upload, version control, audit trail, approval workflow,
-  e-signature, export และ share document
-- **Quotation & Service Fee Definition**: สร้างใบเสนอราคา, กำหนดขอบเขตบริการ,
+- **Client & Matter Management**: บริหารข้อมูล `Client`, `Matter`,
+  ประวัติการติดต่อ เอกสารที่เกี่ยวข้อง ทีมผู้รับผิดชอบ และสถานะของงาน
+- **Document Automation Management**: สร้าง `Document` จาก `Document Template`,
+  auto-fill fields, conditional content, upload, version control, `Audit Log`,
+  approval workflow, e-signature, export และ share document
+- **Quotation & Service Fee Definition**: สร้าง `Quotation`, กำหนดขอบเขตบริการ,
   pricing model, payment terms, approval workflow, revision history, export,
   print และ dashboard สำหรับติดตาม quotation
 - **Calendar & Scheduling**: จัดการนัดหมาย กำหนดเวลาสำคัญ และ reminder ที่ผูกกับ
-  matter หรือ task
-- **Task & Team Management**: มอบหมายงานให้ทีม ติดตามความคืบหน้า
-  และจัดการผู้รับผิดชอบในแต่ละ matter
+  `Matter` หรือ `Task`
+- **Task & Team Management**: มอบหมาย `Task` ให้ทีม ติดตามความคืบหน้า
+  และจัดการผู้รับผิดชอบในแต่ละ `Matter`
 - **Billing & Payment Collection**: ติดตามการวางบิล เงื่อนไขการชำระ การรับชำระ
-  และสถานะ collection ที่เกี่ยวข้องกับ quotation หรือ matter
+  และสถานะ collection ที่เกี่ยวข้องกับ `Quotation` หรือ `Matter`
 - **Finance Foundation**: วางรากฐานข้อมูลการเงิน เช่น chart of accounts,
-  receivable, payable, invoice, payment, tax-related setup และ financial
+  receivable, payable, `Invoice`, `Payment`, tax-related setup และ financial
   reporting ที่จำเป็นต่อการต่อยอด module การเงิน
-- **Administration & SaaS Management**: จัดการ tenant, user, role, permission,
-  RBAC, audit log, security setting, master data และ configuration ที่รองรับ
-  multi-tenant
+- **Administration & SaaS Management**: จัดการ `Tenant`, `User`, `Role`,
+  `Permission`, RBAC, `Audit Log`, security setting, master data และ
+  configuration ที่รองรับ multi-tenant
 
 ## Out of Scope
 

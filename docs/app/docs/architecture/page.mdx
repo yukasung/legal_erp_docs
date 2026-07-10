@@ -11,11 +11,12 @@ model เดียวกัน
 
 ## Architecture Goals
 
-- ทำให้ข้อมูล client, matter, document, task, calendar, quotation, billing และ
-  finance foundation เชื่อมกันจาก source of truth เดียว
-- รองรับการใช้งานแบบ multi-tenant โดยแยกข้อมูลของแต่ละ tenant ออกจากกัน
-- ควบคุมสิทธิ์ผ่าน role, permission และ audit log
-- รองรับการต่อยอด module ใหม่โดยไม่ทำให้ core matter workflow ซับซ้อนเกินไป
+- ทำให้ข้อมูล `Client`, `Matter`, `Document`, `Task`, `Calendar Activity`,
+  `Quotation`, `Billing` และ `Finance Foundation` เชื่อมกันจาก source of truth
+  เดียว
+- รองรับการใช้งานแบบ multi-tenant โดยแยกข้อมูลของแต่ละ `Tenant` ออกจากกัน
+- ควบคุมสิทธิ์ผ่าน `Role`, `Permission` และ `Audit Log`
+- รองรับการต่อยอด module ใหม่โดยไม่ทำให้ core `Matter` workflow ซับซ้อนเกินไป
 - เปิดทางให้เชื่อมต่อ external integration ในอนาคต โดยยังไม่ผูกกับ provider
   เฉพาะใน baseline แรก
 
@@ -25,10 +26,11 @@ model เดียวกัน
 ประจำวันของสำนักงานกฎหมายหรือทีมกฎหมาย ระบบควรทำหน้าที่เป็นศูนย์กลางข้อมูล
 ระหว่างทีมกฎหมาย ทีมปฏิบัติการ ผู้ดูแลระบบ และทีมการเงิน
 
-- **Legal Users**: ใช้งาน matter, task, document, calendar และ quotation
-- **Finance Users**: ติดตาม billing, payment collection และ financial data
-- **Administrators**: จัดการ tenant, user, role, permission, master data และ
-  configuration
+- **Legal Users**: ใช้งาน `Matter`, `Task`, `Document`, `Calendar Activity` และ
+  `Quotation`
+- **Finance Users**: ติดตาม `Billing`, payment collection และ financial data
+- **Administrators**: จัดการ `Tenant`, `User`, `Role`, `Permission`, master data
+  และ configuration
 - **External Systems**: ระบบภายนอกที่อาจเชื่อมต่อในอนาคต เช่น payment gateway,
   accounting system, e-Filing, court system หรือ document signing service
 
@@ -52,42 +54,43 @@ flowchart TB
 
 - **Frontend Layer**: React และ Tailwind CSS สำหรับสร้าง web interface ที่ผู้ใช้
   ทำงานผ่าน browser
-- **Backend Layer**: Django สำหรับจัดการ business logic, permission, validation,
-  workflow, API และการเข้าถึงข้อมูล
-- **Data Layer**: PostgreSQL สำหรับจัดเก็บข้อมูลหลักของระบบ เช่น tenant, user,
-  client, matter, document metadata, task, calendar event, quotation, invoice
-  และ payment record
+- **Backend Layer**: Django สำหรับจัดการ business logic, `Permission`,
+  validation, workflow, API และการเข้าถึงข้อมูล
+- **Data Layer**: PostgreSQL สำหรับจัดเก็บข้อมูลหลักของระบบ เช่น `Tenant`,
+  `User`, `Client`, `Matter`, document metadata, `Task`, `Calendar Activity`,
+  `Quotation`, `Invoice` และ `Payment` record
 - **File Storage Boundary**: พื้นที่จัดเก็บไฟล์เอกสารแนบ template และ exported
-  document ควรถูกแยกจาก relational data โดยเก็บ metadata และ permission
+  document ควรถูกแยกจาก relational data โดยเก็บ metadata และ `Permission`
   reference ไว้ใน PostgreSQL
 - **Integration Boundary**: จุดเชื่อมต่อกับระบบภายนอกควรถูกแยกเป็น boundary
   ชัดเจน เพื่อให้เปลี่ยน provider หรือเลื่อน integration ไป phase ถัดไปได้
 
 ## Core Backend Components
 
-- **Tenant Management**: จัดการ tenant และข้อมูล configuration ที่ใช้แยกบริบท
+- **Tenant Management**: จัดการ `Tenant` และข้อมูล configuration ที่ใช้แยกบริบท
   การทำงานของแต่ละองค์กร
-- **Identity and Access Control**: จัดการ user, role, permission, session และ
-  policy สำหรับกำหนดว่าใครเห็นหรือแก้ไขข้อมูลใดได้บ้าง
-- **Matter Workspace**: เป็น component กลางที่เชื่อม client, document, task,
-  calendar, quotation, billing และ finance-related record เข้ากับ matter
+- **Identity and Access Control**: จัดการ `User`, `Role`, `Permission`, session
+  และ policy สำหรับกำหนดว่าใครเห็นหรือแก้ไขข้อมูลใดได้บ้าง
+- **Matter Workspace**: เป็น component กลางที่เชื่อม `Client`, `Document`,
+  `Task`, `Calendar Activity`, `Quotation`, `Billing` และ finance-related record
+  เข้ากับ `Matter`
 - **Document Service**: ดูแล document template, generated document, uploaded
-  file, version, approval และ audit trail ที่เกี่ยวข้องกับเอกสาร
+  file, version, approval และ `Audit Log` ที่เกี่ยวข้องกับเอกสาร
 - **Quotation and Billing Service**: จัดการ service fee definition, quotation,
-  approval, revision, invoice, payment term และ collection status
+  approval, revision, `Invoice`, payment term และ collection status
 - **Task and Scheduling Service**: จัดการ task assignment, deadline, calendar
-  activity และ reminder ที่ผูกกับ matter หรือผู้รับผิดชอบ
+  activity และ reminder ที่ผูกกับ `Matter` หรือผู้รับผิดชอบ
 - **Finance Foundation Service**: วางข้อมูลพื้นฐานสำหรับ receivable, payable,
-  invoice, payment, tax-related setup และ financial reporting
+  `Invoice`, `Payment`, tax-related setup และ financial reporting
 - **Audit and Reporting Service**: บันทึกการเปลี่ยนแปลงสำคัญและเตรียมข้อมูล
   สำหรับ dashboard หรือ report
 
 ## Matter-Centered Model
 
-`Matter` เป็น record กลางของระบบ ผู้ใช้ควรสามารถเริ่มจาก matter
-แล้วเข้าถึงข้อมูล ที่เกี่ยวข้องได้ครบถ้วน เช่น client, contact history,
-document, task, calendar event, quotation, invoice, payment และ profitability
-data
+`Matter` เป็น record กลางของระบบ ผู้ใช้ควรสามารถเริ่มจาก `Matter`
+แล้วเข้าถึงข้อมูลที่เกี่ยวข้องได้ครบถ้วน เช่น `Client`, contact history,
+`Document`, `Task`, `Calendar Activity`, `Quotation`, `Invoice`, `Payment` และ
+profitability data
 
 ความสัมพันธ์หลักที่ควรใช้เป็นฐานสำหรับ database และ API มีดังนี้:
 
@@ -95,31 +98,33 @@ data
 - หนึ่ง `Client` มีได้หลาย `Matter`
 - หนึ่ง `Matter` เชื่อมกับ document, task, calendar event, quotation, invoice
   และ payment record ได้หลายรายการ
-- หนึ่ง `User` อาจมี role แตกต่างกันตาม tenant หรือ responsibility ภายใน matter
-- ทุก record สำคัญควรมี tenant boundary และ audit metadata ที่ชัดเจน
+- หนึ่ง `User` อาจมี `Role` แตกต่างกันตาม `Tenant` หรือ responsibility ภายใน
+  `Matter`
+- ทุก record สำคัญควรมี `Tenant` boundary และ audit metadata ที่ชัดเจน
 
 ## Multi-Tenant Boundary
 
-ทุกข้อมูลหลักต้องระบุ tenant context เพื่อป้องกันการเข้าถึงข้อมูลข้ามองค์กร
+ทุกข้อมูลหลักต้องระบุ `Tenant` context เพื่อป้องกันการเข้าถึงข้อมูลข้ามองค์กร
 โดยไม่ตั้งใจ การออกแบบ API, query และ permission check ต้องถือว่า tenant
 boundary เป็นเงื่อนไขพื้นฐานเสมอ
 
 แนวทาง baseline:
 
-- ทุก request ต้องรู้ว่าอยู่ใน tenant ใด
-- Query ของข้อมูลธุรกิจต้อง filter ตาม tenant
-- Permission ต้องตรวจทั้ง role ระดับระบบและสิทธิ์ที่เกี่ยวข้องกับ matter
-- Audit log ต้องบันทึก user, tenant, action, target record และเวลาเกิดเหตุการณ์
+- ทุก request ต้องรู้ว่าอยู่ใน `Tenant` ใด
+- Query ของข้อมูลธุรกิจต้อง filter ตาม `Tenant`
+- `Permission` ต้องตรวจทั้ง `Role` ระดับระบบและสิทธิ์ที่เกี่ยวข้องกับ `Matter`
+- `Audit Log` ต้องบันทึก `User`, `Tenant`, action, target record
+  และเวลาเกิดเหตุการณ์
 
 ## Security and Audit
 
 ระบบควรวาง security model จาก role-based access control เป็นพื้นฐาน แล้วขยายด้วย
-permission เฉพาะ module หรือ matter เมื่อ requirement ชัดเจนขึ้น
+`Permission` เฉพาะ module หรือ `Matter` เมื่อ requirement ชัดเจนขึ้น
 
-- จำกัดการเข้าถึงข้อมูลตาม role และ tenant
-- แยก permission สำหรับ view, create, update, approve, export และ delete
-- บันทึก audit log สำหรับการเปลี่ยนแปลงข้อมูลสำคัญ
-- ป้องกันการเข้าถึง document และ exported file โดยไม่ผ่าน permission check
+- จำกัดการเข้าถึงข้อมูลตาม `Role` และ `Tenant`
+- แยก `Permission` สำหรับ view, create, update, approve, export และ delete
+- บันทึก `Audit Log` สำหรับการเปลี่ยนแปลงข้อมูลสำคัญ
+- ป้องกันการเข้าถึง `Document` และ exported file โดยไม่ผ่าน permission check
 - เตรียมแนวทาง backup และ recovery สำหรับข้อมูล PostgreSQL และ file storage
 
 ## Integration Strategy

@@ -19,6 +19,7 @@ export default {
       index: 'Overview',
       scope: 'Scope',
       architecture: 'Architecture',
+      'domain-language': 'Domain Language',
       _access: {
         type: 'separator',
         title: <Section>Access</Section>

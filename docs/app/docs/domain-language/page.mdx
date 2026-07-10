@@ -1,0 +1,54 @@
+# Domain Language
+
+หน้านี้สรุปคำศัพท์หลักของ Legal ERP Platform เพื่อให้ทีมเอกสาร ทีมออกแบบ และทีม
+พัฒนาใช้ภาษากลางเดียวกันเมื่ออ่าน requirement หรือเขียนรายละเอียด module ถัดไป
+
+## Core Concepts
+
+- **Legal ERP Platform**: ระบบบริหารงานกฎหมายแบบ matter-centered สำหรับสำนักงาน
+  กฎหมายและทีมกฎหมายในองค์กร
+- **Tenant**: หนึ่งสำนักงานกฎหมายหรือหนึ่งองค์กรที่ใช้งานระบบ
+  โดยข้อมูลต้องแยกจาก tenant อื่น
+- **User**: ผู้ใช้งานระบบภายใต้ tenant ใด tenant หนึ่ง
+- **Role**: กลุ่มหน้าที่ของ user ที่ใช้กำหนดชุด permission พื้นฐาน
+- **Permission**: สิทธิ์สำหรับการดู สร้าง แก้ไข อนุมัติ ส่งออก หรือลบข้อมูล
+
+## Matter Workspace
+
+- **Client**: บุคคลหรือองค์กรที่รับบริการทางกฎหมาย
+- **Matter**: แฟ้มงานกฎหมายหรือรายการงานหลักที่เชื่อมโยง client, document, task,
+  calendar activity, quotation, invoice และ payment
+- **Matter Workspace**: พื้นที่ทำงานของ matter ที่รวมข้อมูลและกิจกรรมทั้งหมดของ
+  งานกฎหมายเรื่องนั้น
+- **Document**: เอกสารที่สร้าง อัปโหลด หรือจัดเก็บในระบบและเชื่อมกับ matter หรือ
+  client
+- **Document Template**: แม่แบบสำหรับสร้าง document โดยเติมข้อมูลจากระบบ
+- **Task**: งานย่อยที่มอบหมายให้ user หรือทีมรับผิดชอบ
+- **Calendar Activity**: กิจกรรม วันนัด หรือ deadline ที่ผูกกับ matter, task
+  หรือ user
+
+## Commercial And Finance
+
+- **Quotation**: ใบเสนอราคาหรือข้อเสนอค่าบริการสำหรับ matter หรือ service
+  package
+- **Billing**: กระบวนการติดตามการวางบิล invoice เงื่อนไขการชำระ และสถานะ
+  collection
+- **Invoice**: เอกสารเรียกเก็บเงินที่พร้อมให้ client ชำระ
+- **Payment**: ข้อมูลการรับชำระเงินที่เชื่อมกับ invoice, matter หรือ client
+- **Finance Foundation**: ข้อมูลพื้นฐานด้านการเงินสำหรับ receivable, payable,
+  tax-related setup และ financial reporting
+
+## Governance
+
+- **Audit Log**: ประวัติการเปลี่ยนแปลงข้อมูลสำคัญที่บันทึก user, tenant, action,
+  target record และเวลาเกิดเหตุการณ์
+- **External Integration**: จุดเชื่อมต่อกับระบบภายนอก เช่น e-signature, payment
+  gateway, accounting system หรือ government service
+
+## Avoided Terms
+
+- ใช้ **Matter** แทน **Case** เมื่อกล่าวถึงแฟ้มงานหลักของระบบ
+- ใช้ **Client** แทน **Customer** สำหรับผู้รับบริการทางกฎหมาย
+- ใช้ **Tenant** แทน **Office Account** หรือ **BU** สำหรับองค์กรที่ใช้งานระบบ
+- ใช้ **Finance Foundation** เมื่อหมายถึงข้อมูลการเงินพื้นฐาน ไม่ใช่ accounting
+  workflow แบบเต็มรูปแบบ

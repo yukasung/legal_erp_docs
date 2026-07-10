@@ -1,3 +1,49 @@
 # Overview
 
-รอข้อมูลจากไฟล์ requirement ต้นทาง
+หน้านี้เป็นจุดเริ่มต้นของหมวด Overview สำหรับ Legal ERP Platform ใช้สำหรับมองภาพ
+รวมของระบบก่อนลงรายละเอียดในหน้า module, workflow, database, API และ UI
+
+Legal ERP Platform เป็น web-based platform สำหรับบริหารงานกฎหมายแบบ
+matter-centered โดยให้ `Matter` เป็น record กลางที่เชื่อมข้อมูล client,
+document, task, calendar, quotation, billing และ finance foundation เข้าด้วยกัน
+
+## Documentation Map
+
+- [Introduction](/docs/overview/introduction): อธิบายเป้าหมายของระบบ กลุ่มผู้ใช้
+  ความสามารถหลัก รูปแบบการทำงาน และ technical foundation
+- [Scope](/docs/overview/scope): กำหนดขอบเขต baseline ของระบบ สิ่งที่อยู่ใน
+  scope สิ่งที่ยังอยู่นอก scope และคำถามที่ต้องตัดสินใจต่อ
+- [Architecture](/docs/overview/architecture): พื้นที่สำหรับสรุปสถาปัตยกรรมระบบ
+  component สำคัญ และแนวทางเชื่อมต่อระหว่าง frontend, backend และ database
+
+## Platform Summary
+
+ระบบนี้ออกแบบให้ทีมกฎหมายทำงานจากข้อมูลชุดเดียวกัน ลดการกระจายของข้อมูลระหว่าง
+file, spreadsheet, chat และระบบบัญชีแยกส่วน ผู้ใช้ควรสามารถเห็นสถานะของ matter
+ตั้งแต่เริ่มรับเรื่อง สร้างเอกสาร มอบหมายงาน นัดหมาย ออกใบเสนอราคา วางบิล
+รับชำระเงิน และวิเคราะห์ผลการทำงานได้จากพื้นที่เดียวกัน
+
+## Core Areas
+
+- **Client & Matter Management**: จัดการข้อมูล client, matter, relationship,
+  contact history, status และทีมผู้รับผิดชอบ
+- **Document Automation Management**: จัดการ template, document generation,
+  upload, version control, approval และ audit trail
+- **Quotation & Service Fee Definition**: สร้างและติดตาม quotation, service
+  package, pricing model, approval, revision และ export
+- **Calendar & Scheduling**: จัดการนัดหมาย deadline reminder และ activity
+  ที่เกี่ยวข้องกับ matter หรือ task
+- **Task & Team Management**: มอบหมายงาน ติดตามความคืบหน้า และจัดการผู้รับผิดชอบ
+  ในแต่ละ matter
+- **Billing & Payment Collection**: ติดตาม invoice, payment term, collection
+  status และข้อมูลการรับชำระที่เกี่ยวข้อง
+- **Finance Foundation**: เตรียมโครงสร้างข้อมูลด้านบัญชีและรายงานการเงินพื้นฐาน
+  สำหรับต่อยอด workflow ด้าน finance
+- **Administration & SaaS Management**: จัดการ tenant, user, role, permission,
+  RBAC, master data, audit log และ system configuration
+
+## Current Documentation Status
+
+- เริ่มต้นแล้ว: Introduction และ Scope
+- ลำดับถัดไป: Architecture เพื่อกำหนดภาพรวมระบบก่อนแตกลง database, API และ UI
+- รอขยายรายละเอียด: Roles, Modules, Flows, Database, API, UI และ Changelog

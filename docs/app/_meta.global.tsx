@@ -14,24 +14,16 @@ export default {
   docs: {
     type: 'page',
     title: 'Legal ERP Platform',
+    href: '/docs/overview',
     items: {
-      _overview: {
-        type: 'separator',
-        title: <Section>Overview</Section>
-      },
       index: {
         type: 'page',
         display: 'hidden',
         title: 'Documentation Home'
       },
-      overview: {
-        title: 'Overview',
-        items: {
-          index: 'Overview',
-          scope: 'Scope',
-          architecture: 'Architecture'
-        }
-      },
+      overview: 'Overview',
+      scope: 'Scope',
+      architecture: 'Architecture',
       _access: {
         type: 'separator',
         title: <Section>Access</Section>

@@ -8,6 +8,11 @@ import './globals.css'
 export const metadata: Metadata = {
   description:
     'Documentation for Legal ERP workflows, modules, and administration.',
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.SITE_URL ||
+      'http://127.0.0.1:3000'
+  ),
   keywords: [
     'Legal ERP',
     'legal operations',
@@ -21,14 +26,25 @@ export const metadata: Metadata = {
     title: 'Legal ERP Docs'
   },
   title: {
-    default: 'Legal ERP Documentation',
+    default: 'Legal ERP Docs',
     template: '%s | Legal ERP Docs'
   },
   openGraph: {
     url: './',
+    title: 'Legal ERP Docs',
+    description:
+      'Documentation for Legal ERP workflows, modules, and administration.',
     siteName: 'Legal ERP Docs',
+    images: ['/opengraph-image'],
     locale: 'th_TH',
     type: 'website'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Legal ERP Docs',
+    description:
+      'Documentation for Legal ERP workflows, modules, and administration.',
+    images: ['/opengraph-image']
   },
   other: {
     'msapplication-TileColor': '#fff'
@@ -49,7 +65,7 @@ const navbar = (
 
 const footer = (
   <Footer>
-    <p className="text-xs">© {new Date().getFullYear()} Legal ERP.</p>
+    <p className="text-xs">© {new Date().getFullYear()} Legal ERP Docs.</p>
   </Footer>
 )
 

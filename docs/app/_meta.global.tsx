@@ -17,59 +17,59 @@ export default {
     items: {
       _overview: {
         type: 'separator',
-        title: <Section>ภาพรวม</Section>
+        title: <Section>Overview</Section>
       },
-      index: 'หน้าแรกเอกสาร',
+      index: 'Documentation Home',
       overview: {
-        title: 'ภาพรวม',
+        title: 'Overview',
         items: {
-          index: 'ภาพรวม',
-          introduction: 'บทนำ',
-          scope: 'ขอบเขต',
-          architecture: 'สถาปัตยกรรม'
+          index: 'Overview',
+          introduction: 'Introduction',
+          scope: 'Scope',
+          architecture: 'Architecture'
         }
       },
       _access: {
         type: 'separator',
-        title: <Section>สิทธิ์การใช้งาน</Section>
+        title: <Section>Access</Section>
       },
       roles: {
-        title: 'บทบาทผู้ใช้งาน',
+        title: 'Roles',
         items: {
-          index: 'ภาพรวม',
-          roles: 'บทบาทผู้ใช้งาน',
-          permissions: 'สิทธิ์การใช้งาน'
+          index: 'Overview',
+          roles: 'User Roles',
+          permissions: 'Permissions'
         }
       },
       _modules: {
         type: 'separator',
-        title: <Section>โมดูล</Section>
+        title: <Section>Modules</Section>
       },
       modules: {
-        title: 'โมดูล',
+        title: 'Modules',
         items: {
-          index: 'ภาพรวม',
-          clients: 'Client',
-          matters: 'Matter',
-          tasks: 'Task',
-          documents: 'Document',
+          index: 'Overview',
+          clients: 'Clients',
+          matters: 'Matters',
+          tasks: 'Tasks',
+          documents: 'Documents',
           billing: 'Billing',
           finance: 'Finance'
         }
       },
       _process: {
         type: 'separator',
-        title: <Section>กระบวนการ</Section>
+        title: <Section>Process</Section>
       },
       flows: {
-        title: 'Flow'
+        title: 'Flows'
       },
       _technical: {
         type: 'separator',
-        title: <Section>เทคนิค</Section>
+        title: <Section>Technical</Section>
       },
       database: {
-        title: 'ฐานข้อมูล'
+        title: 'Database'
       },
       api: {
         title: 'API'
@@ -79,10 +79,10 @@ export default {
       },
       _changes: {
         type: 'separator',
-        title: <Section>การเปลี่ยนแปลง</Section>
+        title: <Section>Changes</Section>
       },
       changelog: {
-        title: 'บันทึกการเปลี่ยนแปลง'
+        title: 'Changelog'
       }
     }
   }

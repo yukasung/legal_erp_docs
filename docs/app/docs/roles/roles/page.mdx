@@ -8,6 +8,33 @@
 role ได้ เช่น partner คนหนึ่งอาจเป็นทั้ง `Lawyer` และ `Manager` ส่วนผู้ดูแลระบบ
 บางองค์กรอาจเป็น `Admin` และ `Manager` ในคนเดียวกัน
 
+```mermaid
+flowchart TB
+  Matter["Matter (แฟ้มงานกฎหมาย)<br/>ศูนย์กลางงานกฎหมาย"]
+
+  Lawyer["Lawyer<br/>ทำงานกฎหมายหลัก"]
+  Assistant["Assistant<br/>เตรียมข้อมูลและติดตามงาน"]
+  Finance["Finance<br/>ดูแล billing และ payment"]
+  Manager["Manager<br/>ดูภาพรวมและอนุมัติรายการสำคัญ"]
+  Admin["Admin<br/>ตั้งค่าระบบและสิทธิ์"]
+
+  Document["Document<br/>เอกสารทางกฎหมาย"]
+  Task["Task / Calendar<br/>งานและนัดหมาย"]
+  Billing["Quotation / Billing<br/>ค่าใช้จ่ายและการรับเงิน"]
+  Report["Dashboard / Report<br/>ภาพรวมและการตัดสินใจ"]
+
+  Lawyer -->|"สร้างและดูแล"| Matter
+  Assistant -->|"ช่วยเตรียมและติดตาม"| Matter
+  Finance -->|"เชื่อมข้อมูลการเงิน"| Matter
+  Manager -->|"ตรวจสอบภาพรวม"| Matter
+  Admin -. "กำหนดการเข้าถึง" .-> Matter
+
+  Matter --> Document
+  Matter --> Task
+  Matter --> Billing
+  Matter --> Report
+```
+
 ## Admin
 
 `Admin` คือผู้ดูแลระบบของแต่ละองค์กรหรือผู้ดูแลระดับ platform ที่รับผิดชอบ

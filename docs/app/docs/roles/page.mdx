@@ -26,6 +26,40 @@ permission ในหน้าถัดไป
 
 เพื่อให้เอกสารเริ่มต้นไม่ซับซ้อนเกินไป รอบนี้กำหนดกลุ่มผู้ใช้งานหลัก 5 กลุ่ม:
 
+```mermaid
+flowchart LR
+  subgraph Requirement["Requirement Groups"]
+    Client["Client / ลูกความ"]
+    LegalTeam["ทนาย / พนักงานกฎหมาย / ทนายอาวุโส"]
+    CaseManager["ผู้จัดการคดี / ทีมงาน"]
+    Sales["ฝ่ายขาย"]
+    Accounting["ฝ่ายการเงินและบัญชี"]
+    HR["HR"]
+    Executive["ผู้บริหาร"]
+    SystemAdmin["ผู้ดูแลระบบ"]
+  end
+
+  subgraph Baseline["Primary Roles"]
+    Admin["Admin"]
+    Lawyer["Lawyer"]
+    Assistant["Assistant"]
+    Finance["Finance"]
+    Manager["Manager"]
+    Future["Future External Roles"]
+  end
+
+  SystemAdmin --> Admin
+  LegalTeam --> Lawyer
+  CaseManager --> Assistant
+  Accounting --> Finance
+  Executive --> Manager
+  LegalTeam --> Manager
+  Client -. "client portal later" .-> Future
+  Sales -. "not separated yet" .-> Lawyer
+  Sales -. "quotation support" .-> Finance
+  HR -. "phase decision later" .-> Future
+```
+
 | Role        | ใช้แทนกลุ่มจาก requirement                           | จุดประสงค์หลัก                                                          |
 | ----------- | ---------------------------------------------------- | ----------------------------------------------------------------------- |
 | `Admin`     | ผู้ดูแลระบบ, SaaS Admin, System Admin, Tenant Admin  | ตั้งค่าระบบ ผู้ใช้งาน role, permission, master data, security และ audit |

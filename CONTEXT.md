@@ -6,21 +6,21 @@
 
 ## Language
 
-**Legal ERP Platform (ระบบ Legal ERP)**: ชื่อระบบอย่างเป็นทางการสำหรับระบบ
-บริหารงานกฎหมาย โดยมี `Matter` เป็นแฟ้มงานหลัก _Avoid_: MatterSolv, MatterSlov,
-Legal ERP, End-to-End Digital Legal Practice Management Platform
+**Legal ERP Platform**: ชื่อระบบอย่างเป็นทางการสำหรับระบบบริหารงานกฎหมาย โดยมี
+`Matter` เป็นแฟ้มงานหลัก _Avoid_: MatterSolv, MatterSlov, Legal ERP, End-to-End
+Digital Legal Practice Management Platform
 
-**Tenant (องค์กรผู้ใช้งาน)**: สำนักงานกฎหมายหรือองค์กรหนึ่งแห่งที่ใช้ระบบ
-ข้อมูลขององค์กรนี้ต้องแยกจากองค์กรอื่น _Avoid_: BU, office account
+**Tenant**: สำนักงานกฎหมายหรือองค์กรหนึ่งแห่งที่ใช้ระบบ ข้อมูลขององค์กรนี้ต้อง
+แยกจากองค์กรอื่น _Avoid_: BU, office account
 
-**User (ผู้ใช้งาน)**: คนที่เข้าใช้งานระบบภายใต้ `Tenant` ใด `Tenant` หนึ่ง
-และได้รับสิทธิ์ตามงานที่รับผิดชอบ _Avoid_: Staff account, employee account
+**User**: คนที่เข้าใช้งานระบบภายใต้ `Tenant` ใด `Tenant` หนึ่ง และได้รับสิทธิ์
+ตามงานที่รับผิดชอบ _Avoid_: Staff account, employee account
 
-**Role (บทบาทผู้ใช้งาน)**: กลุ่มหน้าที่ของ `User` ที่ช่วยกำหนดสิทธิ์เริ่มต้น
-เช่น administrator, lawyer, finance หรือ assistant _Avoid_: Position, job title
+**Role**: กลุ่มหน้าที่ของ `User` ที่ช่วยกำหนดสิทธิ์เริ่มต้น เช่น administrator,
+lawyer, finance หรือ assistant _Avoid_: Position, job title
 
-**Permission (สิทธิ์การใช้งาน)**: สิทธิ์ในการทำงานกับข้อมูล เช่น ดู เพิ่ม แก้ไข
-อนุมัติ ส่งออก หรือลบข้อมูล _Avoid_: Access flag
+**Permission**: สิทธิ์ในการทำงานกับข้อมูล เช่น ดู เพิ่ม แก้ไข อนุมัติ ส่งออก
+หรือลบข้อมูล _Avoid_: Access flag
 
 **Client (ลูกความ/ผู้รับบริการ)**: บุคคลหรือองค์กรที่รับบริการทางกฎหมาย และ
 สามารถมีหลาย `Matter` ได้ _Avoid_: Customer
@@ -33,52 +33,53 @@ Legal ERP, End-to-End Digital Legal Practice Management Platform
 `Matter` ซึ่งเป็นแฟ้มงานหลักของระบบ _Avoid_: ใช้ Case แบบลอย ๆ โดยไม่ชัดเจนว่า
 หมายถึงคดีศาลหรือแฟ้มงานกฎหมาย
 
-**Matter Workspace (หน้ารวมงานกฎหมาย)**: พื้นที่ทำงานของ `Matter` ที่รวมข้อมูล
-และกิจกรรมทั้งหมดของงานกฎหมายเรื่องนั้น _Avoid_: Case file screen
+**Matter Workspace**: พื้นที่ทำงานของ `Matter` ที่รวมข้อมูลและกิจกรรมทั้งหมดของ
+งานกฎหมายเรื่องนั้น _Avoid_: Case file screen
 
-**Document (เอกสาร)**: เอกสารที่สร้าง อัปโหลด หรือจัดเก็บในระบบ และเชื่อมกับ
-`Matter` หรือ `Client` _Avoid_: File เฉพาะเมื่อต้องการสื่อถึงเอกสารที่มีสถานะ
-หรือขั้นตอนการอนุมัติ
+**Document (เอกสารทางกฎหมาย)**: เอกสารที่สร้าง อัปโหลด หรือจัดเก็บในระบบ และ
+เชื่อมกับ `Matter` หรือ `Client` _Avoid_: File เฉพาะเมื่อต้องการสื่อถึงเอกสารที่
+มีสถานะหรือขั้นตอนการอนุมัติ
 
-**Document Template (แม่แบบเอกสาร)**: แบบฟอร์มหรือแม่แบบที่ระบบใช้สร้าง
+**Document Template (แม่แบบเอกสารทางกฎหมาย)**: แบบฟอร์มหรือแม่แบบที่ระบบใช้สร้าง
 `Document` ใหม่ โดยดึงข้อมูลจาก `Matter`, `Client` หรือข้อมูลอื่นที่บันทึกไว้
 _Avoid_: Form file
 
-**Task (งานย่อย)**: งานที่มอบหมายให้ `User` หรือทีมรับผิดชอบ ภายใน `Matter`
-หรือขั้นตอนการทำงานที่เกี่ยวข้อง _Avoid_: To-do
+**Legal Service (บริการทางกฎหมาย)**: ประเภทบริการที่สำนักงานกฎหมายหรือทีมกฎหมาย
+ให้ลูกความ เช่น จดทะเบียนบริษัท ร่างสัญญา หรือดำเนินคดี _Avoid_: Product package
+เมื่อหมายถึงขอบเขตบริการทางกฎหมาย
 
-**Calendar Activity (นัดหมาย/กำหนดเวลา)**: กิจกรรม วันนัด หรือกำหนดส่งงาน
-ที่ผูกกับ `Matter`, `Task` หรือ `User` _Avoid_: Appointment เมื่อหมายถึงกิจกรรม
-ทุกประเภท
+**Task**: งานที่มอบหมายให้ `User` หรือทีมรับผิดชอบ ภายใน `Matter` หรือขั้นตอนการ
+ทำงานที่เกี่ยวข้อง _Avoid_: To-do
 
-**Quotation (ใบเสนอราคา)**: ใบเสนอราคาหรือข้อเสนอค่าบริการสำหรับ `Matter`
-หรือชุดบริการ _Avoid_: Quote
+**Calendar Activity**: กิจกรรม วันนัด หรือกำหนดส่งงานที่ผูกกับ `Matter`, `Task`
+หรือ `User` _Avoid_: Appointment เมื่อหมายถึงกิจกรรมทุกประเภท
 
-**Invoice (ใบแจ้งหนี้)**: เอกสารเรียกเก็บเงินที่พร้อมให้ `Client` ชำระ _Avoid_:
-Bill เมื่อหมายถึงเอกสาร invoice อย่างเป็นทางการ
+**Quotation**: ใบเสนอราคาหรือข้อเสนอค่าบริการสำหรับ `Matter` หรือชุดบริการ
+_Avoid_: Quote
 
-**Payment (การรับชำระเงิน)**: ข้อมูลการรับเงินที่เชื่อมกับ `Invoice`, `Matter`
-หรือ `Client` _Avoid_: Collection record เมื่อหมายถึงรายการชำระเงินจริง
+**Invoice**: เอกสารเรียกเก็บเงินที่พร้อมให้ `Client` ชำระ _Avoid_: Bill
+เมื่อหมายถึงเอกสาร invoice อย่างเป็นทางการ
 
-**Billing (การวางบิลและติดตามชำระ)**: การติดตามใบแจ้งหนี้ เงื่อนไขการชำระ
-และสถานะการรับเงิน _Avoid_: Accounting
+**Payment**: ข้อมูลการรับเงินที่เชื่อมกับ `Invoice`, `Matter` หรือ `Client`
+_Avoid_: Collection record เมื่อหมายถึงรายการชำระเงินจริง
 
-**Finance Foundation (ข้อมูลตั้งต้นด้านการเงิน)**: ข้อมูลพื้นฐานที่ช่วยต่อยอด
-งานวางบิล รับเงิน จ่ายเงิน ภาษี และรายงานการเงินเบื้องต้น _Avoid_: Full
-accounting module
+**Billing**: การติดตามใบแจ้งหนี้ เงื่อนไขการชำระ และสถานะการรับเงิน _Avoid_:
+Accounting
 
-**Audit Log (ประวัติการเปลี่ยนแปลง)**: ประวัติว่าใครทำอะไร กับข้อมูลใด
-ในองค์กรใด และทำเมื่อไร _Avoid_: Activity feed เมื่อหมายถึงหลักฐาน audit
+**Finance Foundation**: ข้อมูลพื้นฐานที่ช่วยต่อยอดงานวางบิล รับเงิน จ่ายเงิน
+ภาษี และรายงานการเงินเบื้องต้น _Avoid_: Full accounting module
 
-**External Integration (การเชื่อมต่อระบบภายนอก)**: จุดที่ Legal ERP Platform
-เชื่อมกับระบบอื่น เช่น e-signature, payment gateway, accounting system หรือ
-government service _Avoid_: Plugin
+**Audit Log**: ประวัติว่าใครทำอะไร กับข้อมูลใด ในองค์กรใด และทำเมื่อไร _Avoid_:
+Activity feed เมื่อหมายถึงหลักฐาน audit
 
-**Workflow (ขั้นตอนการทำงาน)**: ลำดับการทำงานตั้งแต่เริ่มเรื่อง ส่งต่อ อนุมัติ
-จนจบงาน
+**External Integration**: จุดที่ Legal ERP Platform เชื่อมกับระบบอื่น เช่น
+e-signature, payment gateway, accounting system หรือ government service _Avoid_:
+Plugin
 
-**Master Data (ข้อมูลตั้งต้น)**: ข้อมูลพื้นฐานที่ระบบใช้ซ้ำ เช่น ประเภทงาน
-ประเภทเอกสาร สถานะงาน หรือรายการค่าบริการ
+**Workflow**: ลำดับการทำงานตั้งแต่เริ่มเรื่อง ส่งต่อ อนุมัติ จนจบงาน
 
-**Dashboard (หน้าสรุปสถานะ)**: หน้าจอที่รวมตัวเลข สถานะ หรือรายการสำคัญ
-เพื่อช่วยติดตามงานและตัดสินใจ
+**Master Data**: ข้อมูลพื้นฐานที่ระบบใช้ซ้ำ เช่น ประเภทงาน ประเภทเอกสาร สถานะงาน
+หรือรายการค่าบริการ
+
+**Dashboard**: หน้าจอที่รวมตัวเลข สถานะ หรือรายการสำคัญ เพื่อช่วยติดตามงานและ
+ตัดสินใจ

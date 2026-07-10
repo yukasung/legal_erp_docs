@@ -39,9 +39,6 @@ export default {
           finance: 'Finance'
         }
       },
-      flows: {
-        title: 'Flows'
-      },
       _technical: {
         type: 'separator',
         title: <Section>Technical</Section>
@@ -51,12 +48,6 @@ export default {
       },
       api: {
         title: 'API'
-      },
-      ui: {
-        title: 'UI'
-      },
-      changelog: {
-        title: 'Changelog'
       },
       overview: {
         display: 'hidden'

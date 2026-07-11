@@ -35,26 +35,7 @@ database และ API
 - **Administration & SaaS Management**: จัดการ tenant, user, role, permission,
   ประวัติการเปลี่ยนแปลง, ความปลอดภัย, master data และค่าตั้งต้นที่รองรับหลาย
   องค์กรในระบบเดียว รวมถึงขั้นตอนสมัครใช้งานสำหรับสำนักงานใหม่ (Tenant
-  Onboarding / Self-Service Signup), การสร้าง BU Account พร้อม
-  domain/sub-domain ของแต่ละองค์กร, การกำหนดแพ็กเกจการใช้งาน (Package
-  Management) ที่ควบคุมว่าโมดูลใดเปิดใช้ได้บ้าง และการควบคุมจำนวน user สูงสุด
+  Onboarding / Self-Service Signup), การสร้าง BU Account พร้อม domain/sub-domain
+  ของแต่ละองค์กร, การกำหนดแพ็กเกจการใช้งาน (Package Management)
+  ที่ควบคุมว่าโมดูลใดเปิดใช้ได้บ้าง และการควบคุมจำนวน user สูงสุด
   ต่อองค์กรตามแพ็กเกจ (User Limit Control)
-
-## Out of Scope
-
-รายการต่อไปนี้ยังไม่ถือเป็นขอบเขตหลักของรอบเริ่มต้น เว้นแต่จะมีข้อตัดสินใจหรือ
-ขอบเขตเพิ่มเติมในภายหลัง:
-
-- แอปมือถือแบบ native
-- การเชื่อมต่อระบบภายนอกแบบใช้งานจริง เช่น e-Filing, CIOS, bank, tax system,
-  payment gateway, external ERP หรือ external CRM
-- ขั้นตอนรับชำระเงินจริงผ่าน payment gateway แบบเต็มรูปแบบ
-- การย้ายข้อมูลจากระบบเดิมแบบเต็มรูปแบบ ยกเว้นการเตรียมนำเข้าข้อมูลตั้งต้น
-  ที่ตกลงเพิ่มเติม
-- ค่าใช้จ่าย cloud hosting, license และบริการภายนอก
-- ใบรับรองความปลอดภัยอย่างเป็นทางการ penetration test หรือ external audit
-  โดยผู้ให้บริการภายนอก
-- การอบรมผู้ใช้ปลายทางและ change management สำหรับการ rollout ใช้งานจริง
-- ระบบเรียกเก็บเงินค่าสมัครใช้งานแพลตฟอร์ม (platform subscription billing)
-  จากสำนักงานที่เป็นลูกค้าของระบบ ซึ่งเป็นคนละส่วนกับ Billing & Payment
-  Collection ที่แต่ละสำนักงานใช้เรียกเก็บเงินจากลูกความของตนเอง

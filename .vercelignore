@@ -1,0 +1,16 @@
+.git
+.turbo
+.eslintcache
+
+requirements
+examples
+
+**/node_modules
+**/.next
+**/.turbo
+**/dist
+
+docs/public/_pagefind
+docs/public/sitemap.xml
+
+*.log

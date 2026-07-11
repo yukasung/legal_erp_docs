@@ -34,7 +34,11 @@ database และ API
   Excel/PDF/CSV
 - **Administration & SaaS Management**: จัดการ tenant, user, role, permission,
   ประวัติการเปลี่ยนแปลง, ความปลอดภัย, master data และค่าตั้งต้นที่รองรับหลาย
-  องค์กรในระบบเดียว
+  องค์กรในระบบเดียว รวมถึงขั้นตอนสมัครใช้งานสำหรับสำนักงานใหม่ (Tenant
+  Onboarding / Self-Service Signup), การสร้าง BU Account พร้อม
+  domain/sub-domain ของแต่ละองค์กร, การกำหนดแพ็กเกจการใช้งาน (Package
+  Management) ที่ควบคุมว่าโมดูลใดเปิดใช้ได้บ้าง และการควบคุมจำนวน user สูงสุด
+  ต่อองค์กรตามแพ็กเกจ (User Limit Control)
 
 ## Out of Scope
 
@@ -51,3 +55,6 @@ database และ API
 - ใบรับรองความปลอดภัยอย่างเป็นทางการ penetration test หรือ external audit
   โดยผู้ให้บริการภายนอก
 - การอบรมผู้ใช้ปลายทางและ change management สำหรับการ rollout ใช้งานจริง
+- ระบบเรียกเก็บเงินค่าสมัครใช้งานแพลตฟอร์ม (platform subscription billing)
+  จากสำนักงานที่เป็นลูกค้าของระบบ ซึ่งเป็นคนละส่วนกับ Billing & Payment
+  Collection ที่แต่ละสำนักงานใช้เรียกเก็บเงินจากลูกความของตนเอง

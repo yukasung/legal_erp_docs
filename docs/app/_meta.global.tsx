@@ -18,7 +18,14 @@ export default {
     items: {
       index: 'Overview',
       scope: 'Scope',
-      architecture: 'Architecture',
+      sops: {
+        title: 'SOPs',
+        items: {
+          index: 'Overview',
+          'matter-lifecycle': 'Matter Lifecycle & Approvals',
+          'matter-intake': 'Matter Intake & Opening'
+        }
+      },
       roles: {
         title: 'Roles',
         items: {
@@ -39,17 +46,11 @@ export default {
           finance: 'Finance'
         }
       },
-      sops: {
-        title: 'SOPs',
-        items: {
-          index: 'Overview',
-          'matter-intake': 'Matter Intake & Opening'
-        }
-      },
       _technical: {
         type: 'separator',
         title: <Section>Technical</Section>
       },
+      architecture: 'Architecture',
       database: {
         title: 'Database'
       },

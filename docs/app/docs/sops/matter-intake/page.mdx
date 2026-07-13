@@ -1,23 +1,23 @@
 # Matter Intake & Opening
 
-| Document Control        | Value         |
-| ----------------------- | ------------- |
-| SOP ID                  | `SOP-MAT-001` |
-| Status                  | Draft         |
-| Version                 | 0.1           |
-| Process Owner           | `TBD`         |
-| Approver                | `TBD`         |
-| Effective Date          | `TBD`         |
-| Last Requirement Review | 13 July 2026  |
+| Document Control        | Value        |
+| ----------------------- | ------------ |
+| SOP ID                  | SOP-MAT-001  |
+| Status                  | Draft        |
+| Version                 | 0.1          |
+| Process Owner           | TBD          |
+| Approver                | TBD          |
+| Effective Date          | TBD          |
+| Last Requirement Review | 13 July 2026 |
 
 > **Draft notice:** Requirement ระบุ capability ของระบบและเงื่อนไขหลัก
 > แต่ยังไม่ระบุผู้อนุมัติรับงาน, SLA, เกณฑ์ conflict/risk และชุดสถานะ Matter
-> อย่างเป็นทางการ ประเด็นเหล่านี้จึงแสดงเป็น `TBD` และ SOP นี้ยังไม่ควรใช้เป็น
+> อย่างเป็นทางการ ประเด็นเหล่านี้จึงแสดงเป็น TBD และ SOP นี้ยังไม่ควรใช้เป็น
 > policy ฉบับอนุมัติ
 
 ## Purpose
 
-กำหนดขั้นตอนรับเรื่องและเปิด `Matter` (แฟ้มงานกฎหมาย) ให้ข้อมูลลูกความ
+กำหนดขั้นตอนรับเรื่องและเปิด Matter (แฟ้มงานกฎหมาย) ให้ข้อมูลลูกความ
 ผู้รับผิดชอบ และสถานะเริ่มต้นเชื่อมโยงกันอย่างถูกต้อง มีการควบคุมสิทธิ์
 และสามารถตรวจสอบย้อนหลังได้
 
@@ -37,7 +37,7 @@ SOP นี้ยังไม่ครอบคลุมการจัดทำ 
 | Lawyer           | ให้ข้อมูลเรื่อง ตรวจสอบข้อมูล และรับผิดชอบ Matter เมื่อได้รับมอบหมาย |
 | ผู้จัดการแฟ้มงาน | ประสานข้อมูล ลงทะเบียน และกำหนดผู้รับผิดชอบตามสิทธิ์                 |
 | Admin            | ลงทะเบียนหรือแก้ข้อมูลตามสิทธิ์ และดูแล master data/RBAC             |
-| ผู้อนุมัติรับงาน | ตัดสินใจจากผล conflict และ risk assessment (`TBD`)                   |
+| ผู้อนุมัติรับงาน | ตัดสินใจจากผล conflict และ risk assessment (TBD)                     |
 
 Requirement ใช้คำว่า “ผู้จัดการคดี” ส่วน SOP นี้ใช้ “ผู้จัดการแฟ้มงาน”
 เพื่อให้สอดคล้องกับการใช้ Matter เป็นแฟ้มงานหลักของระบบ
@@ -54,6 +54,12 @@ Requirement ใช้คำว่า “ผู้จัดการคดี” 
 
 ข้อมูลสำหรับ conflict check และ risk assessment ยังไม่ได้กำหนด field บังคับ
 ไว้ใน requirement จึงต้องยืนยันก่อนอนุมัติ SOP
+
+## Related Control Document
+
+[Matter Lifecycle & Approval Rules](/docs/sops/matter-lifecycle) รวบรวมชุดสถานะ,
+transition, approval matrix และข้อเสนอสำหรับประเด็น TBD ของ SOP นี้
+ข้อเสนอเหล่านั้นยังไม่มีผลเป็น policy จนกว่า Process Owner จะอนุมัติ
 
 ## Workflow
 
@@ -106,11 +112,11 @@ flowchart TD
 
 ### 3. Complete Conflict and Risk Checks
 
-**Responsible:** `TBD`
+**Responsible:** TBD
 
 1. ตรวจความเป็นอิสระและความขัดแย้งทางผลประโยชน์ระหว่างงานใหม่ ลูกความ
    และข้อมูลที่เกี่ยวข้อง
-2. บันทึกผล conflict check พร้อมผู้ตรวจและวันเวลา (`TBD`: รูปแบบหลักฐาน)
+2. บันทึกผล conflict check พร้อมผู้ตรวจและวันเวลา (TBD: รูปแบบหลักฐาน)
 3. ประเมินความเสี่ยงของลูกความก่อนรับงาน
 4. เมื่อพบ conflict หรือความเสี่ยงเกินเกณฑ์ ให้ส่งผู้มีอำนาจตัดสินใจตาม policy
 5. ห้ามลงทะเบียน Matter เป็นงานพร้อมใช้งานจนกว่าจะมีผลการพิจารณาให้รับงาน
@@ -145,7 +151,7 @@ flowchart TD
 
 **Responsible:** Lawyer, ผู้จัดการแฟ้มงาน หรือ Admin
 
-1. เลือกสถานะเริ่มต้นจาก master data (`TBD`: ชื่อสถานะมาตรฐาน)
+1. เลือกสถานะเริ่มต้นจาก master data (TBD: ชื่อสถานะมาตรฐาน)
 2. เปิด Matter detail และตรวจ Client, ประเภท Matter, ชื่อ Matter, Lawyer
    ผู้รับผิดชอบ และสถานะ
 3. ตรวจว่าเฉพาะผู้ใช้ที่มี permission เท่านั้นที่เห็น Matter
@@ -155,14 +161,14 @@ flowchart TD
 
 ## Control Points
 
-| Control              | Requirement                                  | Evidence                                          |
-| -------------------- | -------------------------------------------- | ------------------------------------------------- |
-| Duplicate prevention | ค้นหา Client และ Matter ก่อนสร้าง            | Search result หรือ duplicate-check record (`TBD`) |
-| Conflict and risk    | ตรวจ conflict และประเมินความเสี่ยงก่อนรับงาน | ผลตรวจ ผู้ตรวจ วันเวลา และผลตัดสินใจ (`TBD`)      |
-| Valid Client         | Client ต้องมีอยู่ในระบบก่อนเชื่อม            | Client ID                                         |
-| Valid owner          | Lawyer ผู้รับผิดชอบต้อง active               | User ID และสถานะ active                           |
-| Valid type/status    | ใช้ค่าที่ถูกต้องจาก master data              | Matter type และ status                            |
-| Access control       | รายการและรายละเอียดต้องกรองตาม permission    | RBAC configuration และ access/audit log           |
+| Control              | Requirement                                  | Evidence                                        |
+| -------------------- | -------------------------------------------- | ----------------------------------------------- |
+| Duplicate prevention | ค้นหา Client และ Matter ก่อนสร้าง            | Search result หรือ duplicate-check record (TBD) |
+| Conflict and risk    | ตรวจ conflict และประเมินความเสี่ยงก่อนรับงาน | ผลตรวจ ผู้ตรวจ วันเวลา และผลตัดสินใจ (TBD)      |
+| Valid Client         | Client ต้องมีอยู่ในระบบก่อนเชื่อม            | Client ID                                       |
+| Valid owner          | Lawyer ผู้รับผิดชอบต้อง active               | User ID และสถานะ active                         |
+| Valid type/status    | ใช้ค่าที่ถูกต้องจาก master data              | Matter type และ status                          |
+| Access control       | รายการและรายละเอียดต้องกรองตาม permission    | RBAC configuration และ access/audit log         |
 
 ## Exceptions
 
@@ -178,24 +184,24 @@ flowchart TD
 
 - [ ] ไม่พบ Matter ซ้ำสำหรับคำขอนี้
 - [ ] Client ถูกต้องและไม่ซ้ำ
-- [ ] Conflict check เสร็จและมีหลักฐาน (`TBD`)
-- [ ] Risk assessment เสร็จและมีผลตัดสินใจ (`TBD`)
+- [ ] Conflict check เสร็จและมีหลักฐาน (TBD)
+- [ ] Risk assessment เสร็จและมีผลตัดสินใจ (TBD)
 - [ ] Matter type และชื่อ Matter ถูกต้อง
 - [ ] Matter เชื่อมกับ Client
 - [ ] กำหนด Lawyer ที่ active แล้ว
-- [ ] กำหนดสถานะเริ่มต้นแล้ว (`TBD`)
+- [ ] กำหนดสถานะเริ่มต้นแล้ว (TBD)
 - [ ] ตรวจรายละเอียดและ permission แล้ว
 
 ## Requirement Traceability
 
-| SOP Area                                                               | Source                                                                                         |
-| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| Conflict check, risk assessment และสถานะงาน                            | `Manao Software Project Proposal-Alt Pro-Legal ERP-Phase_1_V1_20260525.pdf`, หน้า 16           |
-| Matter list, search, register, assign Client/Lawyer, status และ access | ไฟล์เดียวกัน, หน้า 32-33                                                                       |
-| Client list, search, register, categorize และ link Matter              | ไฟล์เดียวกัน, หน้า 35                                                                          |
-| Case Registration & Management                                         | `ALT Pro - P3 (MatterSolv).xlsx`, sheet `Sub-Module`, แถว 73-76                                |
-| Client Registration & Management                                       | ไฟล์เดียวกัน, sheet `Sub-Module`, แถว 98-101                                                   |
-| Matter-centric workflow และ Smart Intake prototype                     | `สำเนาของ 1. PMUC-proposal-Practice Management Platform_03032026_Final_DTS.pdf`, หน้า 5 และ 18 |
+| SOP Area                                                               | Source                                                                                       |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Conflict check, risk assessment และสถานะงาน                            | Manao Software Project Proposal-Alt Pro-Legal ERP-Phase_1_V1_20260525.pdf, หน้า 16           |
+| Matter list, search, register, assign Client/Lawyer, status และ access | ไฟล์เดียวกัน, หน้า 32-33                                                                     |
+| Client list, search, register, categorize และ link Matter              | ไฟล์เดียวกัน, หน้า 35                                                                        |
+| Case Registration & Management                                         | ALT Pro - P3 (MatterSolv).xlsx, sheet Sub-Module, แถว 73-76                                  |
+| Client Registration & Management                                       | ไฟล์เดียวกัน, sheet Sub-Module, แถว 98-101                                                   |
+| Matter-centric workflow และ Smart Intake prototype                     | สำเนาของ 1. PMUC-proposal-Practice Management Platform_03032026_Final_DTS.pdf, หน้า 5 และ 18 |
 
 ## Open Questions
 

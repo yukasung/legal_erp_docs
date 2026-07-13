@@ -39,6 +39,13 @@ export default {
           finance: 'Finance'
         }
       },
+      sops: {
+        title: 'SOPs',
+        items: {
+          index: 'Overview',
+          'matter-intake': 'Matter Intake & Opening'
+        }
+      },
       _technical: {
         type: 'separator',
         title: <Section>Technical</Section>

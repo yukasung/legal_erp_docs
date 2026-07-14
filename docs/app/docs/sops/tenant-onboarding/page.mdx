@@ -1,0 +1,261 @@
+# Tenant Onboarding, Package & User Limit
+
+| Document Control        | Value           |
+| ----------------------- | --------------- |
+| SOP ID                  | SOP-ADM-001     |
+| Status                  | Approved        |
+| Version                 | 1.0             |
+| Process Owner           | Platform Owner  |
+| System Owner            | Admin           |
+| Approver                | Manager + Admin |
+| Effective Date          | 14 July 2026    |
+| Last Requirement Review | 14 July 2026    |
+
+> **Approval notice:** Self-Service/Controlled Onboarding, Tenant/BU Account,
+> domain/sub-domain, package entitlement, User Limit Control และ
+> suspension/termination baseline ได้รับการอนุมัติเมื่อ 14 July 2026
+
+## Purpose
+
+กำหนดวิธีรับสมัคร ตรวจสอบ สร้าง เปิดใช้ เปลี่ยนแพ็กเกจ ระงับ และยุติ Tenant
+ของสำนักงานกฎหมาย โดยแยก platform operator ออกจาก Tenant Admin รักษา tenant
+isolation และบังคับ module/user entitlement ก่อนเปิดใช้ระบบ
+
+## Scope
+
+ครอบคลุม Self-Service Signup และ controlled support onboarding, organization/
+domain verification, Tenant ID, BU Account, domain/sub-domain, initial Tenant
+Admin membership, package/module entitlement, User Limit Control, upgrade,
+downgrade, suspension, reactivation, termination, data export/retention handoff
+
+ไม่ครอบคลุม user/role/access lifecycle ภายใน Tenant ซึ่งอยู่ใน SOP-SEC-001,
+shared master data ซึ่งต้องมี SOP แยก, System Health/API operations หรือการ
+เรียกเก็บ platform subscription fee การออก Quotation/Invoice ให้ลูกความของแต่ละ
+สำนักงานยังใช้ SOP-BIL-001/002 และไม่ใช่ platform subscription billing
+
+## Roles
+
+| Role                                  | Responsibility                                                                                              |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Applicant / Authorized Representative | ส่งข้อมูลองค์กร ยืนยันอำนาจ/domain เลือก package และยอมรับ terms                                            |
+| Platform Owner                        | กำหนด package policy อนุมัติ exception/suspension/termination และรับผิดชอบ Tenant lifecycle                 |
+| Onboarding Operator                   | ตรวจข้อมูล เตรียม request และช่วย onboarding ผ่าน controlled support identity; ไม่อนุมัติ/activate งานตนเอง |
+| Admin                                 | ดำเนิน configuration หลัง approval; ไม่ใช้ Tenant Admin role และไม่เปิดดู business data                     |
+| Initial Tenant Admin                  | ยืนยัน invitation/MFA แล้วจัดการ user/access ภายใน Tenant ตาม SOP-SEC-001                                   |
+| System                                | ตรวจ uniqueness/limit, provision isolation boundary, apply entitlement/status และบันทึก immutable events    |
+
+## Approved Status Baseline
+
+### Tenant
+
+Signup Draft, Pending Verification, Provisioning, Active, Suspended,
+Terminating, Terminated และ Archived
+
+### Package Assignment
+
+Pending, Active, Scheduled Change, Suspended, Expired และ Cancelled
+
+- Pending Verification ห้ามสร้าง business record หรือเชิญ user เพิ่ม
+- Active ต้องผ่าน organization/domain verification, package assignment และ
+  initial Tenant Admin activation
+- Suspended block interactive/API session ตาม reason แต่ไม่ลบข้อมูล
+- Terminating เป็นช่วง export/reconciliation/retention handoff
+- Terminated/Archived ห้ามกลับ Active โดยแก้ record เดิม; re-onboarding ต้องใช้
+  approved new episode และอ้าง Tenant เดิมเมื่อ policy อนุญาต
+
+## Approved Control Decision
+
+| Decision ID | Approved Outcome                                                                                                                                                                                                                                                                     |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| DEC-ADM-001 | Tenant ID/domain unique; verification ก่อน provisioning; Platform requester/operator/approver/System executor แยก actor; package ควบคุม module และ seat; upgrade/downgrade มีผลเมื่อ approved; over-limit block new use โดยไม่ลบข้อมูล; termination ผ่าน export/retention/Legal Hold |
+
+## Required Information
+
+- Onboarding Request ID, source (self-service/controlled support), legal name,
+  registration identifier, country, address และ authorized representative
+- verified email/phone, organization/domain evidence, domain/sub-domain request
+  และ verification method/result/expiry
+- Tenant ID, BU Account ID, region/data boundary และ isolation/provision result
+- package/version, enabled modules, user limit, effective time และ terms version
+- initial Tenant Admin identity/membership, invitation expiry และ MFA result
+- requester, operator, approver, executor, expected version, idempotency key,
+  before/after entitlement และ reason
+- active/pending/reserved seat counts, module usage/dependencies, remediation,
+  export/retention/Legal Hold result
+
+## Procedure
+
+### 1. Submit and Verify Tenant Application
+
+**Responsible:** Applicant, Onboarding Operator
+
+1. Applicant เปิด Self-Service Signup หรือ Operator เปิด controlled request
+2. บันทึก legal identity, registration, contact, country, domain และ authorized
+   representative พร้อม terms/privacy acknowledgement
+3. ระบบตรวจ duplicate legal identifier, domain/sub-domain และ active/pending
+   Tenant candidate
+4. ยืนยัน organization/domain ด้วยวิธีที่อนุมัติและ token/evidence ที่มี expiry
+5. verification fail/expire ต้องคง Pending Verification หรือ Reject พร้อม
+   reason; ห้าม provision
+
+**Expected result:** มี verified application หนึ่งรายการต่อ organization/domain
+โดยไม่เปิด Tenant ก่อนผ่าน gate
+
+### 2. Approve and Provision Tenant
+
+**Responsible:** Platform Owner (approver), Admin/System (executor)
+
+1. Platform Owner ตรวจ verification, package, region/data boundary และ risk
+2. Onboarding Operator/requester ห้าม approve/activate รายการที่ตนจัดทำ
+3. เมื่อ approved ระบบสร้าง immutable Tenant ID, BU Account และ unique
+   domain/sub-domain ด้วย idempotency key
+4. provision isolation boundary, default configuration และ package entitlement
+5. ตรวจ health/readiness ของ Tenant โดยไม่ใช้ production business data
+
+**Expected result:** Tenant ถูก provision ครั้งเดียวและไม่มีข้อมูล/identifier
+ปะปนกับ Tenant อื่น
+
+### 3. Activate Initial Tenant Admin
+
+**Responsible:** Platform Owner, Admin/System, Initial Tenant Admin
+
+1. บันทึก approved initial Tenant Admin identity และ membership scope
+2. ส่ง expiring invitation ให้ผู้รับที่ผ่าน verification
+3. บังคับ identity confirmation, password policy, MFA และ terms acceptance
+4. Activate Tenant เมื่อ initial Tenant Admin และ package readiness ครบ
+5. การสร้าง user/role/permission หลังจากนี้ใช้ SOP-SEC-001 ภายใน Tenant
+
+**Expected result:** Tenant Active พร้อม Tenant Admin ที่ยืนยันตัวตน โดย
+platform operator ไม่มี Tenant business role
+
+### 4. Enforce Package and User Limit
+
+**Responsible:** System, Tenant Admin, Platform Owner
+
+1. package/version ระบุ module entitlement และ user limit ที่มีผล
+2. ทุก module access/create และ user invite/activation ต้องตรวจ active package
+3. seat count รวม Active membership และ Pending Invite/reservation
+   ที่ยังไม่หมดอายุ
+4. เมื่อเต็ม limit ให้ block invitation/activation ใหม่พร้อม current/limit count
+5. expired invitation คืน seat reservation แบบ idempotent และมี event
+
+**Expected result:** Tenant ใช้เฉพาะ module/seat ที่ package อนุญาตและไม่มี
+oversubscription จาก concurrent request
+
+### 5. Upgrade or Downgrade Package
+
+**Responsible:** Tenant Admin (requester), Platform Owner (approver), System
+
+1. ระบุ current/target package, reason, effective time และ before/after modules/
+   user limit
+2. ระบบตรวจ active users, pending invites, module data, integrations และ
+   in-flight workflow ที่ได้รับผล
+3. Platform Owner อนุมัติ exact package/version; requester ห้าม self-approve
+4. Upgrade มีผลทันทีหลัง approval หรือเวลาที่อนุมัติ และ retry คืนผลเดิม
+5. Downgrade มีผลตาม approved time: block new activity ใน module ที่ถูกถอดและ
+   block user เพิ่มเมื่อ over-limit แต่ห้ามลบข้อมูลหรือ deactivate user
+   อัตโนมัติ
+6. เปิด remediation เพื่อ reduce seats/close dependencies/export ตาม policy;
+   historical data ใช้ controlled read/export/retention path
+
+**Expected result:** entitlement ใหม่มีผลแน่นอน ไม่มีข้อมูลสูญหาย และ over-limit
+ถูกควบคุมจน reconcile
+
+### 6. Suspend and Reactivate Tenant
+
+**Responsible:** Platform Owner (request/approve), Admin/System (execute)
+
+1. ระบุ reason, scope, effective time, notice และ emergency/security condition
+2. Suspend session/token/API/integration ตาม reason และ preserve data/history
+3. แจ้ง Tenant Admin พร้อม export/support path ที่อนุญาต
+4. Reactivate ต้องยืนยัน reason resolved, package valid, initial admin/readiness
+   และ approver ที่ไม่ใช่ executor
+5. บันทึก before/after status, session result และ notifications
+
+**Expected result:** Tenant ถูกระงับ/เปิดคืนตาม authority
+โดยไม่ลบหรือเปิดเผยข้อมูล
+
+### 7. Terminate and Archive Tenant
+
+**Responsible:** Tenant Admin/Platform Owner (request), Manager + Admin
+(approve), System
+
+1. เปิด termination request พร้อม effective time, reason และ authorized contact
+2. ตรวจ active users/sessions, integrations, workflow, export request, retention
+   assignment, disputes และ Legal Hold
+3. ส่ง controlled export ตาม role/purpose/recipient/checksum และบันทึก
+   acceptance
+4. revoke access/integration, เปลี่ยน Terminating → Terminated และ reconcile
+   counts
+5. Retain/archive/dispose ตาม SOP-AUD-001; Legal Hold block disposal และห้าม
+   hard delete Tenant/business history
+
+**Expected result:** Tenant ยุติอย่างตรวจสอบได้ ผู้ใช้เข้าไม่ได้ ข้อมูลส่งมอบและ
+เก็บรักษาตาม authority
+
+## Control Points
+
+| Control                      | Requirement                                                                     | Evidence                                                |
+| ---------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Organization/domain identity | legal identifier/domain/sub-domain unique และ verification ไม่หมดอายุ           | duplicate candidates, verification method/result/expiry |
+| Actor separation             | applicant/operator, approver และ Admin/System executor แยก actor                | request, decision and execution events                  |
+| Tenant isolation             | Tenant/BU/domain/region ถูก provision แยกและทุก record ผูก Tenant               | isolation/readiness result and Tenant ID                |
+| Package entitlement          | module/action ใช้ได้เมื่อ active package/version อนุญาต                         | entitlement decision and before/after snapshot          |
+| User limit atomicity         | Active + pending/reserved seats ไม่เกิน limit แม้ concurrent request            | count/limit/constraint and reservation events           |
+| Downgrade preservation       | entitlement ใหม่มีผลแต่ไม่ auto-delete/deactivate; มี dependency remediation    | impact/remediation/reconciliation                       |
+| Suspension/termination       | revoke session/integration, controlled export, retention และ Legal Hold ก่อนปิด | revoke/export/hold/retention/status evidence            |
+| Idempotency                  | provision/package/status retry คืนผลเดิม ไม่สร้าง Tenant/event ซ้ำ              | idempotency key and original result                     |
+
+## Exceptions
+
+- **Duplicate organization/domain:** block และส่ง Platform Owner review; ห้าม
+  merge Tenant หรือโอน domain อัตโนมัติ
+- **Domain verification ไม่ผ่าน/หมดอายุ:** ขอ evidence/token ใหม่และคง Pending
+  Verification
+- **User limit เต็ม:** block invitation/activation ใหม่; upgrade package หรือ
+  deactivate/expire reservation ผ่าน SOP-SEC-001
+- **Downgrade แล้ว over-limit:** block new users/module activity, เปิด
+  remediation และห้ามลบข้อมูลหรือสุ่ม deactivate user
+- **Provisioning บางส่วนล้มเหลว:** rollback/cleanup ด้วย request ID หรือ resume
+  idempotently; ห้ามเปิด Active
+- **Security suspension เร่งด่วน:** revoke ก่อนแล้ว complete approval/notice
+  ผ่าน exception SLA; ห้ามใช้เป็นวิธีหลีกเลี่ยง termination control
+- **Legal Hold/dispute:** Terminated ได้เมื่อ access ถูก revoke แต่ dispose
+  ไม่ได้ จน Hold/obligation ถูก release
+
+## Completion Checklist
+
+- [ ] legal identity/domain/sub-domain uniqueness และ verification ผ่าน
+- [ ] requester/operator, approver และ executor แยก actor
+- [ ] Tenant ID/BU Account/isolation/readiness ถูก provision ครั้งเดียว
+- [ ] initial Tenant Admin ยืนยัน identity, MFA และ terms ก่อน Active
+- [ ] package/version/module/user limit snapshot ครบ
+- [ ] user invite/activation ตรวจ Active + pending/reserved seats แบบ atomic
+- [ ] upgrade/downgrade เก็บ impact, effective time และ before/after
+- [ ] suspension/reactivation revoke/restore ตาม authority และมี notice
+- [ ] termination มี export, access/integration revoke, retention และ Legal Hold
+- [ ] ไม่มี platform operator ได้ Tenant business role โดยอัตโนมัติ
+
+## Related Documents
+
+- [User, Role & Access Management](/docs/sops/access-management)
+- [Reports, Export & Audit Review](/docs/sops/reports-audit)
+- [Retention and Disposal of Audit Evidence](/docs/sops/retention-disposal)
+- [Role & Permission Alignment](/docs/sops/governance/role-permission-alignment)
+- [Exception & Escalation Matrix](/docs/sops/governance/exception-escalation)
+- [SOP UAT Scenarios & Test Cases](/docs/sops/governance/uat-test-cases)
+
+## Requirement Traceability
+
+| SOP Area                                           | Source                                                        |
+| -------------------------------------------------- | ------------------------------------------------------------- |
+| Tenant/BU Account and domain/sub-domain            | ALT Pro - P3 (MatterSolv).xlsx, sheet Sub-Module, แถว 226-227 |
+| Package/module entitlement and User Limit Control  | ไฟล์เดียวกัน, แถว 228-229                                     |
+| Self-Service Signup and initial Tenant Admin       | Scope; Architecture, Tenant Onboarding & Package Management   |
+| User activation/access boundary                    | SOP-SEC-001; Manao Software Project Proposal, หน้า 63-67      |
+| Suspension/termination/export/retention/Legal Hold | Scope, Security/Audit baseline, SOP-REP-001 และ SOP-AUD-001   |
+
+## Approval Record
+
+- Manager และ Admin อนุมัติ
+- Effective Date: 14 July 2026

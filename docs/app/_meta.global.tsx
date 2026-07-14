@@ -33,6 +33,7 @@ export default {
           'invoice-payment': 'Invoice, Payment & Adjustment',
           'personnel-lifecycle': 'Personnel Lifecycle & Employee Data',
           'payroll-leave': 'Payroll & Leave Management',
+          'tenant-onboarding': 'Tenant Onboarding & Package',
           'access-management': 'User, Role & Access Management',
           'reports-audit': 'Reports, Export & Audit Review',
           'retention-disposal': 'Retention & Disposal',

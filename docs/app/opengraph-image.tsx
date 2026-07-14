@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 
-export const alt = 'Legal ERP Docs'
+export const alt = 'Legal ERP Documentation'
 export const contentType = 'image/png'
 export const size = {
   width: 1200,
@@ -50,7 +50,7 @@ export default function OpenGraphImage() {
               lineHeight: 1
             }}
           >
-            Legal ERP Docs
+            Legal ERP Documentation
           </div>
           <div style={{ color: '#cbd5e1', fontSize: 34, letterSpacing: 0 }}>
             Workflows, modules, and administration

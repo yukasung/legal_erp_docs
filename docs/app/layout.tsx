@@ -22,27 +22,27 @@ export const metadata: Metadata = {
     'documentation'
   ],
   generator: 'Next.js',
-  applicationName: 'Legal ERP Docs',
+  applicationName: 'Legal ERP Documentation',
   appleWebApp: {
-    title: 'Legal ERP Docs'
+    title: 'Legal ERP Documentation'
   },
   title: {
-    default: 'Legal ERP Docs',
-    template: '%s | Legal ERP Docs'
+    default: 'Legal ERP Documentation',
+    template: '%s | Legal ERP Documentation'
   },
   openGraph: {
     url: './',
-    title: 'Legal ERP Docs',
+    title: 'Legal ERP Documentation',
     description:
       'Documentation for Legal ERP workflows, modules, and administration.',
-    siteName: 'Legal ERP Docs',
+    siteName: 'Legal ERP Documentation',
     images: ['/opengraph-image'],
     locale: 'th_TH',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Legal ERP Docs',
+    title: 'Legal ERP Documentation',
     description:
       'Documentation for Legal ERP workflows, modules, and administration.',
     images: ['/opengraph-image']
@@ -58,14 +58,18 @@ export const metadata: Metadata = {
 const navbar = (
   <Navbar
     logo={
-      <span className="x:font-semibold x:tracking-normal">Legal ERP Docs</span>
+      <span className="x:font-semibold x:tracking-normal">
+        Legal ERP Documentation
+      </span>
     }
   />
 )
 
 const footer = (
   <Footer>
-    <p className="text-xs">© {new Date().getFullYear()} Legal ERP Docs.</p>
+    <p className="text-xs">
+      © {new Date().getFullYear()} Legal ERP Documentation.
+    </p>
   </Footer>
 )
 

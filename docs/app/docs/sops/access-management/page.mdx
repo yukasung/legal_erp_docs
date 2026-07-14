@@ -1,15 +1,15 @@
 # User, Role & Access Management
 
-| Document Control        | Value                           |
-| ----------------------- | ------------------------------- |
-| SOP ID                  | SOP-SEC-001                     |
-| Status                  | Approved                        |
-| Version                 | 1.0                             |
-| Process Owner           | Admin                           |
-| System Owner            | Admin                           |
-| Approver                | Manager + Admin                 |
-| Effective Date          | 14 July 2026                    |
-| Last Requirement Review | 14 July 2026                    |
+| Document Control        | Value           |
+| ----------------------- | --------------- |
+| SOP ID                  | SOP-SEC-001     |
+| Status                  | Approved        |
+| Version                 | 1.0             |
+| Process Owner           | Admin           |
+| System Owner            | Admin           |
+| Approver                | Manager + Admin |
+| Effective Date          | 14 July 2026    |
+| Last Requirement Review | 14 July 2026    |
 
 > **Approval notice:** Joiner/Mover/Leaver, RBAC, individual permission, MFA,
 > Emergency Access, recertification และ audit controls ได้รับการอนุมัติเมื่อ 14
@@ -28,13 +28,12 @@ transfer, Emergency Access, recertification และ anomaly/access review
 
 ## Roles
 
-| Role                  | Responsibility                                           |
-| --------------------- | -------------------------------------------------------- |
-| Requesting Manager    | ยืนยันความจำเป็น ขอบเขต และระยะเวลาของ access            |
-| Admin                 | เตรียม/ดำเนินการ account, role และ permission change     |
-| Data/Compliance Owner | อนุมัติ privileged/sensitive access และ review anomaly   |
-| User                  | ยืนยันตัวตน ใช้ MFA และรักษา credential                  |
-| Auditor               | ตรวจ request, approval, recertification และ audit events |
+| Role    | Responsibility                                                    |
+| ------- | ----------------------------------------------------------------- |
+| Manager | ยืนยันความจำเป็น ขอบเขต และระยะเวลาของ access และเป็น A1          |
+| Admin   | เตรียม/ดำเนินการ account, role และ permission change; เป็น A2 ได้ |
+| User    | ยืนยันตัวตน ใช้ MFA และรักษา credential                           |
+| Auditor | ตรวจ request, approval, recertification และ audit events          |
 
 Admin ผู้ดำเนินการห้ามอนุมัติคำขอของตนเอง และสิทธิ์ไม่ทำให้ผู้ใช้เห็นข้อมูลข้าม
 Tenant หรือข้าม Matter restriction
@@ -51,17 +50,19 @@ Tenant หรือข้าม Matter restriction
 
 ## Access Authority
 
-| Action                                       | Requester          | Approval                             | Executor |
-| -------------------------------------------- | ------------------ | ------------------------------------ | -------- |
-| Create standard user                         | Manager            | Manager/Tenant Authority             | Admin    |
-| Assign standard role                         | Manager            | Manager/Tenant Authority             | Admin    |
-| Individual permission                        | Manager            | Manager                              | Admin    |
-| Admin/audit/export/finance-approve privilege | Manager            | Manager A1 + Data/Compliance A2      | Admin    |
-| Suspend/deactivate                           | Manager/Compliance | Manager หรือ Data/Compliance ตามเหตุ | Admin    |
-| Emergency Access                             | Admin/User         | Authorized Manager                   | Admin    |
+| Action                                       | Requester  | Approval                 | Executor |
+| -------------------------------------------- | ---------- | ------------------------ | -------- |
+| Create standard user                         | Manager    | Manager/Tenant Authority | Admin    |
+| Assign standard role                         | Manager    | Manager/Tenant Authority | Admin    |
+| Individual permission                        | Manager    | Manager                  | Admin    |
+| Admin/audit/export/finance-approve privilege | Manager    | Manager A1 + Admin A2    | Admin    |
+| Suspend/deactivate                           | Manager    | Manager                  | Admin    |
+| Emergency Access                             | Admin/User | Authorized Manager       | Admin    |
 
 Requester ห้ามอนุมัติคำขอของตนเอง Individual/Emergency Access ต้องมี expires at
 และถูกถอนอัตโนมัติเมื่อครบกำหนด
+
+Admin A2 ต้องเป็นคนละบัญชีกับ Admin ผู้ execute คำขอเดียวกัน
 
 ## Procedure
 

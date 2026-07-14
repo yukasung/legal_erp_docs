@@ -7,7 +7,7 @@
 | Version                 | 1.0                            |
 | Process Owner           | Release Manager                |
 | Approver                | Product Owner + Technical Lead |
-| Compliance Sign-off     | Data/Compliance Owner          |
+| Control Sign-off        | Admin                          |
 | Effective Date          | 14 July 2026                   |
 | Last Requirement Review | 14 July 2026                   |
 
@@ -24,18 +24,18 @@ risk/exceptions, migration/rollback version และ decision timestamp
 
 ## Evidence Package
 
-| Evidence ID | Evidence                                                               | Owner                    |
-| ----------- | ---------------------------------------------------------------------- | ------------------------ |
-| REL-SCP     | frozen scope, backlog IDs, dependencies and excluded gaps              | Product Owner            |
-| REL-TRC     | Requirement → Decision → SOP → implementation → UAT coverage           | Product + QA             |
-| REL-BLD     | build artifact digest, dependency/SBOM and source commit               | Technical Lead           |
-| REL-SEC     | RBAC/tenant/security tests, vulnerability and secret scan              | Security/Data Compliance |
-| REL-MIG     | schema/data migration dry run, counts, timing and rollback result      | Database Owner           |
-| REL-UAT     | Test Run IDs, manifest checksum, Passed/Failed/Blocked and defects     | QA Lead                  |
-| REL-OPS     | monitoring, alerts, runbook, capacity, backup/restore and support rota | Operations               |
-| REL-ROL     | rollback trigger, steps, artifact/data compatibility and rehearsal     | Technical Lead           |
-| REL-COM     | user/client/internal communication and training acknowledgement        | Product/Operations       |
-| REL-DEC     | signed go/no-go decision, exceptions and residual risk                 | Release Approvers        |
+| Evidence ID | Evidence                                                               | Owner              |
+| ----------- | ---------------------------------------------------------------------- | ------------------ |
+| REL-SCP     | frozen scope, backlog IDs, dependencies and excluded gaps              | Product Owner      |
+| REL-TRC     | Requirement → Decision → SOP → implementation → UAT coverage           | Product + QA       |
+| REL-BLD     | build artifact digest, dependency/SBOM and source commit               | Technical Lead     |
+| REL-SEC     | RBAC/tenant/security tests, vulnerability and secret scan              | Admin              |
+| REL-MIG     | schema/data migration dry run, counts, timing and rollback result      | Database Owner     |
+| REL-UAT     | Test Run IDs, manifest checksum, Passed/Failed/Blocked and defects     | QA Lead            |
+| REL-OPS     | monitoring, alerts, runbook, capacity, backup/restore and support rota | Operations         |
+| REL-ROL     | rollback trigger, steps, artifact/data compatibility and rehearsal     | Technical Lead     |
+| REL-COM     | user/client/internal communication and training acknowledgement        | Product/Operations |
+| REL-DEC     | signed go/no-go decision, exceptions and residual risk                 | Release Approvers  |
 
 ## Scope and Traceability Gate
 
@@ -141,23 +141,23 @@ sustained error/latency ที่เกิน approved threshold
    event
 5. Enable workers/integrations/feature flags ทีละชุดและตรวจ queue/idempotency
 6. Run critical production-safe verification and reconciliation counts
-7. Product/Technical/Data Compliance confirm go-live or invoke rollback
+7. Product/Technical/Admin confirm go-live or invoke rollback
 8. Start hypercare and record final evidence/timestamps
 
 ## Go/No-Go Authority
 
-| Decision Area              | Sign-off                                                                                                               |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Scope/business readiness   | Product Owner                                                                                                          |
-| Build/migration/rollback   | Technical Lead + Database Owner                                                                                        |
-| UAT/defect status          | QA Lead                                                                                                                |
-| Security/privacy/retention | Data/Compliance Owner                                                                                                  |
-| Operations/support         | Operations Owner                                                                                                       |
-| Final Go                   | Product Owner + Technical Lead + Data/Compliance Owner concurrence for every production release covered by CHK-REL-001 |
+| Decision Area              | Sign-off                                                                                               |
+| -------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Scope/business readiness   | Product Owner                                                                                          |
+| Build/migration/rollback   | Technical Lead + Database Owner                                                                        |
+| UAT/defect status          | QA Lead                                                                                                |
+| Security/privacy/retention | Admin                                                                                                  |
+| Operations/support         | Operations Owner                                                                                       |
+| Final Go                   | Product Owner + Technical Lead + Admin concurrence for every production release covered by CHK-REL-001 |
 
 CHK-REL-001 ครอบคลุมทุก release ไป environment ที่มีผู้ใช้จริงตาม Purpose
-ดังนั้น Data/Compliance concurrence เป็น mandatory sign-off ไม่มี production
-exemption; หากไม่พร้อมต้อง No-Go หรือเปิด release ใหม่หลังปิดข้อกังวล
+ดังนั้น Admin concurrence เป็น mandatory sign-off ไม่มี production exemption;
+หากไม่พร้อมต้อง No-Go หรือเปิด release ใหม่หลังปิดข้อกังวล
 
 No-Go อัตโนมัติเมื่อ mandatory case ไม่ผ่าน, P1/P2 เปิด, migration/rollback
 ไม่ผ่าน, artifact/evidence ระบุไม่ได้ หรือ owner สำคัญไม่พร้อมใน window ห้ามลด

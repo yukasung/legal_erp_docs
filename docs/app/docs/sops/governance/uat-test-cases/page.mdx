@@ -56,17 +56,17 @@ screen/API result, record IDs และ audit event reference ไม่ใช้
 
 ## Execution Profiles
 
-| Case Prefix | Actor / Preconditions                                                | Required Test Inputs                                                                  |
-| ----------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| CLI         | Lawyer/Assistant + Manager; Client candidates ใน Tenant A/B          | Client type, identity fields, duplicate score band and dependencies                   |
-| MAT         | Lawyer + Manager + Executive A2; Client Active                       | Matter type, conflict parties, risk band, SLA clock and transition                    |
-| DOC         | Assistant/Lawyer + Manager + Data/Compliance                         | Matter access, document/version/checksum, classification and recipient                |
-| TSK/CAL     | Assigned user + Manager; timezone/sync sandbox พร้อม                 | owner, deadline, recurrence, conflict and sync response                               |
-| BIL         | Finance maker + Manager approver; pricing/tax master พร้อม           | quotation/invoice/payment amounts, currency, tax and posting reference                |
-| SEC         | Admin executor + Manager/Data/Compliance approvers; Tenant A/B users | role/action/scope, expiry, MFA and session/token                                      |
-| REP/AUD     | Report owner/Admin + Manager/Data/Compliance                         | source population, filters/as-of, expected totals and event chain                     |
-| RET         | Data Owner + dual approvers; expired/non-expired/held records        | retention rule, trigger, hold and disposal population                                 |
-| GOV/EXC     | QA Lead + document/control owners                                    | controlled document set, broken/valid samples, severity clock and escalation contacts |
+| Case Prefix | Actor / Preconditions                                            | Required Test Inputs                                                                  |
+| ----------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| CLI         | Lawyer/Assistant + Manager; Client candidates ใน Tenant A/B      | Client type, identity fields, duplicate score band and dependencies                   |
+| MAT         | Lawyer + Manager + Manager A2; Client Active                     | Matter type, conflict parties, risk band, SLA clock and transition                    |
+| DOC         | Assistant/Lawyer + Manager A1 + Admin A2                         | Matter access, document/version/checksum, classification and recipient                |
+| TSK/CAL     | Assigned user + Manager; timezone/sync sandbox พร้อม             | owner, deadline, recurrence, conflict and sync response                               |
+| BIL         | Finance maker + Manager approver; pricing/tax master พร้อม       | quotation/invoice/payment amounts, currency, tax and posting reference                |
+| SEC         | Admin executor + Manager A1/Admin A2 approvers; Tenant A/B users | role/action/scope, expiry, MFA and session/token                                      |
+| REP/AUD     | Report owner/Admin executor + Manager A1/Admin A2                | source population, filters/as-of, expected totals and event chain                     |
+| RET         | Data Owner + dual approvers; expired/non-expired/held records    | retention rule, trigger, hold and disposal population                                 |
+| GOV/EXC     | QA Lead + document/control owners                                | controlled document set, broken/valid samples, severity clock and escalation contacts |
 
 ## Fixture Reference Rule
 
@@ -84,7 +84,7 @@ screen/API result, record IDs และ audit event reference ไม่ใช้
 | FX-DOC         | Matter UAT-MAT-1001; Document UAT-DOC-1001; version 1.0; classification Internal; recipient reviewer-a@example.test; share expiry 2026-08-10T17:00:00+07:00                  |
 | FX-TSK/CAL     | Matter UAT-MAT-1001; task UAT-TSK-1001 due 2026-08-05T17:00:00+07:00; appointment UAT-CAL-1001 at 2026-08-04T10:00:00+07:00; timezone Asia/Bangkok                           |
 | FX-BIL         | Quotation UAT-QUO-1001; service fee THB 100,000; discount 10%; VAT 7%; invoice UAT-INV-1001; payment UAT-PAY-1001 amount THB 53,500                                          |
-| FX-SEC         | Tenant UAT-A and UAT-B; user-a@example.test; Admin admin-a@example.test; Manager manager-a@example.test; A2 compliance-a@example.test; expiry 2026-08-04T17:00:00+07:00      |
+| FX-SEC         | Tenant UAT-A and UAT-B; user-a@example.test; Admin admin-a@example.test; Manager manager-a@example.test; A2 admin-a2@example.test; expiry 2026-08-04T17:00:00+07:00          |
 | FX-REP/AUD     | Report UAT-REP-1001; as-of 2026-08-03T17:00:00+07:00; three invoices; expected gross THB 107,000; immutable events EVT-1001 to EVT-1005                                      |
 | FX-RET         | Records REC-EXPIRED-01, REC-ACTIVE-01 and REC-HOLD-01; retention expiry 2026-07-31; Legal Hold HOLD-001 on REC-HOLD-01                                                       |
 | FX-GOV/EXC     | Controlled docs 18; form templates 12; valid ID SOP-MAT-001; duplicate test ID SOP-MAT-001-DUP; P1 detected 2026-08-03T09:00:00+07:00                                        |
@@ -135,7 +135,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 | ------ | ----------- | ------------------------------------------------------ | ----------------------------------------------------- |
 | MAT-01 | REQ-MAT-001 | Intake ผ่าน duplicate/conflict/risk Low                | Manager approve และ transition ตาม lifecycle          |
 | MAT-02 | REQ-MAT-001 | Conflict Status เป็น Escalated/Prohibited              | หยุด gate และส่ง authority พร้อม assessment           |
-| MAT-03 | REQ-MAT-001 | High risk acceptance                                   | ต้องมี Manager A1 + Executive A2 แยกคน                |
+| MAT-03 | REQ-MAT-001 | High risk acceptance                                   | ต้องมี Manager A1 + Manager A2 แยกคน                  |
 | MAT-04 | REQ-MAT-001 | Prohibited risk/conflict                               | Reject/no override และไม่มี Active transition         |
 | MAT-05 | REQ-MAT-001 | SLA pause/resume/warning/breach                        | clock และ event ถูกต้อง ไม่มี auto-approval           |
 | MAT-06 | REQ-MAT-002 | Matter duplicate ต่ำกว่า review threshold              | เปิดต่อได้และเก็บ rule version/score                  |

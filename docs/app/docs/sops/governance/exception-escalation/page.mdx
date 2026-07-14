@@ -1,14 +1,14 @@
 # Exception & Escalation Matrix
 
-| Document Control        | Value                           |
-| ----------------------- | ------------------------------- |
-| Document ID             | CTRL-EXC-001                    |
-| Status                  | Approved                        |
-| Version                 | 1.0                             |
-| Process Owner           | Manager                         |
-| Approver                | Manager + Admin                 |
-| Effective Date          | 14 July 2026                    |
-| Last Requirement Review | 14 July 2026                    |
+| Document Control        | Value           |
+| ----------------------- | --------------- |
+| Document ID             | CTRL-EXC-001    |
+| Status                  | Approved        |
+| Version                 | 1.0             |
+| Process Owner           | Manager         |
+| Approver                | Manager + Admin |
+| Effective Date          | 14 July 2026    |
+| Last Requirement Review | 14 July 2026    |
 
 ## Purpose
 
@@ -35,19 +35,19 @@ Open, Contained, In Remediation, Resolved, Closed และ Cancelled โดย 
 
 ## Escalation Matrix
 
-| Domain / Trigger                         | First Owner           | Decision Authority                                         | Mandatory Escalation / Evidence                  |
-| ---------------------------------------- | --------------------- | ---------------------------------------------------------- | ------------------------------------------------ |
-| Client duplicate/merge uncertainty       | Manager               | Manager + Data Owner when material                         | Candidate score, dependency and decision reason  |
-| Conflict/Risk/Prohibited finding         | Responsible Lawyer    | Manager A1 + A2 (คนละคน) for High; no override for Prohibited | Assessment and decision event                    |
-| Matter deadline/status/closure blocked   | Manager               | Manager per DEC-MAT-012                                    | Deadline impact, transition request and notice   |
-| Wrong document version/signature/share   | Document Owner        | Manager + Admin if external/sensitive                      | Revoke, recipients, checksum and incident        |
-| Calendar conflict/external sync failure  | Task/Calendar Owner   | Manager for deadline impact                                | Conflict, retries, manual confirmation           |
-| Quotation pricing/approval inconsistency | Finance               | Manager                                                    | Version, price source, discount and client state |
-| Invoice/payment/refund discrepancy       | Finance               | Manager; Admin for suspected fraud                         | Reconciliation, before/after and posting IDs     |
-| Unauthorized/privileged access anomaly   | Admin                 | Manager + Admin                                             | Lock/revoke events, scope and session activity   |
-| Report mismatch/sensitive export         | Report Owner          | Manager + Admin when exposed                                | Filter snapshot, rows, recipient and revocation  |
-| Legal Hold/disposal conflict             | Admin                 | Manager A1 + Admin A2                                       | Hold search, population and disposal block       |
-| Audit event integrity/correction failure | Admin                 | Manager + Admin                                             | Integrity result, original/correction reference  |
+| Domain / Trigger                         | First Owner         | Decision Authority                                           | Mandatory Escalation / Evidence                  |
+| ---------------------------------------- | ------------------- | ------------------------------------------------------------ | ------------------------------------------------ |
+| Client duplicate/merge uncertainty       | Manager             | Manager + Data Owner when material                           | Candidate score, dependency and decision reason  |
+| Conflict/Risk/Prohibited finding         | Responsible Lawyer  | Manager A1 + Manager A2 for High; no override for Prohibited | Assessment and decision event                    |
+| Matter deadline/status/closure blocked   | Manager             | Manager per DEC-MAT-012                                      | Deadline impact, transition request and notice   |
+| Wrong document version/signature/share   | Document Owner      | Manager + Admin if external/sensitive                        | Revoke, recipients, checksum and incident        |
+| Calendar conflict/external sync failure  | Task/Calendar Owner | Manager for deadline impact                                  | Conflict, retries, manual confirmation           |
+| Quotation pricing/approval inconsistency | Finance             | Manager                                                      | Version, price source, discount and client state |
+| Invoice/payment/refund discrepancy       | Finance             | Manager; Admin for suspected fraud                           | Reconciliation, before/after and posting IDs     |
+| Unauthorized/privileged access anomaly   | Admin               | Manager + Admin                                              | Lock/revoke events, scope and session activity   |
+| Report mismatch/sensitive export         | Report Owner        | Manager + Admin when exposed                                 | Filter snapshot, rows, recipient and revocation  |
+| Legal Hold/disposal conflict             | Admin               | Manager A1 + Admin A2                                        | Hold search, population and disposal block       |
+| Audit event integrity/correction failure | Admin               | Manager + Admin                                              | Integrity result, original/correction reference  |
 
 ## Immediate Actions
 
@@ -77,10 +77,9 @@ Open, Contained, In Remediation, Resolved, Closed และ Cancelled โดย 
 - Suspected fraud ที่ยังไม่ยืนยันต้องไม่ต่ำกว่า P2 และยกระดับเป็น P1 เมื่อพบ
   unauthorized payment/data exposure หรือ material integrity impact
 - หาก owner ไม่ acknowledge ภายใน SLA ให้ escalate ไป Decision Authority ทันที
-- หากพลาด Contain target ให้แจ้ง Manager + Admin และทบทวน
-  severity
-- หากพลาด Restore target ให้ escalate ไป Manager เพื่ออนุมัติ
-  recovery path, client/regulatory communication และ resource เพิ่มเติม
+- หากพลาด Contain target ให้แจ้ง Manager + Admin และทบทวน severity
+- หากพลาด Restore target ให้ escalate ไป Manager เพื่ออนุมัติ recovery path,
+  client/regulatory communication และ resource เพิ่มเติม
 - หากพลาด Resolution/Approved Plan target ต้องมี documented risk acceptance,
   revised due time และ Manager approval; ห้ามเลื่อนเงียบหรือปิด exception
 - หากพลาด Update Cadence ให้ escalation system แจ้ง owner manager และ Decision

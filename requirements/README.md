@@ -1,7 +1,7 @@
 # Requirements Source Files
 
 Use this folder for source requirement files that Codex should read before
-writing or updating the Legal ERP Docs site.
+writing or updating the Legal ERP Documentation site.
 
 ## Folder Structure
 

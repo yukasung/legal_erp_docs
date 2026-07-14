@@ -1,15 +1,15 @@
 # Workflow Configuration
 
-| Document Control        | Value                           |
-| ----------------------- | ------------------------------- |
-| Document ID             | CFG-WFL-001                     |
-| Status                  | Approved                        |
-| Version                 | 1.0                             |
-| Process Owner           | Product Owner                   |
-| System Owner            | Technical Lead                  |
-| Approver                | Manager + Data/Compliance Owner |
-| Effective Date          | 14 July 2026                    |
-| Last Requirement Review | 14 July 2026                    |
+| Document Control        | Value           |
+| ----------------------- | --------------- |
+| Document ID             | CFG-WFL-001     |
+| Status                  | Approved        |
+| Version                 | 1.0             |
+| Process Owner           | Product Owner   |
+| System Owner            | Technical Lead  |
+| Approver                | Manager + Admin |
+| Effective Date          | 14 July 2026    |
+| Last Requirement Review | 14 July 2026    |
 
 ## Purpose
 
@@ -38,22 +38,22 @@ Approved instance ต้อง snapshot workflow/version/authority ที่ใ�
 
 ## Matter Lifecycle
 
-| From             | Command / To                    | Required Guard                                                  | Authority                                                                                                  | Side Effects                                      |
-| ---------------- | ------------------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| Intake Draft     | submit-intake → Conflict Review | Client exists, intake required fields, duplicate disposition    | Lawyer/Assistant request; authorized user/system execute                                                   | start conflict SLA, notify assessor               |
-| Intake Draft     | cancel → Cancelled              | cancellation reason                                             | Lawyer/Assistant request; Manager approve; authorized user/system execute                                  | terminal notice, preserve prior reference         |
-| Conflict Review  | clear → Risk Review             | latest Conflict Cleared                                         | Responsible Lawyer; no approval when Cleared, Manager if previously Escalated                              | stop conflict SLA, start risk SLA                 |
-| Conflict Review  | prohibit → Rejected             | Conflict Prohibited                                             | Responsible Lawyer actor; no additional approval/no override; System execute                               | terminal notice, preserve evidence                |
-| Risk Review      | submit → Pending Approval       | Risk rating/evidence complete                                   | assessor request                                                                                           | start acceptance SLA, assign A1/A2                |
-| Pending Approval | approve → Active                | Acceptance Approved, Commercial Readiness, Client/Lawyer Active | Low/Medium Manager A1; High Manager A1 + Executive A2                                                      | activate access/work, notify team                 |
-| Pending Approval | reject → Rejected               | existing Acceptance Rejected decision/reason                    | Acceptance Approver actor; no duplicate approval; System execute                                           | terminal notice                                   |
-| Active           | hold → On Hold                  | reason and review date                                          | Responsible Lawyer request; Manager approve; authorized user/system execute                                | pause allowed SLA, notify team/client as policy   |
-| Active           | immediate-hold → On Hold        | legal/sanctions/ethical/data security/preservation reason       | Responsible Lawyer or Data/Compliance Owner actor; immediate execute; Manager review due in 1 business day | stop affected work immediately, open review clock |
-| On Hold          | resume → Active                 | hold reason resolved, reassessment if trigger                   | Responsible Lawyer request; Manager approve; authorized user/system execute                                | resume clocks, notify owners                      |
-| Active           | complete → Completed            | substantive work complete                                       | Responsible Lawyer request; Manager approve; authorized user/system execute                                | run closure dependencies                          |
-| Completed        | close → Closed                  | task/document/time/billing checklist clear                      | Lawyer/Assistant request; Manager approve; authorized user/system execute                                  | lock normal commands, retention trigger           |
-| Completed        | reactivate → Active             | reason to continue work                                         | Responsible Lawyer request; Manager approve; authorized user/system execute                                | resume work, create reopening timeline event      |
-| Closed           | reopen → Conflict Review        | reopen reason and Manager approval                              | Responsible Lawyer request; Manager approve; alternate Manager if requester holds Manager role             | recheck conflict/risk, new timeline event         |
+| From             | Command / To                    | Required Guard                                                  | Authority                                                                                      | Side Effects                                      |
+| ---------------- | ------------------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| Intake Draft     | submit-intake → Conflict Review | Client exists, intake required fields, duplicate disposition    | Lawyer/Assistant request; authorized user/system execute                                       | start conflict SLA, notify assessor               |
+| Intake Draft     | cancel → Cancelled              | cancellation reason                                             | Lawyer/Assistant request; Manager approve; authorized user/system execute                      | terminal notice, preserve prior reference         |
+| Conflict Review  | clear → Risk Review             | latest Conflict Cleared                                         | Responsible Lawyer; no approval when Cleared, Manager if previously Escalated                  | stop conflict SLA, start risk SLA                 |
+| Conflict Review  | prohibit → Rejected             | Conflict Prohibited                                             | Responsible Lawyer actor; no additional approval/no override; System execute                   | terminal notice, preserve evidence                |
+| Risk Review      | submit → Pending Approval       | Risk rating/evidence complete                                   | assessor request                                                                               | start acceptance SLA, assign A1/A2                |
+| Pending Approval | approve → Active                | Acceptance Approved, Commercial Readiness, Client/Lawyer Active | Low/Medium Manager A1; High Manager A1 + Manager A2                                            | activate access/work, notify team                 |
+| Pending Approval | reject → Rejected               | existing Acceptance Rejected decision/reason                    | Acceptance Approver actor; no duplicate approval; System execute                               | terminal notice                                   |
+| Active           | hold → On Hold                  | reason and review date                                          | Responsible Lawyer request; Manager approve; authorized user/system execute                    | pause allowed SLA, notify team/client as policy   |
+| Active           | immediate-hold → On Hold        | legal/sanctions/ethical/data security/preservation reason       | Responsible Lawyer or Admin actor; immediate execute; Manager review due in 1 business day     | stop affected work immediately, open review clock |
+| On Hold          | resume → Active                 | hold reason resolved, reassessment if trigger                   | Responsible Lawyer request; Manager approve; authorized user/system execute                    | resume clocks, notify owners                      |
+| Active           | complete → Completed            | substantive work complete                                       | Responsible Lawyer request; Manager approve; authorized user/system execute                    | run closure dependencies                          |
+| Completed        | close → Closed                  | task/document/time/billing checklist clear                      | Lawyer/Assistant request; Manager approve; authorized user/system execute                      | lock normal commands, retention trigger           |
+| Completed        | reactivate → Active             | reason to continue work                                         | Responsible Lawyer request; Manager approve; authorized user/system execute                    | resume work, create reopening timeline event      |
+| Closed           | reopen → Conflict Review        | reopen reason and Manager approval                              | Responsible Lawyer request; Manager approve; alternate Manager if requester holds Manager role | recheck conflict/risk, new timeline event         |
 
 Rejected/Cancelled terminal states ห้าม reopen; ต้องสร้าง Matter ใหม่ที่เชื่อม
 original reference เมื่อ policy อนุญาต
@@ -65,10 +65,10 @@ business day ต้อง breach/escalate แต่ห้าม resume อัต
 
 | Workflow                           | Requester                | Approval                                                    | Executor              | Guards / Result                                          |
 | ---------------------------------- | ------------------------ | ----------------------------------------------------------- | --------------------- | -------------------------------------------------------- |
-| identity correction                | Lawyer/Assistant         | Manager; identifier collision A1 + Data/Compliance A2       | authorized user/Admin | revision, duplicate recheck, before/after                |
-| merge/reverse merge                | Lawyer/Assistant/Manager | Manager A1 + Data/Compliance A2                             | Admin                 | dependency scan, surviving ID, redirect, immutable event |
+| identity correction                | Lawyer/Assistant         | Manager; identifier collision A1 + Admin A2                 | authorized user/Admin | revision, duplicate recheck, before/after                |
+| merge/reverse merge                | Lawyer/Assistant/Manager | Manager A1 + Admin A2                                       | Admin                 | dependency scan, surviving ID, redirect, immutable event |
 | deactivate/reactivate              | Lawyer/Assistant         | Manager                                                     | Admin                 | active dependencies handled; status event                |
-| compliance reactivation            | Manager                  | Manager A1 + Data/Compliance A2                             | Admin                 | compliance evidence resolved                             |
+| compliance reactivation            | Manager                  | Manager A1 + Admin A2                                       | Admin                 | compliance evidence resolved                             |
 | VIP/Retainer lifecycle             | Manager/authorized owner | Manager per plan/rule                                       | authorized user       | eligibility, effective/expiry, periodic review           |
 | confidential note finalize/correct | record author/owner      | classification authority; correction approver when material | authorized user       | finalized revision immutable, access scope/retention     |
 
@@ -87,8 +87,9 @@ business day ต้อง breach/escalate แต่ห้าม resume อัต
 
 External share เป็น workflow ย่อย: request →
 classification/recipient/purpose/expiry validation → Manager A1 และ
-Restricted/Privileged Data/Compliance A2 → issue link → expire/revoke → retain
-access log
+Restricted/Privileged Admin A2 → issue link → expire/revoke → retain access log
+
+Admin A2 ต้องเป็นคนละบัญชีกับ Admin ผู้ execute workflow เดียวกัน
 
 ## Task and Calendar Workflow
 
@@ -116,14 +117,16 @@ reason/impact Notification retry ห้ามสร้าง duplicate reminder 
 
 ## Access Workflow
 
-| Request                        | Approval                                     | Execution / Expiry                                                  |
-| ------------------------------ | -------------------------------------------- | ------------------------------------------------------------------- |
-| Standard user/role             | Manager/Tenant Authority                     | Admin invite/activate after MFA; no self-approval                   |
-| Standard individual permission | Manager                                      | Admin grant with reason/scope/expiry                                |
-| Privileged permission          | Manager A1 + Data/Compliance A2              | Admin grant; mandatory expiry and recertification                   |
-| Emergency Access               | Authorized Manager                           | Admin grant time-bound Acting Role; auto-revoke and post-use review |
-| Suspend/deactivate             | Manager or Data/Compliance per reason        | revoke sessions/tokens then ownership reconciliation                |
-| Recertification                | Manager; Data/Compliance confirms privileged | Admin Keep/Modify/Revoke execution and snapshot                     |
+| Request                        | Approval                           | Execution / Expiry                                                  |
+| ------------------------------ | ---------------------------------- | ------------------------------------------------------------------- |
+| Standard user/role             | Manager/Tenant Authority           | Admin invite/activate after MFA; no self-approval                   |
+| Standard individual permission | Manager                            | Admin grant with reason/scope/expiry                                |
+| Privileged permission          | Manager A1 + Admin A2              | Admin grant; mandatory expiry and recertification                   |
+| Emergency Access               | Authorized Manager                 | Admin grant time-bound Acting Role; auto-revoke and post-use review |
+| Suspend/deactivate             | Manager or Admin per reason        | revoke sessions/tokens then ownership reconciliation                |
+| Recertification                | Manager; Admin confirms privileged | Admin Keep/Modify/Revoke execution and snapshot                     |
+
+Admin A2 ต้องเป็นคนละบัญชีกับ Admin ผู้ grant/revoke/execute คำขอเดียวกัน
 
 ## Report, Retention and Exception Workflow
 
@@ -140,21 +143,21 @@ reason/impact Notification retry ห้ามสร้าง duplicate reminder 
 
 ## SLA Configuration
 
-| SLA Code             | Start                           | Target / Calendar                          | Pause / Resume                                        | Warning / Breach                                    |
-| -------------------- | ------------------------------- | ------------------------------------------ | ----------------------------------------------------- | --------------------------------------------------- |
-| MAT-INTAKE           | intake request received         | 1 business day / Tenant business calendar  | waiting Client evidence with reason                   | warning 75%; breach Manager                         |
-| MAT-CONFLICT-STD     | conflict required data complete | 1 business day / Tenant business calendar  | waiting Client evidence with reason                   | warning 75%; breach Manager, no auto-clear          |
-| MAT-CONFLICT-COMPLEX | conflict required data complete | 2 business days / Tenant business calendar | waiting Client evidence with reason                   | warning 75%; breach Manager, no auto-clear          |
-| MAT-RISK-LM          | Conflict Cleared                | 1 business day / Tenant business calendar  | waiting Client evidence with reason                   | warning 75%; breach Manager                         |
-| MAT-RISK-HIGH        | Conflict Cleared                | 2 business days / Tenant business calendar | waiting Client evidence with reason                   | warning 75%; breach Executive Approver              |
-| MAT-ACCEPT-LM        | assessment complete             | 1 business day / Tenant business calendar  | Client evidence only; approver absence uses alternate | warning 75%; breach Manager + Alternate             |
-| MAT-ACCEPT-HIGH      | assessment/mitigation complete  | 2 business days / Tenant business calendar | Client evidence only; approver absence uses alternate | warning 75%; breach Executive + Alternate Executive |
-| TASK-DUE             | Task Open/In Progress           | configured due_at / record timezone        | Waiting/Blocked only with approved reason             | reminder schedule; overdue owner/Manager            |
-| ACCESS-EMERGENCY     | grant executed                  | grant expires_at / continuous clock        | no pause                                              | expiry auto-revoke; post-use review due             |
-| EXC-P1               | exception opened                | 15m/1h/4h/24h / continuous                 | no pause                                              | hourly update and missed-stage escalation           |
-| EXC-P2               | exception opened                | 1h/4h/24h/72h / continuous                 | no pause                                              | 4-hour update and missed-stage escalation           |
-| EXC-P3               | exception opened                | 4h/1d/3d/10d / approved business calendar  | approved calendar only                                | daily update and missed-stage escalation            |
-| EXC-P4               | exception opened                | 1d/5d/10d/30 calendar days                 | approved business calendar for business-day targets   | weekly/closure update and missed-stage escalation   |
+| SLA Code             | Start                           | Target / Calendar                          | Pause / Resume                                        | Warning / Breach                                      |
+| -------------------- | ------------------------------- | ------------------------------------------ | ----------------------------------------------------- | ----------------------------------------------------- |
+| MAT-INTAKE           | intake request received         | 1 business day / Tenant business calendar  | waiting Client evidence with reason                   | warning 75%; breach Manager                           |
+| MAT-CONFLICT-STD     | conflict required data complete | 1 business day / Tenant business calendar  | waiting Client evidence with reason                   | warning 75%; breach Manager, no auto-clear            |
+| MAT-CONFLICT-COMPLEX | conflict required data complete | 2 business days / Tenant business calendar | waiting Client evidence with reason                   | warning 75%; breach Manager, no auto-clear            |
+| MAT-RISK-LM          | Conflict Cleared                | 1 business day / Tenant business calendar  | waiting Client evidence with reason                   | warning 75%; breach Manager                           |
+| MAT-RISK-HIGH        | Conflict Cleared                | 2 business days / Tenant business calendar | waiting Client evidence with reason                   | warning 75%; breach Manager A2                        |
+| MAT-ACCEPT-LM        | assessment complete             | 1 business day / Tenant business calendar  | Client evidence only; approver absence uses alternate | warning 75%; breach Manager + Alternate               |
+| MAT-ACCEPT-HIGH      | assessment/mitigation complete  | 2 business days / Tenant business calendar | Client evidence only; approver absence uses alternate | warning 75%; breach Manager A2 + Alternate Manager A2 |
+| TASK-DUE             | Task Open/In Progress           | configured due_at / record timezone        | Waiting/Blocked only with approved reason             | reminder schedule; overdue owner/Manager              |
+| ACCESS-EMERGENCY     | grant executed                  | grant expires_at / continuous clock        | no pause                                              | expiry auto-revoke; post-use review due               |
+| EXC-P1               | exception opened                | 15m/1h/4h/24h / continuous                 | no pause                                              | hourly update and missed-stage escalation             |
+| EXC-P2               | exception opened                | 1h/4h/24h/72h / continuous                 | no pause                                              | 4-hour update and missed-stage escalation             |
+| EXC-P3               | exception opened                | 4h/1d/3d/10d / approved business calendar  | approved calendar only                                | daily update and missed-stage escalation              |
+| EXC-P4               | exception opened                | 1d/5d/10d/30 calendar days                 | approved business calendar for business-day targets   | weekly/closure update and missed-stage escalation     |
 
 ทุก milestone เก็บ due_at, achieved_at, breached_at และ escalation_event หาก
 config เปลี่ยนหลังเริ่ม instance ต้องใช้ snapshot เดิม เว้นแต่ authorized

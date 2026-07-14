@@ -1,15 +1,15 @@
 # Document & Template Management
 
-| Document Control        | Value                           |
-| ----------------------- | ------------------------------- |
-| SOP ID                  | SOP-DOC-001                     |
-| Status                  | Approved                        |
-| Version                 | 1.0                             |
-| Process Owner           | Manager                         |
-| System Owner            | Admin                           |
-| Approver                | Manager + Admin                 |
-| Effective Date          | 14 July 2026                    |
-| Last Requirement Review | 14 July 2026                    |
+| Document Control        | Value           |
+| ----------------------- | --------------- |
+| SOP ID                  | SOP-DOC-001     |
+| Status                  | Approved        |
+| Version                 | 1.0             |
+| Process Owner           | Manager         |
+| System Owner            | Admin           |
+| Approver                | Manager + Admin |
+| Effective Date          | 14 July 2026    |
+| Last Requirement Review | 14 July 2026    |
 
 > **Approval notice:** ขั้นตอนสร้าง อัปโหลด version, review, approve, sign,
 > export และ share ได้รับการอนุมัติเป็น baseline เมื่อ 14 July 2026
@@ -28,15 +28,16 @@ share, expiry และ archive
 
 ## Roles
 
-| Role                  | Responsibility                                       |
-| --------------------- | ---------------------------------------------------- |
-| Lawyer                | สร้าง แก้ review และรับผิดชอบความถูกต้องทางกฎหมาย    |
-| Assistant             | อัปโหลด จัดหมวดหมู่ metadata และเตรียม draft         |
-| Manager                | อนุมัติ final document และ external release          |
-| Data/Compliance Owner | กำกับ Restricted/Privileged sharing และ retention    |
-| Admin                 | ดูแล template/configuration, RBAC, signature profile |
+| Role      | Responsibility                                                                                    |
+| --------- | ------------------------------------------------------------------------------------------------- |
+| Lawyer    | สร้าง แก้ review และรับผิดชอบความถูกต้องทางกฎหมาย                                                 |
+| Assistant | อัปโหลด จัดหมวดหมู่ metadata และเตรียม draft                                                      |
+| Manager   | อนุมัติ final document และ external release เป็น A1                                               |
+| Admin     | ดูแล template/configuration/RBAC/signature profile และอนุมัติ Restricted/Privileged share เป็น A2 |
 
-Admin ห้ามอนุมัติเนื้อหาเอกสารทางกฎหมายหรือลงนามแทนเจ้าของลายเซ็น
+Admin ห้ามอนุมัติเนื้อหาเอกสารทางกฎหมายหรือลงนามแทนเจ้าของลายเซ็น Admin A2
+ตรวจได้เฉพาะ metadata, classification, recipient, purpose, expiry และ approval
+evidence และต้องเป็นคนละบัญชีกับ Admin ผู้ execute share เดียวกัน
 
 ## Document Status
 
@@ -125,8 +126,7 @@ validation
 1. ตรวจ status, recipient, purpose, format และ confidentiality
 2. External share ใช้เฉพาะ Approved/Signed version เว้นแต่มี watermark Draft และ
    Manager อนุมัติ
-3. Restricted/Privileged external share ต้องมี Manager และ Admin
-   อนุมัติ
+3. Restricted/Privileged external share ต้องมี Manager และ Admin อนุมัติ
 4. ใช้ expiring link, recipient authentication และ download limit ตาม policy
 5. บันทึก exported/shared version, recipient, channel, expiry และ actor
 

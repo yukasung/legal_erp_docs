@@ -109,59 +109,59 @@ Definition of Ready ด้านเอกสารครบ หรือ Conditi
 เงื่อนไขที่ระบุ ค่านี้ไม่อนุญาตให้เริ่ม development จน Execution Gate ด้าน
 dependency ผ่าน
 
-| Backlog ID  | Delivery Owner / Data Owner             | Decision / SOP-Control                | Permission / Event-Evidence                                                       | Target | Artifact Readiness |
-| ----------- | --------------------------------------- | ------------------------------------- | --------------------------------------------------------------------------------- | ------ | ------------------ |
-| IMP-PLT-001 | Technical Lead / Data/Compliance        | DEC-SEC-001, SOP-SEC-001              | tenant context middleware; access.denied + scoped query evidence                  | R0     | Ready              |
-| IMP-PLT-002 | Technical Lead / Data/Compliance        | DEC-SEC-001, SOP-SEC-001              | auth/session controls; MFA + revoke events                                        | R0     | Ready              |
-| IMP-PLT-003 | Technical Lead / Data/Compliance        | CTRL-RBAC-001, SPEC-RBAC-001          | permission evaluator; policy version + allow/deny evidence                        | R0     | Ready              |
-| IMP-PLT-004 | Technical Lead / Process Owner          | CTRL-RBAC-001, CFG-WFL-001            | workflow request/approve/execute; decision snapshot                               | R0     | Ready              |
-| IMP-PLT-005 | Technical Lead / Data/Compliance        | DEC-MAT-008, SOP-REP-001              | audit write/correct/verify; hash-chain evidence                                   | R0     | Ready              |
-| IMP-PLT-006 | Technical Lead / Domain Data Owner      | DEC-DOC-001, TPL-SOP-001              | evidence attach/verify; checksum/classification reference                         | R0     | Ready              |
-| IMP-PLT-007 | Technical Lead / Process Owner          | DEC-EXC-001, CTRL-EXC-001             | scheduler/escalation; milestone/notification events                               | R0     | Ready              |
-| IMP-PLT-008 | Technical Lead / Product Owner          | STD-SOP-001, CFG-WFL-001              | config registry permission; version/effective snapshot                            | R0     | Ready              |
-| IMP-PLT-009 | Technical Lead / Report Owner           | DEC-REP-001, SOP-REP-001              | report/export system actions; job/checksum/delivery evidence                      | R0     | Ready              |
-| IMP-PLT-010 | Technical Lead / Data/Compliance        | DEC-MAT-011, SOP-AUD-001              | hold enforcement/system disposal; block/idempotency events                        | R0     | Ready              |
-| IMP-CLI-001 | Client Team / Manager                   | DEC-CLI-001, SOP-CLI-001              | client create/update; validation/status event                                     | R1     | Ready              |
-| IMP-CLI-002 | Client Team / Manager                   | DEC-CLI-002, SOP-CLI-001              | duplicate check/review; candidates/score/rule version                             | R1     | Ready              |
-| IMP-CLI-003 | Client Team / Manager                   | DEC-CLI-003, SOP-CLI-001              | identity/merge/status workflow permissions; before/after event                    | R1     | Ready              |
-| IMP-CLI-004 | Client Team / Manager + Data/Compliance | DEC-CLI-004/005, SOP-CLI-001          | VIP/Retainer/note scoped actions; lifecycle/access evidence                       | R1     | Ready              |
-| IMP-MAT-001 | Matter Team / Manager                   | DEC-MAT-010/013, SOP-MAT-001          | matter create/duplicate actions; validation/check event                           | R1     | Ready              |
-| IMP-MAT-002 | Matter Team / Manager                   | DEC-MAT-002/003/004/009, CTRL-MAT-001 | assessment/acceptance split permissions; decision evidence                        | R1     | Ready              |
-| IMP-MAT-003 | Matter Team / Manager                   | DEC-MAT-001/012, CTRL-MAT-001         | transition request/approve/execute; immutable status event                        | R1     | Ready              |
-| IMP-MAT-004 | Matter Team / Manager                   | DEC-MAT-010/012, SOP-MAT-002          | close request/approve; dependency reconciliation                                  | R1     | Ready              |
-| IMP-DOC-001 | Document Team / Document Owner          | DEC-DOC-001, SOP-DOC-001              | document create/version; checksum/version event                                   | R1     | Ready              |
-| IMP-DOC-002 | Document Team / Document Owner          | DEC-DOC-001, SOP-DOC-001              | review/final approve; maker-checker decision                                      | R1     | Ready              |
-| IMP-DOC-003 | Integration Team / Document Owner       | DEC-DOC-001, SOP-DOC-001              | sandbox signature request/system webhook; production provider remains DSC-ESG-001 | R1     | Conditional        |
-| IMP-DOC-004 | Document Team / Document Owner          | DEC-DOC-001, SOP-DOC-001              | share request/A1/A2/execute; recipient/expiry/access events                       | R1     | Ready              |
-| IMP-TSK-001 | Work Management Team / Manager          | DEC-TSK-001, SOP-TSK-001              | task actions; assignment/status/reminder events                                   | R1     | Ready              |
-| IMP-CAL-001 | Work Management Team / Manager          | DEC-TSK-001, SOP-TSK-001              | calendar/conflict actions; timezone/override evidence                             | R1     | Ready              |
-| IMP-CAL-002 | Integration Team / Manager              | DEC-TSK-001, SOP-TSK-001              | adapter/stub callback; production provider onboarding remains separate            | R1     | Conditional        |
-| IMP-BIL-001 | Billing Team / Finance                  | DEC-BIL-001, SOP-BIL-001              | quotation prepare/calculate; totals/version evidence                              | R2     | Ready              |
-| IMP-BIL-002 | Billing Team / Finance                  | DEC-BIL-001, SOP-BIL-001              | quotation submit/approve/respond; decision/client evidence                        | R2     | Ready              |
-| IMP-BIL-003 | Billing Team / Finance                  | DEC-BIL-002, SOP-BIL-002              | invoice post; posting/duplicate-reference evidence                                | R2     | Ready              |
-| IMP-BIL-004 | Billing Team / Finance                  | DEC-BIL-002, SOP-BIL-002              | payment allocate/reconcile; allocation/control totals                             | R2     | Ready              |
-| IMP-BIL-005 | Billing Team / Finance                  | DEC-BIL-002, SOP-BIL-002              | adjustment request/approve/execute; compensating entry                            | R2     | Ready              |
-| IMP-SEC-001 | Identity Team / Data/Compliance         | DEC-SEC-001, SOP-SEC-001              | user/standard access workflow; MFA/grant snapshot                                 | R2     | Ready              |
-| IMP-SEC-002 | Identity Team / Data/Compliance         | DEC-SEC-001, SOP-SEC-001              | privileged/emergency split permissions; expiry/revoke events                      | R2     | Ready              |
-| IMP-SEC-003 | Identity Team / Data/Compliance         | DEC-SEC-001, SOP-SEC-001              | suspend/recertify actions; transfer/before-after evidence                         | R2     | Ready              |
-| IMP-REP-001 | Reporting Team / Report Owner           | DEC-REP-001, SOP-REP-001              | report run/validate; filters/as-of/reconciliation                                 | R2     | Ready              |
-| IMP-REP-002 | Reporting Team / Report Owner           | DEC-REP-001, SOP-REP-001              | export request/A1/A2/execute; checksum/recipient/expiry                           | R2     | Ready              |
-| IMP-AUD-001 | Assurance Team / Data/Compliance        | DEC-MAT-008/REP-001, SOP-REP-001      | audit review/correction; finding/integrity evidence                               | R2     | Ready              |
-| IMP-RET-001 | Assurance Team / Data/Compliance        | DEC-MAT-011, SOP-AUD-001              | retention assign/hold/dispose UI; schedule must be validated before release       | R2     | Conditional        |
-| IMP-GOV-001 | Docs Platform Team / Data/Compliance    | DEC-GOV-001, Governance set           | validation pipeline; register/coverage result                                     | R2     | Ready              |
-| IMP-EXC-001 | Platform Team / Manager                 | DEC-EXC-001, CTRL-EXC-001             | exception actions; SLA/escalation/closure evidence                                | R2     | Ready              |
+| Backlog ID  | Delivery Owner / Data Owner        | Decision / SOP-Control                | Permission / Event-Evidence                                                       | Target | Artifact Readiness |
+| ----------- | ---------------------------------- | ------------------------------------- | --------------------------------------------------------------------------------- | ------ | ------------------ |
+| IMP-PLT-001 | Technical Lead / Admin             | DEC-SEC-001, SOP-SEC-001              | tenant context middleware; access.denied + scoped query evidence                  | R0     | Ready              |
+| IMP-PLT-002 | Technical Lead / Admin             | DEC-SEC-001, SOP-SEC-001              | auth/session controls; MFA + revoke events                                        | R0     | Ready              |
+| IMP-PLT-003 | Technical Lead / Admin             | CTRL-RBAC-001, SPEC-RBAC-001          | permission evaluator; policy version + allow/deny evidence                        | R0     | Ready              |
+| IMP-PLT-004 | Technical Lead / Process Owner     | CTRL-RBAC-001, CFG-WFL-001            | workflow request/approve/execute; decision snapshot                               | R0     | Ready              |
+| IMP-PLT-005 | Technical Lead / Admin             | DEC-MAT-008, SOP-REP-001              | audit write/correct/verify; hash-chain evidence                                   | R0     | Ready              |
+| IMP-PLT-006 | Technical Lead / Domain Data Owner | DEC-DOC-001, TPL-SOP-001              | evidence attach/verify; checksum/classification reference                         | R0     | Ready              |
+| IMP-PLT-007 | Technical Lead / Process Owner     | DEC-EXC-001, CTRL-EXC-001             | scheduler/escalation; milestone/notification events                               | R0     | Ready              |
+| IMP-PLT-008 | Technical Lead / Product Owner     | STD-SOP-001, CFG-WFL-001              | config registry permission; version/effective snapshot                            | R0     | Ready              |
+| IMP-PLT-009 | Technical Lead / Report Owner      | DEC-REP-001, SOP-REP-001              | report/export system actions; job/checksum/delivery evidence                      | R0     | Ready              |
+| IMP-PLT-010 | Technical Lead / Admin             | DEC-MAT-011, SOP-AUD-001              | hold enforcement/system disposal; block/idempotency events                        | R0     | Ready              |
+| IMP-CLI-001 | Client Team / Manager              | DEC-CLI-001, SOP-CLI-001              | client create/update; validation/status event                                     | R1     | Ready              |
+| IMP-CLI-002 | Client Team / Manager              | DEC-CLI-002, SOP-CLI-001              | duplicate check/review; candidates/score/rule version                             | R1     | Ready              |
+| IMP-CLI-003 | Client Team / Manager              | DEC-CLI-003, SOP-CLI-001              | identity/merge/status workflow permissions; before/after event                    | R1     | Ready              |
+| IMP-CLI-004 | Client Team / Manager + Admin      | DEC-CLI-004/005, SOP-CLI-001          | VIP/Retainer/note scoped actions; lifecycle/access evidence                       | R1     | Ready              |
+| IMP-MAT-001 | Matter Team / Manager              | DEC-MAT-010/013, SOP-MAT-001          | matter create/duplicate actions; validation/check event                           | R1     | Ready              |
+| IMP-MAT-002 | Matter Team / Manager              | DEC-MAT-002/003/004/009, CTRL-MAT-001 | assessment/acceptance split permissions; decision evidence                        | R1     | Ready              |
+| IMP-MAT-003 | Matter Team / Manager              | DEC-MAT-001/012, CTRL-MAT-001         | transition request/approve/execute; immutable status event                        | R1     | Ready              |
+| IMP-MAT-004 | Matter Team / Manager              | DEC-MAT-010/012, SOP-MAT-002          | close request/approve; dependency reconciliation                                  | R1     | Ready              |
+| IMP-DOC-001 | Document Team / Document Owner     | DEC-DOC-001, SOP-DOC-001              | document create/version; checksum/version event                                   | R1     | Ready              |
+| IMP-DOC-002 | Document Team / Document Owner     | DEC-DOC-001, SOP-DOC-001              | review/final approve; maker-checker decision                                      | R1     | Ready              |
+| IMP-DOC-003 | Integration Team / Document Owner  | DEC-DOC-001, SOP-DOC-001              | sandbox signature request/system webhook; production provider remains DSC-ESG-001 | R1     | Conditional        |
+| IMP-DOC-004 | Document Team / Document Owner     | DEC-DOC-001, SOP-DOC-001              | share request/A1/A2/execute; recipient/expiry/access events                       | R1     | Ready              |
+| IMP-TSK-001 | Work Management Team / Manager     | DEC-TSK-001, SOP-TSK-001              | task actions; assignment/status/reminder events                                   | R1     | Ready              |
+| IMP-CAL-001 | Work Management Team / Manager     | DEC-TSK-001, SOP-TSK-001              | calendar/conflict actions; timezone/override evidence                             | R1     | Ready              |
+| IMP-CAL-002 | Integration Team / Manager         | DEC-TSK-001, SOP-TSK-001              | adapter/stub callback; production provider onboarding remains separate            | R1     | Conditional        |
+| IMP-BIL-001 | Billing Team / Finance             | DEC-BIL-001, SOP-BIL-001              | quotation prepare/calculate; totals/version evidence                              | R2     | Ready              |
+| IMP-BIL-002 | Billing Team / Finance             | DEC-BIL-001, SOP-BIL-001              | quotation submit/approve/respond; decision/client evidence                        | R2     | Ready              |
+| IMP-BIL-003 | Billing Team / Finance             | DEC-BIL-002, SOP-BIL-002              | invoice post; posting/duplicate-reference evidence                                | R2     | Ready              |
+| IMP-BIL-004 | Billing Team / Finance             | DEC-BIL-002, SOP-BIL-002              | payment allocate/reconcile; allocation/control totals                             | R2     | Ready              |
+| IMP-BIL-005 | Billing Team / Finance             | DEC-BIL-002, SOP-BIL-002              | adjustment request/approve/execute; compensating entry                            | R2     | Ready              |
+| IMP-SEC-001 | Identity Team / Admin              | DEC-SEC-001, SOP-SEC-001              | user/standard access workflow; MFA/grant snapshot                                 | R2     | Ready              |
+| IMP-SEC-002 | Identity Team / Admin              | DEC-SEC-001, SOP-SEC-001              | privileged/emergency split permissions; expiry/revoke events                      | R2     | Ready              |
+| IMP-SEC-003 | Identity Team / Admin              | DEC-SEC-001, SOP-SEC-001              | suspend/recertify actions; transfer/before-after evidence                         | R2     | Ready              |
+| IMP-REP-001 | Reporting Team / Report Owner      | DEC-REP-001, SOP-REP-001              | report run/validate; filters/as-of/reconciliation                                 | R2     | Ready              |
+| IMP-REP-002 | Reporting Team / Report Owner      | DEC-REP-001, SOP-REP-001              | export request/A1/A2/execute; checksum/recipient/expiry                           | R2     | Ready              |
+| IMP-AUD-001 | Assurance Team / Admin             | DEC-MAT-008/REP-001, SOP-REP-001      | audit review/correction; finding/integrity evidence                               | R2     | Ready              |
+| IMP-RET-001 | Assurance Team / Admin             | DEC-MAT-011, SOP-AUD-001              | retention assign/hold/dispose UI; schedule must be validated before release       | R2     | Conditional        |
+| IMP-GOV-001 | Docs Platform Team / Admin         | DEC-GOV-001, Governance set           | validation pipeline; register/coverage result                                     | R2     | Ready              |
+| IMP-EXC-001 | Platform Team / Manager            | DEC-EXC-001, CTRL-EXC-001             | exception actions; SLA/escalation/closure evidence                                | R2     | Ready              |
 
 ## Discovery Before Build
 
-| Backlog ID  | Scope Area                  | Required Outcome Before Development                                               | Owner                     | Blocked Delivery               |
-| ----------- | --------------------------- | --------------------------------------------------------------------------------- | ------------------------- | ------------------------------ |
-| DSC-TIM-001 | Time Tracking & Timesheets  | SOP, status, timer/manual edit, approval, rate/billing linkage, audit and UAT     | Product + Manager         | Billable time                  |
-| DSC-FIN-001 | Finance Foundation          | accounting boundary, chart/tax/expense/journal/reconciliation SOP and authority   | Finance + Manager         | Finance foundation beyond AR   |
-| DSC-HR-001  | Personnel & HR              | employee lifecycle, sensitive access, retention and UAT                           | HR + Data/Compliance      | Personnel records              |
-| DSC-PAY-001 | Payroll                     | calculation rules, periods, corrections, approval, payslip and statutory evidence | HR + Manager              | Payroll                        |
-| DSC-LVE-001 | Leave Management            | leave types, accrual, request/approval/cancel and payroll/calendar effects        | HR + Manager              | Leave                          |
-| DSC-TEN-001 | Tenant Onboarding & Package | signup, identity verification, domain, package, module/user limits and downgrade  | Platform Owner            | SaaS onboarding                |
-| DSC-ESG-001 | E-signature Provider        | provider-neutral contract, identity assurance, webhook/retry and evidence mapping | Product + Data/Compliance | Production signing integration |
+| Backlog ID  | Scope Area                  | Required Outcome Before Development                                               | Owner             | Blocked Delivery               |
+| ----------- | --------------------------- | --------------------------------------------------------------------------------- | ----------------- | ------------------------------ |
+| DSC-TIM-001 | Time Tracking & Timesheets  | SOP, status, timer/manual edit, approval, rate/billing linkage, audit and UAT     | Product + Manager | Billable time                  |
+| DSC-FIN-001 | Finance Foundation          | accounting boundary, chart/tax/expense/journal/reconciliation SOP and authority   | Finance + Manager | Finance foundation beyond AR   |
+| DSC-HR-001  | Personnel & HR              | employee lifecycle, sensitive access, retention and UAT                           | HR + Admin        | Personnel records              |
+| DSC-PAY-001 | Payroll                     | calculation rules, periods, corrections, approval, payslip and statutory evidence | HR + Manager      | Payroll                        |
+| DSC-LVE-001 | Leave Management            | leave types, accrual, request/approval/cancel and payroll/calendar effects        | HR + Manager      | Leave                          |
+| DSC-TEN-001 | Tenant Onboarding & Package | signup, identity verification, domain, package, module/user limits and downgrade  | Platform Owner    | SaaS onboarding                |
+| DSC-ESG-001 | E-signature Provider        | provider-neutral contract, identity assurance, webhook/retry and evidence mapping | Product + Admin   | Production signing integration |
 
 Discovery items อยู่ใน scope แต่ยังห้ามเปลี่ยนเป็น feature ticket จน Definition
 of Ready ผ่าน รายละเอียด gap และลำดับปิดอยู่ใน Scope Gap Analysis

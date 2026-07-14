@@ -69,19 +69,6 @@ export default {
           finance: 'Finance'
         }
       },
-      implementation: {
-        title: 'Implementation Readiness',
-        items: {
-          index: 'Overview',
-          backlog: 'Implementation Backlog',
-          'system-mapping': 'Database, API & UI Mapping',
-          'rbac-action-matrix': 'RBAC Action Matrix',
-          'workflow-configuration': 'Workflow Configuration',
-          'uat-test-data': 'UAT Test Data & Fixtures',
-          'release-readiness': 'Release Readiness',
-          'scope-gap-analysis': 'Scope Gap Analysis'
-        }
-      },
       _technical: {
         type: 'separator',
         title: <Section>Technical</Section>

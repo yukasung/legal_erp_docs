@@ -132,11 +132,11 @@ Legal ERP Platform เป็นระบบแบบ multi-tenant SaaS ที่
 
 แนวทางรอบเริ่มต้น:
 
-- สำนักงานใหม่สมัครใช้งานผ่านขั้นตอน self-service signup หรือให้ Admin
-  ระดับ platform สร้างให้ก่อน แล้วระบบสร้าง BU Account พร้อม domain/sub-domain
-  ของตนเอง
-- แต่ละ tenant ผูกกับแพ็กเกจ (package) ที่กำหนดว่าเปิดใช้โมดูลใดได้บ้าง
-  และจำนวน user สูงสุดที่อนุญาต (User Limit Control)
+- สำนักงานใหม่สมัครใช้งานผ่านขั้นตอน self-service signup หรือให้ platform
+  onboarding service ดำเนินการผ่าน controlled support identity แล้วระบบสร้าง BU
+  Account พร้อม domain/sub-domain และ initial Tenant Admin membership
+- แต่ละ tenant ผูกกับแพ็กเกจ (package) ที่กำหนดว่าเปิดใช้โมดูลใดได้บ้าง และจำนวน
+  user สูงสุดที่อนุญาต (User Limit Control)
 - ระบบต้องตรวจสอบขีดจำกัดของแพ็กเกจก่อนอนุญาตให้เชิญ user ใหม่หรือเปิดใช้
   โมดูลเพิ่มเติม
 - การเปลี่ยนแพ็กเกจ (upgrade/downgrade) ควรมีผลทันทีต่อสิทธิ์การเข้าถึงโมดูล
@@ -168,9 +168,14 @@ production ทั้งหมดตั้งแต่ phase แรก
 [Scope](/docs/scope)) แต่ยังไม่ผูกกับผู้ให้บริการ e-signature รายใดรายหนึ่ง —
 ออกแบบเป็นจุดเชื่อม (integration boundary) ที่เปลี่ยนผู้ให้บริการได้ในภายหลัง
 
-ระบบภายนอกอื่นที่อาจต้องรองรับในอนาคต (ยังไม่อยู่ในขอบเขตรอบเริ่มต้น):
+รอบเริ่มต้นรวม provider-neutral adapter, sandbox/stub และ internal
+Task/Calendar/ notification workflow แต่การเชื่อม production provider ต้องผ่าน
+discovery, security/consent contract และ release gate ก่อนเปิดใช้
+
+ระบบภายนอกอื่นที่อาจต้องรองรับในอนาคต หรือยังไม่รวม production provider
+onboarding ในรอบเริ่มต้น:
 
 - payment gateway หรือ bank integration
 - external accounting หรือ ERP system
 - court, e-Filing หรือ government service
-- email, calendar หรือ notification provider
+- production email, calendar หรือ notification provider onboarding

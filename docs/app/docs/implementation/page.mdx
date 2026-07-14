@@ -1,0 +1,32 @@
+# Implementation Readiness
+
+เอกสารชุดนี้แปลง Requirement, Decision, SOP และ UAT baseline ให้เป็นข้อกำหนดที่
+ทีม Product, Engineering, QA, Security และ Operations ใช้พัฒนาระบบร่วมกันได้
+
+## Delivery Artifacts
+
+| Artifact                                                              | Status   | Purpose                                                         |
+| --------------------------------------------------------------------- | -------- | --------------------------------------------------------------- |
+| [Implementation Backlog](/docs/implementation/backlog)                | Approved | จัดลำดับงาน dependency และ UAT coverage                         |
+| [Database, API & UI Mapping](/docs/implementation/system-mapping)     | Approved | ระบุ data model, command/query, UI และ audit event              |
+| [RBAC Action Matrix](/docs/implementation/rbac-action-matrix)         | Approved | กำหนด permission ระดับ action, scope และ approval gate          |
+| [Workflow Configuration](/docs/implementation/workflow-configuration) | Approved | กำหนด lifecycle, approval, SLA, escalation และ notification     |
+| [UAT Test Data & Fixtures](/docs/implementation/uat-test-data)        | Approved | กำหนด synthetic users/records, seed order และ expected controls |
+| [Release Readiness Checklist](/docs/implementation/release-readiness) | Approved | กำหนด go/no-go gates, evidence และ rollback readiness           |
+| [Scope Gap Analysis](/docs/implementation/scope-gap-analysis)         | Approved | แยก scope ที่พร้อมพัฒนากับ scope ที่ต้องมี SOP/Decision เพิ่ม   |
+
+## Source Baseline
+
+- Requirements Source Files ภายใต้ requirements/source
+- [Requirements Traceability Matrix](/docs/sops/governance/traceability-matrix)
+- [SOP Master Register](/docs/sops/governance/master-register)
+- [Role & Permission Alignment](/docs/sops/governance/role-permission-alignment)
+- [SOP UAT Scenarios & Test Cases](/docs/sops/governance/uat-test-cases)
+- [Architecture](/docs/architecture)
+
+## Readiness Rule
+
+Backlog item พร้อม development เมื่อมี Requirement ID, Decision/controlled
+policy, SOP/Control, acceptance criteria, owner, dependency และ UAT mapping ครบ
+หากข้อมูล ใดขาดให้สร้าง discovery/control item และห้ามทีมพัฒนาสมมติ business
+authority เอง

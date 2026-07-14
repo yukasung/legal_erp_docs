@@ -1,0 +1,222 @@
+# RBAC Action Matrix
+
+| Document Control        | Value                           |
+| ----------------------- | ------------------------------- |
+| Document ID             | SPEC-RBAC-001                   |
+| Status                  | Approved                        |
+| Version                 | 1.0                             |
+| Process Owner           | Data/Compliance Owner           |
+| System Owner            | Technical Lead                  |
+| Approver                | Manager + Data/Compliance Owner |
+| Effective Date          | 14 July 2026                    |
+| Last Requirement Review | 14 July 2026                    |
+
+## Purpose
+
+กำหนด permission code ระดับ action และ baseline grant ของ Admin, Lawyer,
+Assistant, Finance, HR และ Manager โดย approval authority ยังคงผ่าน workflow
+ไม่ใช่เพียงมี permission แล้วอนุมัติได้ทุก record
+
+## Evaluation Model
+
+คำขอผ่านเมื่อเงื่อนไขทั้งหมดเป็นจริง:
+
+1. Membership Active และ Tenant ตรง authenticated context
+2. Package/module entitlement เปิดใช้งาน
+3. Role/individual grant มี action permission และยังไม่หมดอายุ
+4. Resource scope ตรง Tenant, team, Matter, owner หรือ record restriction
+5. Workflow authority/SoD อนุญาต actor สำหรับ request ปัจจุบัน
+6. Record status อนุญาต action และไม่มี Legal Hold/security block ที่เกี่ยวข้อง
+
+UI visibility ไม่ใช่ security control API ต้องประเมินครบทุกข้อทุกครั้ง
+
+## Matrix Notation
+
+| Value   | Meaning                                                       |
+| ------- | ------------------------------------------------------------- |
+| Full    | ทำ action ได้ภายใน Tenant และ functional scope ที่มอบหมาย     |
+| Work    | ทำได้เฉพาะ Matter/team/record ที่ได้รับมอบหมาย                |
+| Support | เตรียม/แก้ข้อมูลปฏิบัติการ แต่ไม่ final approve               |
+| Own     | เฉพาะ record ของตนเอง                                         |
+| Approve | เป็น candidate approver แต่ยังต้องผ่าน workflow authority/SoD |
+| Execute | ดำเนินการหลัง approval ไม่มี business decision authority      |
+| Read    | อ่านตาม data scope                                            |
+| No      | ไม่มี baseline grant                                          |
+
+## Client and Matter Permissions
+
+| Permission                    | Admin                    | Lawyer                     | Assistant               | Finance              | HR  | Manager                 | Scope / Gate                          |
+| ----------------------------- | ------------------------ | -------------------------- | ----------------------- | -------------------- | --- | ----------------------- | ------------------------------------- |
+| client.view                   | No except emergency      | Work                       | Work                    | Read billing contact | No  | Read scoped             | mask sensitive fields                 |
+| client.create                 | No                       | Work                       | Support                 | No                   | No  | Full                    | duplicate check required              |
+| client.update_contact         | No                       | Work                       | Support                 | No                   | No  | Full                    | active assignment                     |
+| client.update_identity        | Execute when approved    | Work request               | Support request         | No                   | No  | Approve                 | revision + duplicate recheck          |
+| client.merge                  | Execute                  | Work request               | Support request         | No                   | No  | Approve A1              | Data/Compliance A2                    |
+| client.change_status          | Execute                  | Work request               | Support request         | No                   | No  | Approve                 | compliance reactivation A1/A2         |
+| client.view_confidential_note | No except emergency      | Work scoped                | Support scoped          | No                   | No  | Read scoped             | explicit confidentiality grant        |
+| matter.view                   | Support metadata         | Work                       | Work                    | Read billing status  | No  | Read scoped             | Matter membership/restriction         |
+| matter.create                 | No                       | Work                       | Support                 | No                   | No  | Full                    | Client and duplicate gate             |
+| matter.update_routine         | No                       | Work                       | Support                 | No                   | No  | Full                    | core-field change may reassess        |
+| matter.conflict.prepare       | No                       | Work                       | Support                 | No                   | No  | Work scoped             | assessor assignment                   |
+| matter.conflict.submit        | No                       | Work as Responsible Lawyer | No                      | No                   | No  | Work as Responsible     | approval only if previously Escalated |
+| matter.risk.prepare           | No                       | Work                       | Support                 | No                   | No  | Work scoped             | assessor assignment                   |
+| matter.risk.submit            | No                       | Work as Risk Assessor      | No                      | No                   | No  | Work as Risk Assessor   | assessor differs from approver        |
+| matter.accept.request         | No                       | Work                       | Support request         | No                   | No  | Request scoped          | Commercial Readiness required         |
+| matter.accept.approve         | No                       | No                         | No                      | No                   | No  | Approve A1              | High requires Executive A2            |
+| matter.transition.request     | No                       | Request per rule           | Support request         | No                   | No  | Request per rule        | DEC-MAT-012                           |
+| matter.transition.approve     | No                       | No                         | No                      | No                   | No  | Approve per rule        | no self-approval                      |
+| matter.transition.execute     | Execute approved support | Execute when authorized    | Execute when authorized | No                   | No  | Execute when authorized | exact approved request/version        |
+
+## Document, Task and Calendar Permissions
+
+| Permission                 | Admin                | Lawyer                     | Assistant       | Finance                 | HR      | Manager         | Scope / Gate                                   |
+| -------------------------- | -------------------- | -------------------------- | --------------- | ----------------------- | ------- | --------------- | ---------------------------------------------- |
+| document.view              | No except emergency  | Work                       | Work            | Read finance docs       | No      | Read scoped     | classification + Matter access                 |
+| document.create_version    | No                   | Work                       | Support         | Support finance docs    | No      | Full            | approved/signed immutable                      |
+| document.review            | No                   | Work with bundle           | Support prepare | No                      | No      | Approve         | reviewer assignment                            |
+| document.final_approve     | No                   | Approve with Senior bundle | No              | No                      | No      | Approve         | no self-approval                               |
+| document.sign              | No                   | Assigned signer            | No              | Assigned finance signer | No      | Assigned signer | document type authority                        |
+| document.share_external    | Execute support only | Request                    | Support request | Request finance docs    | No      | Approve A1      | Restricted/Privileged needs Data/Compliance A2 |
+| task.view_update           | Config only          | Work                       | Work            | Work finance            | Work HR | Full scoped     | assignment/team scope                          |
+| task.assign                | No                   | Work team                  | Support limited | Work finance            | Work HR | Full scoped     | cannot assign outside visible scope            |
+| task.override_deadline     | No                   | Request                    | Request         | Request                 | Request | Approve         | reason + exception evidence                    |
+| calendar.manage            | Config only          | Work                       | Work            | Work finance            | Work HR | Full scoped     | attendee/resource scope                        |
+| calendar.override_conflict | No                   | Request                    | Request         | Request                 | Request | Approve         | deadline impact escalation                     |
+| calendar.sync_manage       | Config connection    | Own                        | Own             | Own                     | Own     | Full scoped     | provider token owner/consent                   |
+
+## Commercial and Finance Permissions
+
+| Permission              | Admin                | Lawyer           | Assistant     | Finance      | HR  | Manager                | Scope / Gate               |
+| ----------------------- | -------------------- | ---------------- | ------------- | ------------ | --- | ---------------------- | -------------------------- |
+| quotation.view          | Config only          | Work             | Support       | Full         | No  | Read scoped            | Client/Matter scope        |
+| quotation.prepare       | No                   | Work             | Support       | Full         | No  | Full                   | pricing master read        |
+| quotation.approve       | No                   | No               | No            | Request only | No  | Approve                | no self-approval           |
+| invoice.view            | Config only          | Read own matters | Read assigned | Full         | No  | Read scoped            | legal content excluded     |
+| invoice.post            | No                   | No               | No            | Full         | No  | Approve exception      | approved commercial basis  |
+| payment.record_allocate | No                   | No               | No            | Full         | No  | Read/Approve exception | unique reference/reconcile |
+| billing.adjust_void     | Execute support only | No               | No            | Request      | No  | Approve                | original immutable         |
+| payment.refund_writeoff | No                   | No               | No            | Request      | No  | Approve                | amount/reason/SoD          |
+| finance.export          | No                   | No               | No            | Full scoped  | No  | Approve sensitive      | export log/expiry          |
+
+## Security, Reports and Retention Permissions
+
+| Permission              | Admin                      | Lawyer             | Assistant        | Finance                   | HR                    | Manager                      | Scope / Gate                        |
+| ----------------------- | -------------------------- | ------------------ | ---------------- | ------------------------- | --------------------- | ---------------------------- | ----------------------------------- |
+| user.invite_activate    | Execute                    | No                 | No               | No                        | Support identity      | Approve                      | user limit + MFA                    |
+| access.grant_standard   | Execute                    | No                 | No               | No                        | No                    | Approve                      | request/executor separation         |
+| access.grant_privileged | Execute                    | No                 | No               | No                        | No                    | Approve A1                   | Data/Compliance A2 + expiry         |
+| access.emergency        | Execute/request            | No                 | No               | No                        | No                    | Approve                      | time-bound; no business approval    |
+| access.recertify        | Execute changes            | No                 | No               | No                        | No                    | Approve scoped               | Data/Compliance confirms privileged |
+| report.run              | Read system/audit          | Work               | Read assigned    | Full finance              | Full HR               | Full scoped                  | definition/data scope               |
+| report.export           | Execute delivery           | Work non-sensitive | Support assigned | Full finance              | Full HR               | Approve sensitive            | Restricted/Privileged A1/A2         |
+| audit.prepare           | Prepare security event set | No                 | No               | Prepare finance event set | Prepare HR event set  | Read management              | preparer cannot verify/close        |
+| audit.verify            | No                         | No                 | No               | No                        | No                    | Read finding                 | Data/Compliance or Auditor bundle   |
+| audit.acknowledge       | No                         | No                 | No               | No                        | No                    | Acknowledge material finding | does not verify/close               |
+| audit.close             | No                         | No                 | No               | No                        | No                    | No                           | Data/Compliance reviewer sign-off   |
+| audit.correct_view      | Execute correction tooling | No                 | No               | Request domain correction | Request HR correction | Approve domain               | original event unchanged            |
+| retention.hold          | Execute                    | No                 | No               | Request finance data      | Request HR data       | Approve A1                   | Data/Compliance A2                  |
+| retention.dispose       | Execute                    | No                 | No               | Data Owner prepare        | Data Owner prepare    | Approve A1                   | Data/Compliance A2 + no active hold |
+| exception.view          | Support scoped             | Own/assigned       | Own/assigned     | Own finance               | Own HR                | Full scoped                  | record/data scope                   |
+| exception.contain       | Execute technical control  | Own/assigned       | Own/assigned     | Own finance               | Own HR                | Full scoped                  | preserve evidence                   |
+| exception.escalate      | Support                    | Request            | Request          | Request                   | Request               | Full scoped                  | severity/authority matrix           |
+| exception.resolve       | Execute technical action   | Own/assigned       | Own/assigned     | Own finance               | Own HR                | Approve scoped               | correction/reconciliation evidence  |
+| exception.close         | No                         | No                 | No               | No                        | No                    | Approve scoped               | P1/P2 Data/Compliance sign-off      |
+
+## Permission Object
+
+Grant ต้องเก็บ seed_id, permission_code, subject membership/bundle, effect,
+scope_code + scope_reference, condition_code, effective_at, expires_at, reason,
+request/approval references, granted_by และ revoked_at/by ห้ามใช้ free-text role
+name หรือข้อความใน human-readable matrix ตัดสินสิทธิ์ใน business code
+
+## Scope Expression Vocabulary
+
+| Scope Code        | Enforced Predicate                                                        |
+| ----------------- | ------------------------------------------------------------------------- |
+| TENANT            | resource.tenant_id = context.tenant_id                                    |
+| TEAM              | Tenant + resource.team_id in active user teams                            |
+| ASSIGNED_MATTER   | Tenant + active matter membership/assignment                              |
+| OWN_RECORD        | Tenant + resource.owner_id = current membership                           |
+| FINANCE_DOMAIN    | Tenant + finance/billing resource; excludes legal content fields          |
+| HR_DOMAIN         | Tenant + personnel/payroll/leave resource; excludes Client/Matter/Billing |
+| EXPLICIT_RECORD   | Tenant + active individual grant for resource type/id                     |
+| CONFIG_ONLY       | Tenant configuration metadata; excludes business record content           |
+| EMERGENCY_SESSION | exact approved resource/actions until expires_at; all access logged       |
+
+Scope compiler รับเฉพาะ code/typed reference จาก catalog นี้ ห้ามรับ SQL/free
+text
+
+## Seed Permission Catalog
+
+ตารางนี้เป็น authority สำหรับ seed workflow actions โดยแยก
+request/approve/execute ออกจากกัน Human-readable matrix
+ด้านบนใช้สำหรับตรวจภาพรวมเท่านั้น
+
+| Capability                   | Prepare / Request Permission + Bundle                                    | Approval Permission + Bundle                                                                                                        | Execute Permission + Bundle                                                        | Default Scope                                                 |
+| ---------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Client identity correction   | client.identity.request / ROLE_LAWYER, ROLE_ASSISTANT                    | client.identity.approve / ROLE_MANAGER; collision client.identity.approve_a2 / BUNDLE_DATA_COMPLIANCE                               | client.identity.execute / ROLE_ADMIN or authorized requester                       | ASSIGNED_MATTER or TEAM                                       |
+| Client merge/reverse         | client.merge.request / ROLE_LAWYER, ROLE_ASSISTANT, ROLE_MANAGER         | client.merge.approve_a1 / ROLE_MANAGER + client.merge.approve_a2 / BUNDLE_DATA_COMPLIANCE                                           | client.merge.execute / ROLE_ADMIN                                                  | TENANT                                                        |
+| Client deactivate/reactivate | client.status.request / ROLE_LAWYER, ROLE_ASSISTANT                      | client.status.approve / ROLE_MANAGER; compliance client.status.approve_a2 / BUNDLE_DATA_COMPLIANCE                                  | client.status.execute / ROLE_ADMIN                                                 | TENANT                                                        |
+| Compliance reactivation      | client.compliance_reactivate.request / ROLE_MANAGER                      | client.compliance_reactivate.approve_a1 / alternate ROLE_MANAGER + client.compliance_reactivate.approve_a2 / BUNDLE_DATA_COMPLIANCE | client.compliance_reactivate.execute / ROLE_ADMIN                                  | TENANT                                                        |
+| Matter assessment            | matter.conflict.prepare/submit, matter.risk.prepare/submit / ROLE_LAWYER | matter.assessment.approve_exception / ROLE_MANAGER                                                                                  | matter.assessment.execute / SYSTEM                                                 | ASSIGNED_MATTER                                               |
+| Matter acceptance            | matter.accept.request / ROLE_LAWYER, ROLE_ASSISTANT                      | matter.accept.approve_a1 / ROLE_MANAGER + High matter.accept.approve_a2 / BUNDLE_EXEC_APPROVER                                      | matter.accept.execute / SYSTEM                                                     | ASSIGNED_MATTER                                               |
+| Matter transition            | matter.transition.request / authority from DEC-MAT-012                   | matter.transition.approve / ROLE_MANAGER or configured alternate                                                                    | matter.transition.execute / SYSTEM, authorized user, controlled ROLE_ADMIN support | ASSIGNED_MATTER                                               |
+| Document final approval      | document.review.submit / ROLE_LAWYER, ROLE_ASSISTANT                     | document.final_approve / ROLE_MANAGER, BUNDLE_SENIOR_LAWYER                                                                         | document.approval.execute / SYSTEM                                                 | ASSIGNED_MATTER                                               |
+| Restricted document share    | document.share.request / authorized domain role                          | document.share.approve_a1 / ROLE_MANAGER + document.share.approve_a2 / BUNDLE_DATA_COMPLIANCE                                       | document.share.execute / SYSTEM or controlled ROLE_ADMIN support                   | EXPLICIT_RECORD                                               |
+| Quotation approval           | quotation.submit / ROLE_LAWYER, ROLE_FINANCE                             | quotation.approve / ROLE_MANAGER                                                                                                    | quotation.approval.execute / SYSTEM                                                | ASSIGNED_MATTER                                               |
+| Financial adjustment         | billing.adjust.request / ROLE_FINANCE                                    | billing.adjust.approve / ROLE_MANAGER                                                                                               | billing.adjust.execute / ROLE_FINANCE or SYSTEM                                    | FINANCE_DOMAIN                                                |
+| Standard access              | access.standard.request / ROLE_MANAGER                                   | access.standard.approve / ROLE_MANAGER or alternate                                                                                 | access.standard.execute / ROLE_ADMIN                                               | TENANT                                                        |
+| Privileged access            | access.privileged.request / ROLE_MANAGER                                 | access.privileged.approve_a1 / ROLE_MANAGER + access.privileged.approve_a2 / BUNDLE_DATA_COMPLIANCE                                 | access.privileged.execute / ROLE_ADMIN                                             | TENANT or EXPLICIT_RECORD                                     |
+| Sensitive export             | report.export.request / authorized domain role                           | report.export.approve_a1 / ROLE_MANAGER + Restricted report.export.approve_a2 / BUNDLE_DATA_COMPLIANCE                              | report.export.execute / SYSTEM                                                     | FINANCE_DOMAIN, HR_DOMAIN, ASSIGNED_MATTER or EXPLICIT_RECORD |
+| Audit review                 | audit.prepare / ROLE_ADMIN or domain preparer                            | audit.verify / BUNDLE_DATA_COMPLIANCE or BUNDLE_AUDITOR; audit.acknowledge / ROLE_MANAGER for material finding                      | audit.close / BUNDLE_DATA_COMPLIANCE                                               | TENANT or assigned review                                     |
+| Disposal                     | retention.dispose.prepare / domain Data Owner                            | retention.dispose.approve_a1 / ROLE_MANAGER + retention.dispose.approve_a2 / BUNDLE_DATA_COMPLIANCE                                 | retention.dispose.execute / ROLE_ADMIN or SYSTEM                                   | EXPLICIT_RECORD                                               |
+| Exception closure            | exception.resolve / assigned owner                                       | exception.close / ROLE_MANAGER + P1/P2 exception.close_a2 / BUNDLE_DATA_COMPLIANCE                                                  | exception.closure.execute / SYSTEM                                                 | EXPLICIT_RECORD                                               |
+
+## Role and Bundle Seed Manifest
+
+| Seed ID                | Type              | Grants                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Scope / Condition                                                                                                                                    |
+| ---------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ROLE_ADMIN             | baseline role     | tenant.configure, user.invite_activate, access.standard.execute, access.privileged.execute, access.emergency.execute, access.recertify.execute, client.identity.execute, client.merge.execute, client.status.execute, client.compliance_reactivate.execute, matter.transition.execute, document.share.execute, report.export.execute, retention.dispose.execute, audit.prepare                                                                                                                                                                                                                 | CONFIG_ONLY; business record execution requires approved request and EMERGENCY_SESSION or exact workflow assignment                                  |
+| ROLE_LAWYER            | baseline role     | client.create, client.view, client.update, client.identity.request, client.merge.request, client.status.request, matter.create, matter.view, matter.conflict.prepare, matter.conflict.submit, matter.risk.prepare, matter.risk.submit, matter.accept.request, matter.transition.request, document.create, document.version.create, document.review.submit, task.create, task.update, task.complete, calendar.create, calendar.update, quotation.prepare, quotation.submit                                                                                                                      | TEAM + ASSIGNED_MATTER                                                                                                                               |
+| ROLE_ASSISTANT         | baseline role     | client.create, client.view, client.update, client.identity.request, client.merge.request, client.status.request, matter.create, matter.view, matter.accept.request, matter.transition.request, document.create, document.version.create, document.review.submit, task.create, task.update, calendar.create, calendar.update                                                                                                                                                                                                                                                                    | TEAM + ASSIGNED_MATTER; no approval/execute permission                                                                                               |
+| ROLE_FINANCE           | baseline role     | quotation.prepare, quotation.submit, invoice.prepare, invoice.post, payment.record, payment.allocate, billing.adjust.request, billing.adjust.execute, report.run, report.export.request                                                                                                                                                                                                                                                                                                                                                                                                        | FINANCE_DOMAIN                                                                                                                                       |
+| ROLE_HR                | baseline role     | task.create, task.update, task.complete, calendar.create, calendar.update, report.run, report.export.request                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | HR_DOMAIN                                                                                                                                            |
+| ROLE_MANAGER           | baseline role     | client.view, matter.view, matter.assign, client.identity.approve, client.merge.approve_a1, client.status.approve, client.compliance_reactivate.request, client.compliance_reactivate.approve_a1, matter.assessment.approve_exception, matter.accept.approve_a1, matter.transition.approve, document.final_approve, document.share.approve_a1, quotation.approve, billing.adjust.approve, access.standard.request, access.standard.approve, access.privileged.request, access.privileged.approve_a1, report.export.approve_a1, retention.dispose.approve_a1, exception.close, audit.acknowledge | TENANT + configured TEAM/practice scope; compliance reactivation requester requires alternate A1; no automatic business-content access outside scope |
+| BUNDLE_SENIOR_LAWYER   | permission bundle | document.review, document.final_approve                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | ASSIGNED_MATTER; no self-approval                                                                                                                    |
+| BUNDLE_EXEC_APPROVER   | authority bundle  | matter.accept.approve_a2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | configured Tenant/practice; High only                                                                                                                |
+| BUNDLE_DATA_COMPLIANCE | authority bundle  | client.identity.approve_a2, client.merge.approve_a2, client.status.approve_a2, client.compliance_reactivate.approve_a2, document.share.approve_a2, access.privileged.approve_a2, report.export.approve_a2, retention.dispose.approve_a2, exception.close_a2, audit.verify, audit.close                                                                                                                                                                                                                                                                                                         | TENANT; independent/self-approval block                                                                                                              |
+| BUNDLE_AUDITOR         | permission bundle | audit.verify, evidence.verify, report.read_audit                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | TENANT/assigned review; read-only source events; cannot close findings                                                                               |
+| BUNDLE_QA_LEAD         | delivery bundle   | UAT fixture/run/evidence administration                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | UAT environment only; no production approval                                                                                                         |
+
+Seed migration expands only permission codes listed in catalog, fails on unknown
+scope/condition, stores manifest version/checksum และ rejects duplicate seed_id
+with different meaning
+
+## Toxic Combinations
+
+| Combination                                  | Control                                                    |
+| -------------------------------------------- | ---------------------------------------------------------- |
+| prepare + approve quotation เดียวกัน         | runtime self-approval block                                |
+| assess High risk + A1/A2 decision            | assessor cannot approve same decision                      |
+| request privileged access + A1/A2 + execute  | three-party separation where available; never self-approve |
+| create financial adjustment + approve + post | maker-checker and executor event                           |
+| prepare disposal + A1/A2 + execute           | dual approval and separate executor                        |
+| Admin support + business approve             | Acting Role cannot add business authority                  |
+
+## Denial and Audit Rules
+
+- API ตอบผลทั่วไปที่ไม่เปิดเผยว่ามี cross-Tenant record อยู่หรือไม่
+- บันทึก denied event สำหรับ sensitive view/export, approval, privilege และ
+  cross-scope action
+- Event เก็บ policy/rule version และ matched/missing permission โดยไม่เก็บ
+  secret
+- Permission cache invalidate เมื่อ grant/revoke/role/scope/status เปลี่ยน
+- Break-glass session แสดง banner, จำกัดเวลา, log ทุก view/change/export และ
+  review หลังใช้
+
+## Related Documents
+
+- [Role & Permission Alignment](/docs/sops/governance/role-permission-alignment)
+- [User, Role & Access Management](/docs/sops/access-management)
+- [Database, API & UI Mapping](/docs/implementation/system-mapping)
+- [Workflow Configuration](/docs/implementation/workflow-configuration)

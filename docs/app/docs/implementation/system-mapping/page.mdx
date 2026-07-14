@@ -1,0 +1,150 @@
+# Database, API & UI Mapping
+
+| Document Control        | Value          |
+| ----------------------- | -------------- |
+| Document ID             | MAP-IMP-001    |
+| Status                  | Approved       |
+| Version                 | 1.0            |
+| Process Owner           | Technical Lead |
+| Approver                | Product Owner  |
+| Effective Date          | 14 July 2026   |
+| Last Requirement Review | 14 July 2026   |
+
+## Purpose
+
+กำหนด ownership boundary ระหว่าง PostgreSQL, Django API, React UI และ
+audit/event สำหรับ implementation backlog ที่พร้อมพัฒนา เอกสารนี้เป็น logical
+mapping ไม่ใช่ physical schema หรือ OpenAPI ฉบับสุดท้าย
+
+## Cross-Cutting Data Rules
+
+- Business table ทุกตารางมี id, tenant_id, created_at/by, updated_at/by และ
+  version
+- Foreign key ข้าม Tenant ต้องถูกป้องกันทั้ง application validation และ database
+  composite constraint หรือ equivalent enforcement
+- Financial/audit/version records ที่ post/finalize แล้วใช้ immutable row หรือ
+  compensating/correction record ห้าม update/delete ต้นฉบับ
+- Status ใช้ canonical value จาก STD-SOP-001 และ transition ผ่าน workflow
+  command
+- Monetary value เก็บ amount + currency + precision ห้ามใช้ floating point
+- Timestamp เก็บ timezone-aware UTC instant และเก็บ source timezone สำหรับ
+  calendar
+- File binary อยู่ object storage; PostgreSQL เก็บ metadata, object key,
+  checksum, classification, version และ retention reference
+- Soft delete ใช้เฉพาะ record ที่ policy อนุญาต ข้อมูลควบคุมใช้ status lifecycle
+
+## Logical Entity Mapping
+
+| Domain           | PostgreSQL Entities                                                                                        | Key Constraints / Ownership                                                        | Primary UI         | API Resource / Command                                          | Audit Events                                                    |
+| ---------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------ | --------------------------------------------------------------- | --------------------------------------------------------------- |
+| Tenant           | tenant, domain, package, module_entitlement, user_limit                                                    | domain unique; package effective dates; no tenant role for platform support        | Tenant settings    | /api/v1/tenant; change-package; verify-limit                    | tenant.created, package.changed, limit.denied                   |
+| Identity         | user, membership, role, permission, grant, session, mfa_method                                             | email identity + tenant membership; grant scope/expiry; no hard delete             | Users & Access     | /api/v1/users; invite, activate, grant, revoke, suspend         | user.invited, access.granted, access.denied, session.revoked    |
+| Access Workflow  | access_request, access_request_item, recertification_campaign, recertification_decision, emergency_session | requester/approver/executor; scope/expiry; before/after grant snapshot             | Access Requests    | /api/v1/access-requests; decide, execute, recertify, emergency  | access.requested, approved, executed, emergency.revoked         |
+| Approval Control | workflow_request, approval_step, approval_decision, executor_result                                        | generic object reference; rule/version; A1/A2/SoD; decision immutable              | Approval Inbox     | /api/v1/approvals; decide, execute                              | approval.requested, decided, execution.completed                |
+| Evidence         | evidence_reference, evidence_attachment, evidence_checksum, evidence_link                                  | object/action binding; version/checksum; classification/retention; correction link | Evidence panel     | /api/v1/evidence; attach, verify, correct                       | evidence.attached, verified, corrected                          |
+| Client           | client, client_identifier, client_revision, duplicate_check, merge_event                                   | normalized identifier unique/rule-aware within Tenant; merged_to_id same Tenant    | Client list/detail | /api/v1/clients; validate, duplicate-check, merge, deactivate   | client.created, client.corrected, client.merged, status.changed |
+| Interaction      | client_interaction, client_note, confidentiality_grant                                                     | classification and access scope required; finalized content corrected by revision  | Client activity    | /api/v1/clients/:id/interactions                                | interaction.finalized, note.accessed, note.corrected            |
+| Retainer         | retainer_plan, client_subscription, subscription_event                                                     | effective period; status transition; one active conflicting plan prevented         | Client Retainer    | /api/v1/clients/:id/retainers                                   | retainer.approved, subscription.changed                         |
+| Matter           | matter, matter_party, matter_member, matter_revision                                                       | client/team same Tenant; canonical status; responsible Lawyer active               | Matter workspace   | /api/v1/matters; duplicate-check, submit-intake                 | matter.created, duplicate.decided                               |
+| Assessment       | conflict_assessment, risk_assessment, acceptance_decision, commercial_readiness                            | versioned control record; assessor/approver separation; Prohibited terminal gate   | Matter intake      | /api/v1/matters/:id/assessments                                 | conflict.assessed, risk.assessed, acceptance.decided            |
+| Transition       | transition_request, matter_status_event, sla_clock                                                         | from/to rule version; generic approval reference; event immutable                  | Matter timeline    | /api/v1/matters/:id/transitions                                 | transition.requested, approved, rejected, executed              |
+| Document         | document, document_version, review_request, signature_request, share_link                                  | checksum unique per version; approved/signed version immutable; share expiry       | Matter documents   | /api/v1/documents; upload-version, review, approve, sign, share | document.versioned, approved, signed, shared, share.revoked     |
+| Task             | task, task_assignment, task_status_event, reminder                                                         | owner/scope valid; due timezone; terminal correction via event                     | Tasks              | /api/v1/tasks; assign, transition                               | task.assigned, task.changed, reminder.sent                      |
+| Calendar         | appointment, attendee, recurrence_rule, calendar_sync_job                                                  | timezone/recurrence canonical; provider external ID unique per connection          | Calendar           | /api/v1/appointments; conflict-check, sync                      | appointment.changed, conflict.overridden, sync.failed           |
+| Quotation        | quotation, quotation_version, quotation_line, pricing_decision, client_response                            | approved/sent version immutable; currency/tax totals reconcile                     | Quotations         | /api/v1/quotations; calculate, submit, approve, respond, revise | quotation.calculated, approved, sent, responded                 |
+| Invoice          | invoice, invoice_line, posting_event, receipt                                                              | posted values immutable; unique reference within Tenant; total/tax controls        | Billing            | /api/v1/invoices; post, void, write-off                         | invoice.posted, invoice.voided, invoice.written-off             |
+| Payment          | payment, payment_allocation, refund, reconciliation                                                        | unique payment reference; allocations cannot exceed confirmed amount               | Payments           | /api/v1/payments; confirm, allocate, reverse, refund            | payment.received, allocated, reversed, refunded                 |
+| Report           | report_definition, report_run, reconciliation_result, export_job                                           | definition/version; filters/as-of snapshot; export classification/expiry           | Reports            | /api/v1/reports; run, validate, export, schedule                | report.generated, reconciled, export.delivered                  |
+| Audit            | audit_event, correction_event, integrity_check, review_finding                                             | append-only sequence/hash; correction points to original; Tenant partition         | Audit review       | /api/v1/audit-events; verify-integrity, record-correction       | integrity.checked, finding.opened, finding.closed               |
+| Retention        | retention_rule, retention_assignment, legal_hold, disposal_batch, destruction_certificate                  | later-of rules; active hold blocks disposal; A1/A2 required                        | Retention console  | /api/v1/retention; calculate, hold, dispose                     | hold.applied, disposal.blocked, disposal.completed              |
+| Exception        | exception_record, sla_milestone, escalation_event, corrective_action                                       | severity/status canonical; due instants immutable; closure gate                    | Exceptions         | /api/v1/exceptions; contain, restore, resolve, close            | exception.opened, escalated, resolved, closed                   |
+
+## Core Field Mapping
+
+| Entity             | Required Fields                                                            | Derived / Controlled Fields                                              |
+| ------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Client             | tenant, client_type, legal_name, country, identifiers/contact by rule      | normalized fields, duplicate score, status, merged_to                    |
+| Matter             | tenant, client, matter_type, scope, jurisdiction, responsible_lawyer, team | duplicate result, conflict/risk/acceptance, commercial readiness, status |
+| Document Version   | document, version_no, object_key, checksum, classification, author         | review/signature state, approved_at, superseded_by                       |
+| Task               | matter/standalone scope, title, owner, due_at/timezone, priority           | status, overdue_at, reminder outcome                                     |
+| Appointment        | scope, title, start/end/timezone, attendees                                | recurrence instances, conflict result, sync state                        |
+| Quotation Version  | client/matter, lines, currency, tax, validity, terms                       | subtotal, discount, tax, total, approval/client response                 |
+| Invoice            | client/matter, lines, currency, tax, due_date                              | posted balance, paid amount, overdue, void/write-off links               |
+| Payment            | client, amount, currency, received_at, method, external_reference          | allocated/unallocated amount, refund/reversal totals                     |
+| Access Grant       | membership, role/action, resource scope, reason, effective/expiry          | SoD result, approval reference, revoked_at                               |
+| Access Request     | requester, subject, requested role/action/scope, reason, effective/expiry  | approval steps, SoD result, executor result, before/after grant snapshot |
+| Approval Step      | workflow request, step order/type, authority bundle, due_at                | candidate approvers, decision, decided_at, superseded/cancelled state    |
+| Evidence Reference | object/action, evidence type, source/version, classification, checksum     | verification outcome, retention class, correction/current reference      |
+| Audit Event        | tenant, actor, acting_role, action, object_type/id, occurred_at, outcome   | sequence, previous_hash, event_hash, correction/current view             |
+
+## Command API Mapping
+
+Command endpoints ใช้ POST และ idempotency key การแก้ไขทั่วไปใช้ PATCH พร้อม
+expected version เพื่อป้องกัน lost update Query endpoint ต้องกรอง Tenant/scope
+ก่อน serialize เสมอ
+
+| Command                              | Validates                                                        | Transaction Result                                                                               |
+| ------------------------------------ | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| clients/validate                     | required/conditional fields, formats, master data                | validation result only                                                                           |
+| clients/duplicate-check              | normalized fields, Tenant rule version                           | candidates/score/check event                                                                     |
+| clients/:id/merge                    | authority, dependency, A1/A2, surviving ID                       | source Merged + references redirected + merge event                                              |
+| matters/:id/submit-intake            | client exists and is intake-eligible, duplicate, required fields | Conflict Review transition request/event; Client Active is checked only before Matter activation |
+| matters/:id/assessments/:type/decide | assessor/approver, rule version, evidence                        | new assessment/decision version                                                                  |
+| matters/:id/transitions              | from/to rule, authority, prerequisites, expected version         | request/approval/event or explicit rejection                                                     |
+| documents/:id/versions               | permission, lock, checksum, metadata                             | immutable version + upload evidence                                                              |
+| documents/:id/approve                | review result, maker-checker, exact version                      | Approved status + decision event                                                                 |
+| documents/:id/share                  | status, classification, recipient, A1/A2, expiry                 | time-bound link + access log                                                                     |
+| tasks/:id/transition                 | owner/manager authority, expected status                         | status event + reminder/escalation update                                                        |
+| appointments/conflict-check          | attendees, time range, recurrence, timezone                      | conflicts + rule version                                                                         |
+| quotations/:id/approve               | exact version, totals, discount authority, self-approval         | approval event; version immutable                                                                |
+| invoices/:id/post                    | commercial basis, period, totals, duplicate ref                  | posting event + receivable balance                                                               |
+| payments/:id/allocate                | confirmed amount, invoice balance/currency                       | allocation rows + reconciled balances                                                            |
+| financial-adjustments                | original reference, reason, A1, amount authority                 | compensating entry; original unchanged                                                           |
+| access-requests/:id/execute          | approval level, SoD, scope, expiry                               | grant/revoke snapshot + permission event                                                         |
+| reports/:id/export                   | validated run, purpose, recipient, authority                     | export job + checksum/expiry                                                                     |
+| disposal-batches/:id/execute         | expiry, dependencies, holds, A1/A2                               | disposal results + certificate                                                                   |
+
+## Query and UI Mapping
+
+| UI Surface           | Query View                                               | Commands Available                             | Mandatory UI States                                                         |
+| -------------------- | -------------------------------------------------------- | ---------------------------------------------- | --------------------------------------------------------------------------- |
+| Client list/detail   | scoped clients, masked identifiers, duplicate badges     | create, correct, merge/status request          | loading, empty, duplicate blocked, permission denied                        |
+| Matter workspace     | header/status, team, assessments, timeline, dependencies | intake, assess, transition, close/reopen       | gate incomplete, SLA warning/breach, On Hold, read-only Closed              |
+| Document workspace   | document/version tree, review/sign/share state           | upload, version, review, approve, share/revoke | locked, changes requested, signature pending, expired link                  |
+| Task/Calendar        | assigned list/board/calendar, conflicts, sync health     | assign, transition, schedule, override, retry  | overdue, blocked, conflict, sync degraded                                   |
+| Quotation/Billing    | version/totals/client response, AR balances              | calculate, approve, post, allocate, adjust     | stale version, self-approval denied, duplicate ref, reconciliation variance |
+| Access console       | users, grants, expiry, SoD, sessions                     | invite, grant/revoke, suspend, recertify       | user limit, MFA pending, privileged A2 pending, emergency banner            |
+| Reports/Audit        | run metadata, filters, totals, event chain/findings      | validate, export, correct, close finding       | material variance, sensitive approval, integrity failure                    |
+| Retention/Exceptions | candidates, holds, SLA milestones/actions                | hold, approve disposal, contain/escalate/close | hold blocked, dual approval pending, SLA breached, closure blocked          |
+
+## Integration and Event Boundary
+
+- ใช้ provider adapter สำหรับ object storage, e-signature, email/calendar และ
+  export delivery
+- Webhook ทุกตัวตรวจ signature, Tenant/resource binding, replay/idempotency และ
+  event time
+- Business transaction เขียน outbox event ใน transaction เดียวกัน แล้ว worker
+  ส่งต่อ
+- Consumer เก็บ processed event ID และทำงานซ้ำได้โดยผลลัพธ์ไม่เพิ่มรายการซ้ำ
+- Failed integration ไม่เปลี่ยน business record เป็น successful และต้องเปิด
+  retry/exception
+
+## Migration and Index Baseline
+
+- Index ทุก business table เริ่มด้วย tenant_id และ query discriminator
+  ที่ใช้จริง
+- Partial/unique index สำหรับ active identifiers, references และ current
+  versions
+- Partition/retention strategy สำหรับ audit_event, access log และ notification
+  history
+- Migration status/permission มี preflight count, mapping table, dry run และ
+  rollback
+- Backfill event/evidence ต้องระบุ synthetic actor/source และห้ามปลอมเป็น user
+  action
+
+## Related Documents
+
+- [Implementation Backlog](/docs/implementation/backlog)
+- [RBAC Action Matrix](/docs/implementation/rbac-action-matrix)
+- [Workflow Configuration](/docs/implementation/workflow-configuration)
+- [Architecture](/docs/architecture)

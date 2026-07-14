@@ -36,18 +36,29 @@ Senior Lawyer ใช้ Lawyer + permission bundle สำหรับ review/app
 ชื่อด้านล่างเป็น responsibility assignment หรือ permission bundle ไม่ใช่
 baseline role ใหม่ และต้องผูกกับผู้ใช้ที่มี baseline role พร้อม scope ชัดเจน
 
-| Authority / Responsibility | Baseline Mapping                                        | Required Permission / Boundary                       |
-| -------------------------- | ------------------------------------------------------- | ---------------------------------------------------- |
-| Senior Lawyer              | Lawyer                                                  | Scoped document review/approve; ห้าม self-approve    |
-| Executive Approver         | Manager หรือ executive ที่ได้รับมอบหมาย                 | High-risk A2; จำกัด Tenant/practice scope            |
-| Data/Compliance Owner      | Manager หรือ compliance function ที่ได้รับมอบหมาย       | Security, privacy, retention and A2 review           |
-| Data Owner                 | Lawyer, Finance, HR หรือ Manager ตาม record domain      | Data quality/correction/disposal preparation         |
-| Document Owner             | Lawyer หรือ Assistant ตาม assignment                    | Document lifecycle ภายใน Matter scope                |
-| Task/Calendar Owner        | Lawyer, Assistant, Finance หรือ HR ตาม assignment       | Assigned task/calendar operation                     |
-| Report Owner               | Manager, Finance, HR หรือ designated analyst            | Report validation ภายใน data scope                   |
-| QA Lead                    | Designated user; ไม่มี production approval โดยอัตโนมัติ | UAT administration and result sign-off               |
-| Authorized Signer          | Designated Lawyer/Manager/executive                     | Sign เฉพาะ document type และ entity scope ที่มอบหมาย |
-| Auditor                    | Data/Compliance หรือ independent reviewer               | Read audit evidence; ห้ามแก้ source event            |
+| Authority / Responsibility | Baseline Mapping                                        | Required Permission / Boundary                                    |
+| -------------------------- | ------------------------------------------------------- | ----------------------------------------------------------------- |
+| Senior Lawyer              | Lawyer                                                  | Scoped document review/approve; ห้าม self-approve                 |
+| Executive Approver         | Manager หรือ executive ที่ได้รับมอบหมาย                 | High-risk A2; จำกัด Tenant/practice scope                         |
+| Data/Compliance Owner      | Manager หรือ compliance function ที่ได้รับมอบหมาย       | Security, privacy, retention and A2 review                        |
+| Data Owner                 | Lawyer, Finance, HR หรือ Manager ตาม record domain      | Data quality/correction/disposal preparation                      |
+| Document Owner             | Lawyer หรือ Assistant ตาม assignment                    | Document lifecycle ภายใน Matter scope                             |
+| Task/Calendar Owner        | Lawyer, Assistant, Finance หรือ HR ตาม assignment       | Assigned task/calendar operation                                  |
+| Report Owner               | Manager, Finance, HR หรือ designated analyst            | Report validation ภายใน data scope                                |
+| QA Lead                    | Designated user; ไม่มี production approval โดยอัตโนมัติ | UAT administration and result sign-off                            |
+| Authorized Signer          | Designated Lawyer/Manager/executive                     | Sign เฉพาะ document type และ entity scope ที่มอบหมาย              |
+| Auditor                    | Data/Compliance หรือ independent reviewer               | Read audit evidence; ห้ามแก้ source event                         |
+| Product Owner              | Manager หรือ designated product responsibility          | Scope/requirement/backlog; ไม่เพิ่ม runtime permission อัตโนมัติ  |
+| Technical Lead             | Designated engineering responsibility                   | Architecture/build approval; ไม่เป็น Business Approver            |
+| Release Manager            | Manager หรือ Operations responsibility                  | Release coordination/evidence; Final Go ตาม CHK-REL-001           |
+| Database Owner             | Designated engineering/Admin responsibility             | Migration/backup/restore; controlled support เมื่อแตะ Tenant data |
+| Operations Owner           | Designated operations/Admin responsibility              | Runtime/monitoring/support; Emergency Access เมื่อแตะ Tenant data |
+| Platform Owner             | Platform responsibility แยกจาก Tenant role              | Package/service policy; ไม่มี Tenant business authority           |
+| Security Reviewer          | Data/Compliance หรือ independent security function      | Security evidence/risk review; ไม่มี business data edit           |
+
+Delivery responsibility bundle ไม่มอบ production access โดยตัวมันเอง ผู้ถือ
+responsibility ต้องได้รับ runtime role/grant แยกตาม SPEC-RBAC-001 และใช้
+alternate เมื่อเป็นผู้จัดทำ artifact ที่ตนต้องอนุมัติ
 
 ## Permission Alignment Matrix
 

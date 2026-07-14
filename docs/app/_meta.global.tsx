@@ -36,6 +36,7 @@ export default {
           'payroll-leave': 'Payroll & Leave Management',
           'tenant-onboarding': 'Tenant Onboarding & Package',
           'shared-master-data': 'Shared Master Data Management',
+          'platform-operations': 'Platform Monitoring, Backup & Recovery',
           'access-management': 'User, Role & Access Management',
           'reports-audit': 'Reports, Export & Audit Review',
           'retention-disposal': 'Retention & Disposal',

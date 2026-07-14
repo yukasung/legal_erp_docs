@@ -67,6 +67,7 @@ screen/API result, record IDs และ audit event reference ไม่ใช้
 | FIN         | Finance maker + Manager A1/A2 + Admin/System; Open/Closed periods     | COA/tax/rate/budget versions, balanced/unbalanced journals, statement and close package |
 | HR          | HR maker + Manager/Admin approvers; employee self-service accounts    | personnel identity/assignment/lifecycle plus payroll, leave, privacy and routing        |
 | ADM         | Applicant/Operator/Data Steward + Platform Owner/Manager/Admin        | tenant lifecycle plus shared-master identity, source/version, dependency and rollback   |
+| OPS         | Operator + Operations/Database Owner + Manager A1/Admin A2            | metric/log signals, alert rules, backup manifests, recovery points and control totals   |
 | SEC         | Admin executor + Manager A1/Admin A2 approvers; Tenant A/B users      | role/action/scope, expiry, MFA and session/token                                        |
 | REP/AUD     | Report owner/Admin executor + Manager A1/Admin A2                     | source population, filters/as-of, expected totals and event chain                       |
 | RET         | Data Owner + dual approvers; expired/non-expired/held records         | retention rule, trigger, hold and disposal population                                   |
@@ -92,10 +93,11 @@ screen/API result, record IDs และ audit event reference ไม่ใช้
 | FX-FIN         | UAT-LE-A; period 2026-08 Open; THB base; COA-v1; VAT7-v1/WHT3-v1; FX USDTHB 35.00; bank balance/source; Manager A1/A2                                                          |
 | FX-HR          | EMP-A-1001 Active LEGAL-A under Manager-A; joiner EMP-J-1002; mover LEGAL-A to LEGAL-B; UAT-PR-1001 net 33,850; UAT-LV-1001 Annual 2 days                                      |
 | FX-ADM         | UAT Legal New Co., Ltd.; UAT-REG-ADM-1001; uat-new.example.test; PKG-TEAM-v1 modules MAT/DOC/TSK; user limit 2; COURT-UAT-001 v1 Active; source/checksum; one dependent Matter |
+| FX-OPS         | UAT service APP-A; alert rule OPS-RULE-v1; fixed clock 2026-08-03T09:00:00+07:00; backup BK-UAT-001; recovery point 08:55; expected rows 100/control total THB 107,000         |
 | FX-SEC         | Tenant UAT-A and UAT-B; user-a@example.test; Admin admin-a@example.test; Manager manager-a@example.test; A2 admin-a2@example.test; expiry 2026-08-04T17:00:00+07:00            |
 | FX-REP/AUD     | Report UAT-REP-1001; as-of 2026-08-03T17:00:00+07:00; three invoices; expected gross THB 107,000; immutable events EVT-1001 to EVT-1005                                        |
 | FX-RET         | Records REC-EXPIRED-01, REC-ACTIVE-01 and REC-HOLD-01; retention expiry 2026-07-31; Legal Hold HOLD-001 on REC-HOLD-01                                                         |
-| FX-GOV/EXC     | Controlled docs 23; form templates 17; valid ID SOP-MAT-001; duplicate test ID SOP-MAT-001-DUP; P1 detected 2026-08-03T09:00:00+07:00                                          |
+| FX-GOV/EXC     | Controlled docs 24; form templates 18; valid ID SOP-MAT-001; duplicate test ID SOP-MAT-001-DUP; P1 detected 2026-08-03T09:00:00+07:00                                          |
 
 Test seed ต้องใช้ reserved test identifiers และ example.test เท่านั้น
 ห้ามใช้ข้อมูล บุคคลจริง แต่ละ FX-CASE-ID clone Base Fixture แล้วใช้ delta ใน
@@ -124,6 +126,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 | HR-08 to HR-14   | STP-HR-PER      | 1) HR opens employee/lifecycle fixture 2) validate identity, fields, assignment and effective time 3) Manager(s) decide 4) System changes status/revision and Admin executes access 5) reconcile access/ownership/payroll/leave/retention 6) verify privacy and immutable events                                                                                    |
 | ADM-01 to ADM-10 | STP-ADM         | 1) Applicant/Operator opens onboarding or lifecycle request 2) apply identity/domain/package/seat/status Scenario delta 3) verify uniqueness, authority, dependencies and hold 4) Platform Owner/Manager/Admin decide as required 5) System provisions/changes/revokes idempotently 6) verify isolation, entitlement, counts, export/retention and immutable events |
 | ADM-11 to ADM-16 | STP-ADM-MST     | 1) Requester/Data Steward opens shared-master fixture 2) apply identity/source/hierarchy/effective/dependency Scenario delta 3) validate duplicate/scope/authority 4) Manager A1/Admin A2 decide exact version 5) System schedules/activates/deactivates/imports/rolls back 6) verify consumers, counts, snapshots and immutable events                             |
+| OPS-01 to OPS-08 | STP-OPS         | 1) Operator opens health/backup/recovery fixture 2) apply signal/job/manifest/restore Scenario delta 3) validate freshness/correlation/scope/authority 4) Operations Owner/Manager A1/Admin A2 decide as required 5) System triages/verifies/restores/reruns 6) verify isolation, integrity, business totals, RPO/RTO and immutable evidence                        |
 | SEC-01 to SEC-06 | STP-SEC         | 1) Admin opens access request 2) load FX user/role/scope 3) submit SoD/MFA validation 4) required approver decides 5) Admin grants/revokes or attempts Scenario access 6) verify Tenant denial, expiry, sessions and snapshots                                                                                                                                      |
 | REP-01 to REP-04 | STP-REP         | 1) Generate FX report 2) set filters/as-of 3) reconcile expected rows/totals 4) request export as Scenario actor 5) required authority decides/delivers 6) verify checksum, recipient and access log                                                                                                                                                                |
 | AUD-01 to AUD-03 | STP-AUD         | 1) Load EVT-1001 to EVT-1005 2) verify sequence/hash 3) introduce correction/integrity delta 4) run review 5) escalate failure or link correction 6) verify original remains immutable                                                                                                                                                                              |
@@ -269,6 +272,19 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 | ADM-14 | REQ-ADM-004 | deactivate/replace record ที่ถูกอ้างอิง                             | hard delete ถูกปฏิเสธ; replacement link ครบและรายการใหม่ใช้ Active replacement              |
 | ADM-15 | REQ-ADM-004 | bulk import มี valid/duplicate/invalid hierarchy และ retry key เดิม | accepted/rejected/control totals ตรง; retry ไม่สร้าง record/version ซ้ำ                     |
 | ADM-16 | REQ-ADM-004 | activation ผิดกระทบ workflow แล้วทำ approved rollback               | freeze version, exception/A1/A2/compensating version ครบ และ consumers reconcile            |
+
+## Platform Operations Cases
+
+| ID     | Requirement | Scenario                                                          | Expected Result / Evidence                                                                 |
+| ------ | ----------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| OPS-01 | REQ-OPS-001 | metric/log สดอยู่ใน threshold และ dashboard query ตาม fixed as-of | Healthy พร้อม source/rule version/watermark; totals ตรงและ trace กลับ signal ได้           |
+| OPS-02 | REQ-OPS-001 | metric ขาด/stale แต่ค่าล่าสุดเคย Healthy                          | แสดง No Data/monitoring impaired และสร้าง alert; ห้ามคง Healthy                            |
+| OPS-03 | REQ-OPS-001 | threshold breach ซ้ำหลาย event ใน correlation window              | สร้าง incident หลักครั้งเดียวพร้อม first/last/count; ไม่สูญ original signal                |
+| OPS-04 | REQ-OPS-001 | error กระทบหลาย Tenant และเข้าหลัก P1/P2                          | acknowledge/contain/escalate ตาม CTRL-EXC-001 พร้อม owner, clock และ evidence              |
+| OPS-05 | REQ-OPS-002 | backup job สำเร็จพร้อม manifest/checksum/control totals           | Succeeded → Verified เมื่อ scope/readability/totals ผ่าน และ retry ไม่สร้าง manifest ซ้ำ   |
+| OPS-06 | REQ-OPS-002 | backup Succeeded แต่ checksum mismatch หรือ scope ขาด             | Failed/Quarantined, alert/escalation ครบ และ backup นี้ใช้ restore ไม่ได้                  |
+| OPS-07 | REQ-OPS-002 | restore/PITR ไป isolated target ด้วย A1/A2 และ executor แยก       | recovery point/target/provenance ครบ, outbound ถูก block และ technical/business totals ตรง |
+| OPS-08 | REQ-OPS-002 | recovery test เกิน RPO/RTO หรือ business total ไม่ตรงแล้ว rerun   | run เดิม Failed คงอยู่, corrective action/rerun เชื่อมกัน และ Passed เฉพาะรอบที่ reconcile |
 
 ## Security and Access Cases
 

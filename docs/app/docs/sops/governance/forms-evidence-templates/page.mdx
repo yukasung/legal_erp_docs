@@ -56,6 +56,7 @@ fields/authority/evidence ต้องเพิ่ม Version ในแถวท
 | FRM-HR-002  | Personnel Lifecycle Record        | HR             | 1.0     | Approved | 14 July 2026 | SOP-HR-002   | Employee identity, assignment, effective event, approval, revision and reconciliation      |
 | FRM-ADM-001 | Tenant Lifecycle & Package Change | Platform Owner | 1.0     | Approved | 14 July 2026 | SOP-ADM-001  | Organization/domain verification, package/seat entitlement, approval, status and retention |
 | FRM-ADM-002 | Shared Master Data Change         | Platform Owner | 1.0     | Approved | 14 July 2026 | SOP-ADM-002  | Canonical identity, source/version, dependency, approval, activation and rollback          |
+| FRM-OPS-001 | Platform Operation & Recovery     | Operations     | 1.0     | Approved | 14 July 2026 | SOP-OPS-001  | Alert/job evidence, verified backup, restore authority, reconciliation and RPO/RTO result  |
 | FRM-SEC-001 | Access Request & Recertification  | Admin          | 1.0     | Approved | 14 July 2026 | SOP-SEC-001  | Role/action/scope, SoD, expiry, grant/revoke snapshot                                      |
 | FRM-REP-001 | Report, Audit Review & Export     | Manager        | 1.0     | Approved | 14 July 2026 | SOP-REP-001  | Filter/as-of, validation, findings, recipient/export log                                   |
 | FRM-AUD-001 | Legal Hold / Disposal Certificate | Admin          | 1.0     | Approved | 14 July 2026 | SOP-AUD-001  | Search population, holds, A1/A2, destruction evidence                                      |
@@ -297,6 +298,26 @@ fields/authority/evidence ต้องเพิ่ม Version ในแถวท
 - import batch/schema/checksum, accepted/rejected/control totals และ retry
   result
 - exception/rollback decision และ post-change reconciliation
+
+## FRM-OPS-001 Platform Operation & Recovery
+
+- component/environment/Tenant/service tier, owner and data classification
+- monitor/alert rule ID/version, metric/log source, threshold/window and
+  freshness
+- detected/acknowledged times, severity, affected population, correlation and
+  disposition
+- backup job/manifest ID, scope/type/watermark, encryption reference, checksum
+  and expiry
+- verification checks, row/object/control totals and Succeeded/Failed/Verified
+  result
+- restore request, reason, target/time/recovery point, expected RPO/RTO and
+  impact
+- requester, Operator, A1, A2, executor, validators and
+  incident/change/idempotency IDs
+- pre/post integrity/schema/business totals, isolation/outbound/credential
+  checks
+- achieved recovery point/time, RPO/RTO variance, acceptance and residual risk
+- failed run/rerun links, corrective action owner/due date and closure evidence
 
 ## FRM-SEC-001 Access Request & Recertification
 

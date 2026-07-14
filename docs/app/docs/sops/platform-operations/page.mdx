@@ -1,0 +1,283 @@
+# Platform Monitoring, Backup & Recovery
+
+| Document Control        | Value                 |
+| ----------------------- | --------------------- |
+| SOP ID                  | SOP-OPS-001           |
+| Status                  | Approved              |
+| Version                 | 1.0                   |
+| Process Owner           | Operations Owner      |
+| System Owner            | Admin                 |
+| Approver                | Manager A1 + Admin A2 |
+| Effective Date          | 14 July 2026          |
+| Last Requirement Review | 14 July 2026          |
+
+> **Approval notice:** System Health, error/alert triage, backup verification,
+> restore/PITR และ recovery testing ได้รับการอนุมัติเป็น operational baseline
+> เมื่อ 14 July 2026 โดยค่า RPO/RTO ต้องอ้าง service tier/policy ที่อนุมัติ
+
+## Purpose
+
+กำหนดวิธีเฝ้าระวัง platform ตรวจและตอบสนอง alert/error ยืนยันว่า backup สำเร็จ
+กู้คืนข้อมูลอย่างควบคุม และทดสอบ recovery โดยไม่เปิดเผยหรือเขียนทับ production
+data เกิน authority
+
+## Scope
+
+ครอบคลุม application/database/storage health, CPU/RAM/disk/availability,
+concurrent users, error/log signal, alert triage, backup job/retention metadata,
+backup integrity, restore/PITR request, isolated restore, reconciliation,
+recovery exercise, RPO/RTO result และ operational evidence
+
+ไม่ครอบคลุม API/provider lifecycle ใน SOP-INT-001,
+vulnerability/security/privacy assurance ใน SOP-SEC-002, business-record
+retention/disposal ใน SOP-AUD-001 หรือ การแก้ source transaction ของแต่ละ domain
+ค่า threshold, RPO และ RTO ที่ไม่มี approved policy ห้ามสมมติเป็นตัวเลขพร้อมใช้
+
+## Roles
+
+| Role                      | Responsibility                                                                                   |
+| ------------------------- | ------------------------------------------------------------------------------------------------ |
+| Operations Owner          | เป็น process owner กำหนด monitoring/backup/recovery plan และรับผิดชอบ service restoration        |
+| Operator                  | ตรวจ dashboard/log/job เปิด event และทำ runbook step ตาม permission                              |
+| Admin                     | ดำเนิน privileged configuration/restore หลัง approval; ไม่อนุมัติงานตนเอง                        |
+| Manager A1                | อนุมัติ planned restore/recovery test และ business-impact decision                               |
+| Admin A2                  | อนุมัติ privileged production restore/PITR หรือ high-risk change แยกจาก executor                 |
+| Database/Storage Owner    | ตรวจ database/storage backup, restore target, integrity และ reconciliation                       |
+| Domain/Data Owner         | ยืนยัน business population/control totals หลัง restore โดยไม่ให้ Operator ตัดสินแทน              |
+| Security Reviewer         | รับแจ้งเมื่อพบ compromise/suspicious access และส่งต่อ SOP-SEC-002                                |
+| System/Monitoring Service | เก็บ metrics/logs, สร้าง alert, รัน backup, enforce idempotency และบันทึก immutable job evidence |
+
+## Approved Status Baseline
+
+### Operational Event
+
+Detected, Acknowledged, Investigating, Contained, Monitoring, Resolved และ
+Closed
+
+### Backup Job
+
+Scheduled, Running, Succeeded, Failed, Verified, Expired และ Quarantined
+
+### Restore / Recovery Test
+
+Draft, Pending Approval, Approved, Running, Validation, Passed, Failed,
+Cancelled และ Closed
+
+- Resolved ยังไม่เท่ากับ Closed จน evidence/reconciliation/owner acceptance ครบ
+- Succeeded ยังไม่เท่ากับ Verified จน manifest/integrity/control checks ผ่าน
+- Failed restore/recovery test ห้ามเปลี่ยนเป็น Passed โดยแก้สถานะ ต้องแก้และ
+  rerun
+- Expired หมายถึงหมดอายุตาม approved backup policy ไม่ใช่ลบ business record
+
+## Approved Control Decision
+
+| Decision ID | Approved Outcome                                                                                                                                                                                                                                                                      |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DEC-OPS-001 | Monitoring/backup job ใช้ versioned configuration และ immutable run evidence; alert ถูก classify/route ตาม CTRL-EXC-001; backup ต้อง Verified ก่อนใช้; restore/PITR ใช้ scoped target, A1/A2 ตาม risk และแยก executor; validation/reconciliation ต้องผ่าน approved RPO/RTO ก่อน close |
+
+## Required Information
+
+- Tenant/service/component/environment, region, service tier และ data
+  classification
+- monitor/alert ID, rule/version, metric/log source, threshold/window, detected
+  time, severity, affected population และ correlation key
+- backup job/manifest ID, database/storage scope, type, started/completed time,
+  source watermark, encryption/key reference, retention/expiry และ checksum
+- restore request ID, reason, target environment/time, recovery point, requested
+  scope, expected RPO/RTO และ impact
+- requester, Operator, A1, A2, executor, Domain/Data Owner, expected version,
+  idempotency/change/incident reference และ timestamps
+- pre/post row/object/control totals, integrity/query checks, access/isolation
+  result, variance, acceptance, residual risk และ corrective action
+
+## Procedure
+
+### 1. Configure and Review Operational Controls
+
+**Responsible:** Operations Owner, Admin, Database/Storage Owner
+
+1. ระบุ components, owner, environment, service tier และ approved SLI/threshold
+2. version monitor, alert route, backup schedule/scope/retention และ recovery
+   plan
+3. ตรวจ metric/log coverage, clock/timezone, notification target และ runbook
+   link
+4. privileged configuration/change ต้องผ่าน authority และแยก approver/executor
+5. ทบทวน config ตามรอบหรือเมื่อ architecture/service tier เปลี่ยน
+
+**Expected result:** ทุก critical component มี owner และ versioned control
+config
+
+### 2. Monitor Health, Capacity and Errors
+
+**Responsible:** Monitoring Service, Operator
+
+1. เก็บ availability, latency/error, CPU/RAM/disk/storage/database health และ
+   concurrent-user metrics ตาม approved interval
+2. normalize timestamp/environment/component/Tenant scope และ correlation ID
+3. dashboard ต้องแสดง fresh/as-of time และแยก No Data ออกจาก Healthy
+4. threshold breach หรือ error pattern สร้าง alert/event ครั้งเดียวต่อ
+   correlation window
+5. Operator ตรวจ dashboard/log link โดยไม่คัดลอก sensitive payload ลง ticket
+
+**Expected result:** สถานะระบบตรวจย้อนกลับได้และไม่แสดง No Data เป็นปกติ
+
+### 3. Triage Alert or Error
+
+**Responsible:** Operator, Operations Owner
+
+1. acknowledge alert ตาม SLA และยืนยัน signal จริง/false positive/duplicate
+2. ประเมิน affected service, Tenant, user, data, deadline และ financial/security
+   impact
+3. map severity และ due times ตาม CTRL-EXC-001; P1/P2 เปิด exception/incident
+4. contain ด้วย approved runbook เช่น stop job, isolate component หรือ disable
+   affected function โดยไม่ลบ evidence
+5. assign owner, communication cadence, restore path และ linked change/problem
+
+**Expected result:** alert มี disposition/authority/SLA และ containment evidence
+
+### 4. Run and Verify Backup
+
+**Responsible:** System, Database/Storage Owner, Operator
+
+1. รัน scheduled/on-demand backup จาก approved config และ immutable job ID
+2. เก็บ source watermark, object/row/control totals, manifest/checksum,
+   encryption reference และ completion result
+3. job retry ใช้ idempotency/correlation key และไม่ทำให้ manifest สับสน
+4. verify completeness, checksum/readability, scope และ policy retention/expiry
+5. failure, missing scope, stale backup หรือ checksum mismatch เปลี่ยนเป็น
+   Failed/ Quarantined และเปิด alert ห้าม mark Verified
+
+**Expected result:** มี Verified recovery point ตาม approved service policy
+
+### 5. Request and Approve Restore or PITR
+
+**Responsible:** Requester, Operations Owner, Manager A1, Admin A2
+
+1. ระบุเหตุผล incident/change, exact scope, target time/environment และ recovery
+   point candidates
+2. ตรวจ backup เป็น Verified, key/access พร้อม และ target ไม่เขียนทับ production
+   โดยไม่ตั้งใจ
+3. ประเมิน data-loss window, dependency, privacy/security และ business impact
+4. planned/non-production restore ใช้ Manager A1;
+   production/privileged/high-risk ใช้ Manager A1 + Admin A2 คนละบัญชีกับ
+   executor
+5. emergency restore เริ่ม containment ตาม CTRL-EXC-001 ได้ แต่
+   authority/evidence ต้องครบตาม emergency rule และมี post-action review
+
+**Expected result:** restore ใช้ recovery point/scope/authority ที่ระบุชัด
+
+### 6. Execute Restore in Controlled Target
+
+**Responsible:** Admin, Database/Storage Owner, System
+
+1. freeze/record target state, active writes/jobs/integrations และ pre-restore
+   totals
+2. restore ด้วย request/change/idempotency ID ไป isolated target ก่อนเมื่อทำได้
+3. apply log/PITR ถึง approved point โดยเก็บ start/end/watermark และ tool result
+4. จำกัด access, rotate/revoke temporary credential และป้องกัน outbound delivery
+   จาก restored copy
+5. execution fail ให้หยุด Preserve logs และห้าม retry ต่าง target/point โดยไม่มี
+   updated decision
+
+**Expected result:** restored target มี provenance และไม่สร้าง side effect
+ภายนอก
+
+### 7. Validate, Reconcile and Return Service
+
+**Responsible:** Database/Storage Owner, Domain/Data Owner, Operations Owner
+
+1. ตรวจ database/storage integrity, schema/version, row/object/control totals
+   และ cross-Tenant isolation
+2. Domain/Data Owner ตรวจ representative business records และ domain totals
+3. คำนวณ achieved recovery point/time เทียบ approved RPO/RTO โดยบันทึก variance
+4. เปิด service/integration/job ตาม controlled sequence และ monitor regression
+5. Failed/variance ที่ยังไม่ยอมรับห้าม Passed/Close; เปิด remediation/risk
+   decision
+
+**Expected result:** service กลับใช้เมื่อ technical/business reconciliation ผ่าน
+
+### 8. Perform Recovery Test and Close Evidence
+
+**Responsible:** Operations Owner, Admin, Domain/Data Owner, Manager A1
+
+1. สร้าง test plan ระบุ scope, recovery point, target, expected RPO/RTO และ
+   success criteria โดยไม่ใช้ production delivery channel
+2. approve แล้ว execute ขั้นตอน restore/validation/reconciliation
+   แบบเดียวกับจริง
+3. บันทึก actual timeline, gaps, failure, workaround และ corrective action owner
+4. rerun หลัง correction; ห้ามแก้ Failed result เดิมเป็น Passed
+5. close เมื่อ evidence package, Domain/Data Owner acceptance และ follow-up ครบ
+
+**Expected result:** มีหลักฐานล่าสุดว่ากู้คืนได้จริงตาม approved target
+
+## Control Points
+
+| Control                        | Requirement                                                             | Evidence                                         |
+| ------------------------------ | ----------------------------------------------------------------------- | ------------------------------------------------ |
+| Versioned operations config    | monitor/threshold/route/backup/recovery plan มี owner/version           | configuration snapshot and approval/change event |
+| Freshness and signal integrity | No Data ไม่เท่ากับ Healthy; signal มี source/time/correlation           | metric/log watermark and alert rule result       |
+| Backup verification            | Succeeded ต้องผ่าน manifest/checksum/scope/control checks ก่อน Verified | job, manifest, checksum and verification result  |
+| Restore authority and SoD      | scope/point/target ชัด; production/high-risk ใช้ A1/A2 และ executor แยก | request, approvals and execution identity        |
+| Restored-copy containment      | จำกัด access/outbound/integration และ temporary credential              | isolation/access/credential events               |
+| Technical/business validation  | integrity/schema/totals/isolation และ Domain Owner acceptance           | pre/post reconciliation and acceptance           |
+| RPO/RTO evidence               | เทียบ approved target ไม่สมมติตัวเลขหรือปิด variance เงียบ              | recovery point/timeline/variance/risk decision   |
+| Immutable failure history      | Failed job/test/restore คงเดิม; correction ใช้ rerun/linked event       | original/retry/corrective-action links           |
+
+## Exceptions
+
+- **No Data/stale metric:** ถือว่า monitoring impaired เปิด alert และใช้
+  secondary check; ห้ามสรุป Healthy
+- **Alert storm/duplicate:** group ด้วย correlation rule โดยคง first/last/count;
+  ห้ามปิดเหตุจริงเพียงเพราะแจ้งซ้ำ
+- **Backup Failed/Quarantined:** rerun ตาม runbook เปิด exception
+  เมื่อเสี่ยงพลาด approved recovery window และห้ามใช้กู้คืน
+- **ไม่มี Verified recovery point:** escalate Operations Owner/Manager;
+  ห้ามเลือก backup ที่ไม่ verify โดยไม่ recorded emergency risk decision
+- **Restore ผิด scope/target:** หยุดทันที preserve evidence และตรวจ containment;
+  ห้ามดำเนินต่อด้วยการแก้ค่าหน้างาน
+- **RPO/RTO ไม่ผ่าน:** result เป็น Failed/variance พร้อม corrective action หรือ
+  approved residual risk; ห้าม mark Passed
+- **พบ security compromise:** isolate evidence/credential และส่ง SOP-SEC-002
+  ควบคู่ CTRL-EXC-001
+- **Business totals ไม่ตรง:** คง service/read path ตาม decision เปิด
+  reconciliation exception และห้าม Domain Owner acceptance แทนด้วย Operator
+
+## Completion Checklist
+
+- [ ] component/environment/service tier และ owner ครบ
+- [ ] monitor/alert/backup/recovery config มี approved version
+- [ ] alert มี source/time/correlation/severity/disposition
+- [ ] P1/P2 เปิด CTRL-EXC-001 และรักษา SLA/evidence
+- [ ] backup มี manifest/checksum/scope/control totals และเป็น Verified
+- [ ] restore ระบุ target/recovery point/scope และ A1/A2 ตาม risk
+- [ ] requester/approver/executor/validator แยก actor
+- [ ] restored copy จำกัด access/outbound/integration/temporary credential
+- [ ] technical integrity และ business/control totals reconcile
+- [ ] achieved RPO/RTO เทียบ approved policy พร้อม variance
+- [ ] Failed result คง immutable และ correction ผ่าน linked rerun
+
+## Related Documents
+
+- [Tenant Onboarding, Package & User Limit](/docs/sops/tenant-onboarding)
+- [Shared Master Data Management](/docs/sops/shared-master-data)
+- [User, Role & Access Management](/docs/sops/access-management)
+- [Reports, Export & Audit Review](/docs/sops/reports-audit)
+- [Retention and Disposal of Audit Evidence](/docs/sops/retention-disposal)
+- [Role & Permission Alignment](/docs/sops/governance/role-permission-alignment)
+- [Exception & Escalation Matrix](/docs/sops/governance/exception-escalation)
+- [SOP UAT Scenarios & Test Cases](/docs/sops/governance/uat-test-cases)
+
+## Requirement Traceability
+
+| SOP Area                                      | Source                                                        |
+| --------------------------------------------- | ------------------------------------------------------------- |
+| System health, concurrent users and error log | ALT Pro - P3 (MatterSolv).xlsx, sheet Sub-Module, แถว 232-235 |
+| Backup, recovery and recovery testing         | ไฟล์เดียวกัน, แถว 266-269                                     |
+| Operational monitoring and recovery workflow  | Manao Software Project Proposal, หน้า 63-67                   |
+| Cloud backup/PITR/logging/monitoring baseline | ERP Web Application on Google Cloud.jpeg                      |
+| Security, retention and incident boundaries   | Architecture; SOP-SEC-001; SOP-AUD-001; CTRL-EXC-001          |
+
+## Approval Record
+
+- Manager A1 และ Admin A2 อนุมัติ
+- Effective Date: 14 July 2026

@@ -35,24 +35,25 @@ Open, Contained, In Remediation, Resolved, Closed และ Cancelled โดย 
 
 ## Escalation Matrix
 
-| Domain / Trigger                           | First Owner         | Decision Authority                                           | Mandatory Escalation / Evidence                                     |
-| ------------------------------------------ | ------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------- |
-| Client duplicate/merge uncertainty         | Manager             | Manager + Data Owner when material                           | Candidate score, dependency and decision reason                     |
-| Conflict/Risk/Prohibited finding           | Responsible Lawyer  | Manager A1 + Manager A2 for High; no override for Prohibited | Assessment and decision event                                       |
-| Matter deadline/status/closure blocked     | Manager             | Manager per DEC-MAT-012                                      | Deadline impact, transition request and notice                      |
-| Wrong document version/signature/share     | Document Owner      | Manager + Admin if external/sensitive                        | Revoke, recipients, checksum and incident                           |
-| Calendar conflict/external sync failure    | Task/Calendar Owner | Manager for deadline impact                                  | Conflict, retries, manual confirmation                              |
-| Time overlap/approval/billing lock issue   | Timekeeper/Manager  | alternate Manager; Finance when billing affected             | source events, before/after, lock and billing reconciliation        |
-| Quotation pricing/approval inconsistency   | Finance             | Manager                                                      | Version, price source, discount and client state                    |
-| Invoice/payment/refund discrepancy         | Finance             | Manager; Admin for suspected fraud                           | Reconciliation, before/after and posting IDs                        |
-| Journal/tax/FX/period/reconciliation issue | Finance             | Manager A1 + Manager A2 for close/reopen/high-risk           | Source/master versions, balanced lines, reversal and close evidence |
-| Payroll error/leave balance dispute        | HR                  | Manager A1; Admin A2 for privileged/org-wide payroll         | Correction run, before/after balance and approval reference         |
-| Personnel identity/lifecycle mismatch      | HR                  | alternate Manager; Admin for access containment              | employee revision, effective event and reconciliation result        |
-| Tenant verification/package/limit issue    | Platform Owner      | Manager + Admin for suspension/termination                   | verification, entitlement/seat counts, revoke/export/hold           |
-| Unauthorized/privileged access anomaly     | Admin               | Manager + Admin                                              | Lock/revoke events, scope and session activity                      |
-| Report mismatch/sensitive export           | Report Owner        | Manager + Admin when exposed                                 | Filter snapshot, rows, recipient and revocation                     |
-| Legal Hold/disposal conflict               | Admin               | Manager A1 + Admin A2                                        | Hold search, population and disposal block                          |
-| Audit event integrity/correction failure   | Admin               | Manager + Admin                                              | Integrity result, original/correction reference                     |
+| Domain / Trigger                                    | First Owner         | Decision Authority                                           | Mandatory Escalation / Evidence                                     |
+| --------------------------------------------------- | ------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------- |
+| Client duplicate/merge uncertainty                  | Manager             | Manager + Data Owner when material                           | Candidate score, dependency and decision reason                     |
+| Conflict/Risk/Prohibited finding                    | Responsible Lawyer  | Manager A1 + Manager A2 for High; no override for Prohibited | Assessment and decision event                                       |
+| Matter deadline/status/closure blocked              | Manager             | Manager per DEC-MAT-012                                      | Deadline impact, transition request and notice                      |
+| Wrong document version/signature/share              | Document Owner      | Manager + Admin if external/sensitive                        | Revoke, recipients, checksum and incident                           |
+| Calendar conflict/external sync failure             | Task/Calendar Owner | Manager for deadline impact                                  | Conflict, retries, manual confirmation                              |
+| Time overlap/approval/billing lock issue            | Timekeeper/Manager  | alternate Manager; Finance when billing affected             | source events, before/after, lock and billing reconciliation        |
+| Quotation pricing/approval inconsistency            | Finance             | Manager                                                      | Version, price source, discount and client state                    |
+| Invoice/payment/refund discrepancy                  | Finance             | Manager; Admin for suspected fraud                           | Reconciliation, before/after and posting IDs                        |
+| Journal/tax/FX/period/reconciliation issue          | Finance             | Manager A1 + Manager A2 for close/reopen/high-risk           | Source/master versions, balanced lines, reversal and close evidence |
+| Payroll error/leave balance dispute                 | HR                  | Manager A1; Admin A2 for privileged/org-wide payroll         | Correction run, before/after balance and approval reference         |
+| Personnel identity/lifecycle mismatch               | HR                  | alternate Manager; Admin for access containment              | employee revision, effective event and reconciliation result        |
+| Tenant verification/package/limit issue             | Platform Owner      | Manager + Admin for suspension/termination                   | verification, entitlement/seat counts, revoke/export/hold           |
+| Shared master duplicate/dependency/activation issue | Data Steward        | Manager A1 + Admin A2 for platform-wide/rollback             | source/version, candidates, population, before/after and rollback   |
+| Unauthorized/privileged access anomaly              | Admin               | Manager + Admin                                              | Lock/revoke events, scope and session activity                      |
+| Report mismatch/sensitive export                    | Report Owner        | Manager + Admin when exposed                                 | Filter snapshot, rows, recipient and revocation                     |
+| Legal Hold/disposal conflict                        | Admin               | Manager A1 + Admin A2                                        | Hold search, population and disposal block                          |
+| Audit event integrity/correction failure            | Admin               | Manager + Admin                                              | Integrity result, original/correction reference                     |
 
 ## Immediate Actions
 

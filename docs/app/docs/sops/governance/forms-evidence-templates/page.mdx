@@ -55,6 +55,7 @@ fields/authority/evidence ต้องเพิ่ม Version ในแถวท
 | FRM-HR-001  | Payroll Run & Leave Request       | HR             | 1.0     | Approved | 14 July 2026 | SOP-HR-001   | Calculation snapshot, A1/A2/post, correction/export, payslip and leave balance events      |
 | FRM-HR-002  | Personnel Lifecycle Record        | HR             | 1.0     | Approved | 14 July 2026 | SOP-HR-002   | Employee identity, assignment, effective event, approval, revision and reconciliation      |
 | FRM-ADM-001 | Tenant Lifecycle & Package Change | Platform Owner | 1.0     | Approved | 14 July 2026 | SOP-ADM-001  | Organization/domain verification, package/seat entitlement, approval, status and retention |
+| FRM-ADM-002 | Shared Master Data Change         | Platform Owner | 1.0     | Approved | 14 July 2026 | SOP-ADM-002  | Canonical identity, source/version, dependency, approval, activation and rollback          |
 | FRM-SEC-001 | Access Request & Recertification  | Admin          | 1.0     | Approved | 14 July 2026 | SOP-SEC-001  | Role/action/scope, SoD, expiry, grant/revoke snapshot                                      |
 | FRM-REP-001 | Report, Audit Review & Export     | Manager        | 1.0     | Approved | 14 July 2026 | SOP-REP-001  | Filter/as-of, validation, findings, recipient/export log                                   |
 | FRM-AUD-001 | Legal Hold / Disposal Certificate | Admin          | 1.0     | Approved | 14 July 2026 | SOP-AUD-001  | Search population, holds, A1/A2, destruction evidence                                      |
@@ -279,6 +280,23 @@ fields/authority/evidence ต้องเพิ่ม Version ในแถวท
 - lifecycle/package action, before/after entitlement/status, reason และ notice
 - remediation, export/checksum/acceptance, session/integration revoke, retention
   และ Legal Hold result
+
+## FRM-ADM-002 Shared Master Data Change
+
+- Master Request ID, master type และ Platform Shared/Tenant Extension scope
+- canonical ID/code/name, aliases, parent/hierarchy และ replacement ID
+- Court/jurisdiction/police-station authority/location หรือ case type/code
+  fields
+- authoritative source, source date/version, evidence checksum และ Data Steward
+- duplicate candidates, hierarchy/effective-period/Tenant-boundary validation
+- affected domains, dependency population, mapping/migration, notice และ
+  rollback
+- requester, steward, Manager A1, Admin A2, executor, exact version และ
+  idempotency key
+- before/after, Scheduled/Active/Inactive/Superseded event และ effective time
+- import batch/schema/checksum, accepted/rejected/control totals และ retry
+  result
+- exception/rollback decision และ post-change reconciliation
 
 ## FRM-SEC-001 Access Request & Recertification
 

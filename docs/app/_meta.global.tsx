@@ -35,6 +35,7 @@ export default {
           'personnel-lifecycle': 'Personnel Lifecycle & Employee Data',
           'payroll-leave': 'Payroll & Leave Management',
           'tenant-onboarding': 'Tenant Onboarding & Package',
+          'shared-master-data': 'Shared Master Data Management',
           'access-management': 'User, Role & Access Management',
           'reports-audit': 'Reports, Export & Audit Review',
           'retention-disposal': 'Retention & Disposal',

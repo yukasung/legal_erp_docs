@@ -1,0 +1,252 @@
+# Client Portal & Feedback Management
+
+| Document Control        | Value                 |
+| ----------------------- | --------------------- |
+| SOP ID                  | SOP-CLI-002           |
+| Status                  | Approved              |
+| Version                 | 1.0                   |
+| Process Owner           | Client Service Owner  |
+| System Owner            | Admin                 |
+| Approver                | Manager A1 + Admin A2 |
+| Effective Date          | 14 July 2026          |
+| Last Requirement Review | 14 July 2026          |
+
+> **Approval notice:** Portal membership, Client-only publication, feedback/
+> survey, withdrawal และ access evidence ได้รับการอนุมัติเมื่อ 14 July 2026
+
+## Purpose
+
+กำหนดวิธีเชิญและดูแล Client Portal user เผยแพร่ข้อมูล Matter/Document/Invoice
+เฉพาะที่อนุมัติ รับ feedback และถอนการเผยแพร่โดยไม่เปิดเผยข้อมูลข้าม Client,
+Matter หรือ Tenant และไม่แก้ source record
+
+## Scope
+
+ครอบคลุม Portal invitation/identity binding, Client/Matter authorization,
+portal membership, publication snapshot, case status/timeline summary,
+approved document/invoice view/download, notification, feedback/survey,
+acknowledgment/action, correction, suspension/revoke และ portal access evidence
+
+ไม่ครอบคลุม Client master/VIP/Retainer ใน SOP-CLI-001, Matter status decision ใน
+SOP-MAT-002, Document approval/version ใน SOP-DOC-001, Invoice/payment posting
+ใน SOP-BIL-002 หรือ user-support ticket ใน SOP-SUP-001 Portal action ไม่ให้
+สิทธิ์แก้ source record โดยอัตโนมัติ
+
+## Roles
+
+| Role                 | Responsibility                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------ |
+| Client Contact       | รับ invitation, ยืนยันตัวตน, ดู published items และส่ง feedback ของ Client ตน             |
+| Responsible Lawyer   | เลือก Matter/status/document ที่เหมาะสมและรับผิดชอบคำอธิบาย/feedback                       |
+| Client Service Owner | เป็น process owner ตรวจ relationship, publication purpose และ service response             |
+| Document Owner       | ยืนยัน Approved/Signed document version และ external-share boundary                        |
+| Finance              | ยืนยัน invoice/payment view และ financial communication โดยไม่เปิด ledger/internal note    |
+| Manager A1           | อนุมัติ initial/high-risk/sensitive publication และ feedback escalation                     |
+| Admin A2             | อนุมัติ Restricted/Privileged external access และแยกจาก executor                           |
+| Admin/System         | bind membership/publish/withdraw/revoke หลัง approval และเก็บ access events                 |
+
+## Approved Status Baseline
+
+### Portal Membership
+
+Invited, Active, Locked, Suspended, Revoked และ Expired
+
+### Portal Publication
+
+Draft, Pending Approval, Approved, Published, Withdrawn และ Superseded
+
+### Feedback Response
+
+Submitted, Acknowledged, In Review, Actioned, Closed และ Withdrawn
+
+- Active membership ไม่ทำให้เห็นทุก Matter ของ Client
+- Approved publication ยังไม่แสดงจน Published
+- Withdrawn/Superseded ห้าม download ใหม่ แต่คง access/publication history
+- Feedback ไม่เปลี่ยน Matter/Document/Billing status อัตโนมัติ
+
+## Approved Control Decision
+
+| Decision ID | Approved Outcome                                                                                                                                                                                                                                                  |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DEC-CLI-006 | Portal user bind กับ verified Client Contact/Tenant และ explicit Matter scope; publish exact approved source snapshot ตาม classification/expiry; Restricted/Privileged ใช้ A1/A2; list/search/download/notification ไม่รั่ว metadata; feedback แยกจาก source workflow; withdraw/revoke คง immutable history และ active session ถูกตัด |
+
+## Required Information
+
+- Portal Request/Membership ID, Tenant, Client ID, contact identity/email/phone,
+  relationship/authority evidence, invitation/verification/expiry
+- allowed Matter IDs, role/purpose, start/end, terms/privacy acceptance และ MFA
+  เมื่อ policy กำหนด
+- Publication ID/type, source record/version/checksum/status/classification,
+  title/summary fields, recipient scope, expiry/download policy
+- requester, Responsible Lawyer/Document Owner/Finance, A1/A2, executor,
+  expected version/idempotency key และ timestamps
+- feedback/survey ID/version/questions, response/classification, acknowledgment,
+  owner/action/due date, consent/contact preference และ withdrawal
+- access/download/denied/notification events, session/revoke result และ exception
+
+## Procedure
+
+### 1. Request and Verify Portal Membership
+
+**Responsible:** Client Service Owner, Client Contact
+
+1. เลือก Active Client/contact และตรวจ duplicate portal membership
+2. บันทึก relationship/authority, allowed Matters, purpose, term และ contact
+3. ส่ง expiring invitation ผ่าน verified channel โดยไม่เปิดเผย Matter metadata
+4. Client Contact ยืนยัน identity, terms/privacy และ MFA ตาม policy
+5. failed/expired verification คง Invited/Expired ไม่มี portal access
+
+**Expected result:** membership ผูก Client/contact/Tenant/Matter ที่ยืนยันแล้ว
+
+### 2. Approve and Activate Membership
+
+**Responsible:** Manager A1, Admin A2, Admin/System
+
+1. ตรวจ Client/contact/Matter relationship, classification และ conflict/restriction
+2. initial/sensitive/multi-Matter access ใช้ A1; Restricted/Privileged ใช้ A1+A2
+3. requester/approver/executor แยกตาม risk
+4. System activate exact membership scope และสร้าง portal identity/session boundary
+5. ทดสอบ allowed/denied Matter โดยไม่เปิดเผยชื่อ/count ของ record ที่ห้ามเห็น
+
+**Expected result:** Active membership เห็นเฉพาะ explicit authorized scope
+
+### 3. Prepare Publication Snapshot
+
+**Responsible:** Responsible Lawyer, Document Owner, Finance
+
+1. เลือก source record exact version ที่อยู่ใน allowed Matter
+2. Matter summary ใช้ approved client-facing status/fields; ตัด internal note/risk
+3. Document ต้อง Approved/Signed และผ่าน external-share/recipient review
+4. Invoice/payment view ใช้ Posted/client-facing values และไม่แสดง internal ledger
+5. freeze publication snapshot/checksum/classification/expiry เป็น Draft
+
+**Expected result:** Portal content แยกจาก live internal record และตรวจ version ได้
+
+### 4. Approve and Publish
+
+**Responsible:** Manager A1/Admin A2, Admin/System
+
+1. ตรวจ recipient membership, Matter scope, source status/version และ expiry
+2. Restricted/Privileged external publication ใช้ A1+A2
+3. System publish exact snapshot ด้วย idempotency key และสร้าง event
+4. ส่ง notification ที่ไม่เปิดเผย sensitive title/content นอก portal
+5. Client Contact เห็น/download ตาม policy พร้อม access log
+
+**Expected result:** Published content ถูก recipient/version และไม่ส่งซ้ำจาก retry
+
+### 5. Maintain, Supersede or Withdraw Publication
+
+**Responsible:** Source Owner, Client Service Owner, System
+
+1. source version/status เปลี่ยนไม่เขียนทับ Published snapshot
+2. สร้าง publication ใหม่และ mark เดิม Superseded เมื่อ replace
+3. wrong recipient/content, expiry หรือ revoked source ให้ Withdraw ทันทีตาม
+   authority และตัด download token/cache
+4. แจ้ง Client Contact เมื่อจำเป็นโดยไม่เปิดเผย correction เกิน scope
+5. คง original publication/access/download/withdrawal events
+
+**Expected result:** portal current view ถูกต้องและประวัติไม่ถูกลบ
+
+### 6. Receive and Process Feedback
+
+**Responsible:** Client Contact, Client Service Owner, Responsible Lawyer
+
+1. แสดง approved survey/version/purpose และ consent/contact preference
+2. Client ส่ง response โดยผูก Client/Matter/publication เมื่อได้รับอนุญาต
+3. classify response, acknowledge และ assign owner/due date
+4. complaint/deadline/legal/billing/security issue ส่ง domain/CTRL-EXC-001
+5. action/closure ต้องมี response/communication; ห้าม auto-change source status
+
+**Expected result:** feedback มี owner/action/evidence และแยกจาก decision record
+
+### 7. Suspend, Revoke or Expire Portal Access
+
+**Responsible:** Client Service Owner, Manager/Admin, System
+
+1. ตรวจ relationship end, contact change, Client/Matter restriction หรือ anomaly
+2. Suspended ใช้ชั่วคราว; revoke/expiry ตัด session/token/download/integration
+3. ถอน active publications เมื่อ authority/scope หมด พร้อม preserve history
+4. urgent security/privacy action ทำ containment ก่อนและ complete approval review
+5. reactivation ต้อง identity/scope/source readiness และ approval ใหม่
+
+**Expected result:** ผู้ใช้ที่หมดสิทธิ์เข้าถึงไม่ได้และหลักฐานเดิมคงอยู่
+
+### 8. Review Portal Access and Service Evidence
+
+**Responsible:** Client Service Owner, Manager, Auditor
+
+1. review active memberships, scopes, expiries, publications และ denied access
+2. sample source/publication version/checksum และ recipient authorization
+3. review feedback acknowledgment/action/overdue/escalation
+4. reconcile notifications/downloads/withdrawals/revoked sessions
+5. เปิด correction/exception และ recertify/revoke ตามผล
+
+**Expected result:** portal population/current access/service response ถูกทบทวน
+
+## Control Points
+
+| Control                      | Requirement                                                                 | Evidence                                             |
+| ---------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Verified identity/binding    | contact/Tenant/Client/relationship/invitation verification ครบ              | membership and verification events                   |
+| Explicit Matter scope        | Active membership ไม่ให้ implicit access ทุก Client Matter                  | allowed Matter IDs and denied-isolation test         |
+| Exact publication snapshot   | approved source version/checksum/classification/expiry ถูก freeze            | source/publication linkage and checksum              |
+| External approval            | sensitive ใช้ A1; Restricted/Privileged ใช้ A1+A2 และ executor แยก           | approval and publication actor events                |
+| Metadata-safe delivery       | list/search/notification/denied response ไม่เผยข้อมูลนอก scope               | rendered-field policy and negative-test result       |
+| Source immutability          | portal update/feedback ไม่เขียนทับ Matter/Document/Invoice                   | original/current publication and domain events       |
+| Withdrawal/revoke            | block session/token/download/cache แต่คง history                             | revoke/withdraw/access events                        |
+| Feedback accountability      | survey version, acknowledgment, owner, due/action/closure และ escalation      | response and communication/action trail              |
+
+## Exceptions
+
+- **Contact/relationship ไม่ยืนยัน:** ไม่ activate/invite ใหม่จน evidence ผ่าน
+- **Cross-Client/Matter/Tenant request:** deny ทั้ง content/metadata และเปิด
+  security/privacy review
+- **Source ไม่ Approved/Posted หรือ version เปลี่ยน:** block publish หรือสร้าง
+  new snapshot/reapproval ห้าม live overwrite
+- **ส่งผิด recipient/content:** withdraw/revoke token/session preserve evidence
+  และประเมิน privacy incident
+- **Notification fail:** publication state คงตามจริง retry ผ่าน SOP-SUP-001;
+  ห้าม mark Delivered
+- **Feedback มี deadline/complaint/security/payment:** route owner/exception;
+  ห้ามปิดด้วย acknowledgment อย่างเดียว
+- **Client ขอแก้ข้อมูล:** ใช้ SOP-CLI-001 หรือ SOP-SEC-002 privacy request
+- **Portal compromise:** suspend/revoke credential/session และ CTRL-EXC-001
+
+## Completion Checklist
+
+- [ ] Client/contact/Tenant/relationship/allowed Matters ยืนยันครบ
+- [ ] invitation expiry/identity/terms/privacy/MFA ตาม policy ผ่าน
+- [ ] membership/publication authority และ A1/A2 ตาม classification ครบ
+- [ ] source exact version/status/checksum และ client-facing field set ถูกต้อง
+- [ ] internal note/risk/ledger/other-client metadata ไม่ถูกเผยแพร่
+- [ ] notification/download/access/denied events ตรวจย้อนหลังได้
+- [ ] update ใช้ supersede/withdraw ไม่เขียนทับ source/snapshot เดิม
+- [ ] feedback survey/version/owner/due/action/escalation ครบ
+- [ ] suspend/revoke/expiry ตัด session/token/download/cache
+- [ ] recertification/reconciliation ผ่านและ exception มี owner
+
+## Related Documents
+
+- [Client Registration & Maintenance](/docs/sops/client-registration)
+- [Matter Operations & Status Maintenance](/docs/sops/matter-operations)
+- [Document & Template Management](/docs/sops/document-management)
+- [Invoice, Payment & Adjustment](/docs/sops/invoice-payment)
+- [User, Role & Access Management](/docs/sops/access-management)
+- [Security & Privacy Compliance Operations](/docs/sops/security-privacy)
+- [Reports, Export & Audit Review](/docs/sops/reports-audit)
+- [Exception & Escalation Matrix](/docs/sops/governance/exception-escalation)
+- [SOP UAT Scenarios & Test Cases](/docs/sops/governance/uat-test-cases)
+
+## Requirement Traceability
+
+| SOP Area                                     | Source                                                                    |
+| -------------------------------------------- | ------------------------------------------------------------------------- |
+| Client Portal and Client-only record access | ALT Pro - P3 (MatterSolv).xlsx, sheet Sub-Module, แถว 87-88               |
+| Client email/notification and feedback      | ไฟล์เดียวกัน, แถว 106-110                                                 |
+| Portal login, feedback and client documents | Manao Software Project Proposal, หน้า 36-37                               |
+| Portal case/document/invoice view           | PMUC proposal, หน้า 28, 31, 33 และ 35                                    |
+
+## Approval Record
+
+- Manager A1 และ Admin A2 อนุมัติ
+- Effective Date: 14 July 2026

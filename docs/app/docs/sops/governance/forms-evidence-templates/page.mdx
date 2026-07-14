@@ -44,6 +44,7 @@ fields/authority/evidence ต้องเพิ่ม Version ในแถวท
 | Template ID | Template                          | Owner          | Version | Status   | Effective    | Used By      | Minimum Evidence                                                                           |
 | ----------- | --------------------------------- | -------------- | ------- | -------- | ------------ | ------------ | ------------------------------------------------------------------------------------------ |
 | FRM-CLI-001 | Client Registration & Maintenance | Manager        | 1.0     | Approved | 14 July 2026 | SOP-CLI-001  | Search result, duplicate score, approval, before/after                                     |
+| FRM-CLI-002 | Portal Publication & Feedback      | Client Service | 1.0     | Approved | 14 July 2026 | SOP-CLI-002  | Verified membership, publication snapshot, feedback/action and revocation evidence         |
 | FRM-MAT-001 | Matter Intake & Decision          | Manager        | 1.0     | Approved | 14 July 2026 | SOP-MAT-001  | Conflict/risk assessment, acceptance, commercial gate                                      |
 | FRM-MAT-002 | Matter Status Transition          | Manager        | 1.0     | Approved | 14 July 2026 | SOP-MAT-002  | From/to status, reason, authority, transition event                                        |
 | FRM-DOC-001 | Document Review, Sign & Share     | Manager        | 1.0     | Approved | 14 July 2026 | SOP-DOC-001  | Version/checksum, review, signature/share recipient                                        |
@@ -57,7 +58,10 @@ fields/authority/evidence ต้องเพิ่ม Version ในแถวท
 | FRM-ADM-001 | Tenant Lifecycle & Package Change | Platform Owner | 1.0     | Approved | 14 July 2026 | SOP-ADM-001  | Organization/domain verification, package/seat entitlement, approval, status and retention |
 | FRM-ADM-002 | Shared Master Data Change         | Platform Owner | 1.0     | Approved | 14 July 2026 | SOP-ADM-002  | Canonical identity, source/version, dependency, approval, activation and rollback          |
 | FRM-OPS-001 | Platform Operation & Recovery     | Operations     | 1.0     | Approved | 14 July 2026 | SOP-OPS-001  | Alert/job evidence, verified backup, restore authority, reconciliation and RPO/RTO result  |
+| FRM-INT-001 | Integration Lifecycle & Activation | Integration   | 1.0     | Approved | 14 July 2026 | SOP-INT-001  | Contract/schema, sandbox/UAT, credential reference, activation, monitoring and retirement  |
 | FRM-SEC-001 | Access Request & Recertification  | Admin          | 1.0     | Approved | 14 July 2026 | SOP-SEC-001  | Role/action/scope, SoD, expiry, grant/revoke snapshot                                      |
+| FRM-SEC-002 | Security, Privacy & Finding        | Security       | 1.0     | Approved | 14 July 2026 | SOP-SEC-002  | Control evidence, privacy population/decision, finding, remediation, verification and risk |
+| FRM-SUP-001 | Communication & Support Ticket     | Service Support | 1.0    | Approved | 14 July 2026 | SOP-SUP-001  | Template/audience/delivery, ticket SLA/events, knowledge source and human handoff           |
 | FRM-REP-001 | Report, Audit Review & Export     | Manager        | 1.0     | Approved | 14 July 2026 | SOP-REP-001  | Filter/as-of, validation, findings, recipient/export log                                   |
 | FRM-AUD-001 | Legal Hold / Disposal Certificate | Admin          | 1.0     | Approved | 14 July 2026 | SOP-AUD-001  | Search population, holds, A1/A2, destruction evidence                                      |
 | FRM-EXC-001 | Exception & Escalation Record     | Manager        | 1.0     | Approved | 14 July 2026 | CTRL-EXC-001 | Severity, impact, containment, owner, approvals                                            |
@@ -158,6 +162,42 @@ fields/authority/evidence ต้องเพิ่ม Version ในแถวท
 - Requester, reviewer, approver, before/after snapshot and effective date
 - Interaction/Note confidentiality, access scope and retention trigger when
   applicable
+
+## FRM-CLI-002 Portal Publication & Feedback
+
+- Verified contact, Tenant/Client/Matter scope, invitation, expiry and membership status
+- Publication type, exact source ID/version/checksum, classification and approved audience
+- A1/A2 decision for Restricted, Privileged or externally sensitive publication
+- Published/withdrawn/superseded event, active sessions/tokens and revocation result
+- Feedback/survey version, response, acknowledgement, owner, action and escalation reference
+- Access/download/delivery evidence without exposing protected metadata
+
+## FRM-INT-001 Integration Lifecycle & Activation
+
+- Provider/system, business owner, purpose, data classes and Tenant/domain scope
+- Contract, endpoint, schema and documentation versions; rate, timeout and retry rules
+- Authentication method and credential reference only; never store a raw secret in the form
+- Security/provider review, sandbox cases, reconciliation totals and UAT decision
+- A1/A2 approval, activation window, monitoring/correlation and rollback plan
+- Change/rotation/suspension/retirement result, consumer notice and final reconciliation
+
+## FRM-SEC-002 Security, Privacy & Finding
+
+- Asset/data class, control owner, encryption/secret/configuration evidence and review time
+- Privacy requester identity proof, request scope, search population and applicable restriction
+- Redaction, Legal Hold, privilege and disclosure/deletion decision with authority
+- Audit/scan authorization, tool/rule version, finding ID, severity and affected scope
+- Containment, remediation owner/due date, independent verification and closure evidence
+- Risk acceptance rationale, compensating control, A1/A2, expiry and automatic reopen result
+
+## FRM-SUP-001 Communication & Support Ticket
+
+- Template/version, channel, purpose, classification, audience query/snapshot and preferences
+- Correlation/message IDs, queued/sent/delivered/failed/suppressed totals and retry evidence
+- Communication log revision, related Client/Matter/Ticket and access scope
+- Ticket category, severity, SLA timestamps, owner, escalation and resolution evidence
+- Knowledge article source/version, reviewer, approval, expiry and superseding article
+- Chatbot source/citation, confidence, prohibited-action check and human handoff reference
 
 ## FRM-MAT-001 Matter Intake & Decision
 

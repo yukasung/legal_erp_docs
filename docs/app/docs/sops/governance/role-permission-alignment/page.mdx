@@ -103,10 +103,16 @@ responsibility ต้องได้รับ runtime role/grant แยกตา
 | Monitor/alert triage                | Operator/Operations Owner                            | Operations Owner; P1/P2 ใช้ CTRL-EXC-001                  | versioned signal, freshness, correlation, severity and disposition |
 | Backup run/verification             | System runs; Database/Storage Owner verifies         | Operations Owner                                          | manifest/checksum/scope/control totals; Succeeded is not Verified  |
 | Restore/PITR/recovery test          | Admin/Database Owner execute                         | Manager A1; production/high-risk ใช้ Admin A2             | scoped target/point, executor separation, validation and RPO/RTO   |
+| API integration activate/change/retire | Integration Owner/Admin execute                   | Manager A1; external/high-risk ใช้ Admin A2                | contract/schema, sandbox/UAT, scoped credential, reconciliation and revoke |
 | Standard user/role grant            | Admin execute                                        | Manager/Tenant Authority                                  | Requester/approver/executor IDs                                    |
 | Standard individual permission      | Admin execute                                        | Manager                                                   | Scope, reason, expiry and revoke event                             |
 | Privileged permission               | Admin execute                                        | Manager A1 + Admin A2                                     | Expiry, SoD check and auto-revoke                                  |
 | Emergency Access                    | Admin execute                                        | Authorized Manager                                        | Time bound, Acting Role, session review                            |
+| Portal membership/publication       | Client Service prepares; System publishes/revokes   | Manager A1; Restricted/Privileged ใช้ Admin A2             | verified contact, exact Tenant/Client/Matter scope and source version |
+| Portal feedback/action              | Client submits; Client Service acknowledges/actions | Manager when complaint/deadline/security escalation applies | response remains separate from source record; immutable lifecycle |
+| Encryption/privacy/security finding | Security Owner prepares; Admin/System contains      | Manager A1; disclosure/deletion/risk acceptance ใช้ Admin A2 | verified population, hold/privilege, remediation and independent verification |
+| Communication/broadcast             | Service Support prepares; System sends              | Manager A1; sensitive/high-impact broadcast ใช้ Admin A2   | approved template, minimized audience, preferences and delivery truth |
+| Support ticket/knowledge article    | Service Support owns; domain owner contributes      | Support Manager; sensitive/published guidance uses domain approver | SLA events, source version, review/expiry and human handoff |
 | Sensitive report/export             | Module-authorized user                               | Manager; Restricted/Privileged ใช้ Manager A1 + Admin A2  | Filter snapshot, purpose, recipient and expiry                     |
 | Retention disposal                  | Data Owner prepare, Admin execute                    | Manager A1 + Admin A2                                     | Legal Hold check and Destruction Certificate                       |
 
@@ -128,7 +134,7 @@ responsibility ต้องได้รับ runtime role/grant แยกตา
 | -------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------- |
 | Permission baseline เดิมให้ Admin อนุมัติ permission change ได้กว้าง | ใช้ Admin เป็น executor; privileged change ใช้ Manager A1 + Admin A2 แยกคน    | Resolved |
 | Senior Lawyer ยังไม่เป็น role แยก                                    | ใช้ Lawyer + scoped approve permission                                        | Resolved |
-| Client external role ยังไม่มี control พร้อม                          | อยู่นอก baseline; ใช้ controlled external sharing เท่านั้น                    | Resolved |
+| Client external role ไม่ควรปะปนกับ internal baseline                | ใช้ Portal Membership แยก พร้อม verified identity, scope, expiry และ revoke    | Resolved |
 | Sales role ยังไม่อยู่ใน phase ปัจจุบัน                               | ให้ Lawyer/Finance prepare และ Manager approve quotation                      | Resolved |
 | SaaS Admin กับ Tenant Admin ยังไม่แยกชื่อ                            | Admin baseline = Tenant Admin; platform support ใช้ controlled support access | Resolved |
 | Manager อาจถูกตีความว่าเห็นทุกข้อมูล                                 | ทุก permission ต้องมี Tenant/team/Matter scope                                | Resolved |

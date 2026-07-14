@@ -58,7 +58,7 @@ screen/API result, record IDs และ audit event reference ไม่ใช้
 
 | Case Prefix | Actor / Preconditions                                                 | Required Test Inputs                                                                    |
 | ----------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| CLI         | Lawyer/Assistant + Manager; Client candidates ใน Tenant A/B           | Client type, identity fields, duplicate score band and dependencies                     |
+| CLI         | Lawyer/Assistant/Client Service + Manager/Admin A2; Tenant A/B        | Client identity/duplicate plus portal contact, membership, publication and feedback     |
 | MAT         | Lawyer + Manager + Manager A2; Client Active                          | Matter type, conflict parties, risk band, SLA clock and transition                      |
 | DOC         | Assistant/Lawyer + Manager A1 + Admin A2                              | Matter access, document/version/checksum, classification and recipient                  |
 | TSK/CAL     | Assigned user + Manager; timezone/sync sandbox พร้อม                  | owner, deadline, recurrence, conflict and sync response                                 |
@@ -68,7 +68,9 @@ screen/API result, record IDs และ audit event reference ไม่ใช้
 | HR          | HR maker + Manager/Admin approvers; employee self-service accounts    | personnel identity/assignment/lifecycle plus payroll, leave, privacy and routing        |
 | ADM         | Applicant/Operator/Data Steward + Platform Owner/Manager/Admin        | tenant lifecycle plus shared-master identity, source/version, dependency and rollback   |
 | OPS         | Operator + Operations/Database Owner + Manager A1/Admin A2            | metric/log signals, alert rules, backup manifests, recovery points and control totals   |
-| SEC         | Admin executor + Manager A1/Admin A2 approvers; Tenant A/B users      | role/action/scope, expiry, MFA and session/token                                        |
+| INT         | Integration Owner + Manager A1/Admin A2; provider sandbox/stub        | contract/schema, endpoint, credential reference, retry, quota and reconciliation totals |
+| SEC         | Admin/Security Owner + Manager A1/Admin A2; Tenant A/B users          | role/action/scope, MFA/session plus control, privacy request, finding and risk expiry    |
+| SUP         | Service Support + Manager A1/Admin A2; mail/chat/helpdesk stubs        | template/audience, delivery response, ticket SLA, article version and chatbot confidence |
 | REP/AUD     | Report owner/Admin executor + Manager A1/Admin A2                     | source population, filters/as-of, expected totals and event chain                       |
 | RET         | Data Owner + dual approvers; expired/non-expired/held records         | retention rule, trigger, hold and disposal population                                   |
 | GOV/EXC     | QA Lead + document/control owners                                     | controlled document set, broken/valid samples, severity clock and escalation contacts   |
@@ -84,7 +86,7 @@ screen/API result, record IDs และ audit event reference ไม่ใช้
 
 | Fixture Prefix | Fixed Synthetic Data                                                                                                                                                           |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| FX-CLI         | Tenant UAT-A; Organization UAT Legal A Co., Ltd.; Registration UAT-REG-1001; Country TH; Email legal-a@example.test; duplicate candidate CLI-A-1001                            |
+| FX-CLI         | Tenant UAT-A; Client CLI-A-1001; contact portal-a@example.test verified; Matter UAT-MAT-1001; publication DOC-1001 v1 checksum; feedback survey v1                          |
 | FX-MAT         | Client CLI-A-1001 Active; Matter UAT-MAT-1001; type Advisory; Responsible Lawyer lawyer-a@example.test; counterparty UAT Counterparty 1; SLA start 2026-08-03T09:00:00+07:00   |
 | FX-DOC         | Matter UAT-MAT-1001; Document UAT-DOC-1001; version 1.0; classification Internal; recipient reviewer-a@example.test; share expiry 2026-08-10T17:00:00+07:00                    |
 | FX-TSK/CAL     | Matter UAT-MAT-1001; task UAT-TSK-1001 due 2026-08-05T17:00:00+07:00; appointment UAT-CAL-1001 at 2026-08-04T10:00:00+07:00; timezone Asia/Bangkok                             |
@@ -94,10 +96,12 @@ screen/API result, record IDs และ audit event reference ไม่ใช้
 | FX-HR          | EMP-A-1001 Active LEGAL-A under Manager-A; joiner EMP-J-1002; mover LEGAL-A to LEGAL-B; UAT-PR-1001 net 33,850; UAT-LV-1001 Annual 2 days                                      |
 | FX-ADM         | UAT Legal New Co., Ltd.; UAT-REG-ADM-1001; uat-new.example.test; PKG-TEAM-v1 modules MAT/DOC/TSK; user limit 2; COURT-UAT-001 v1 Active; source/checksum; one dependent Matter |
 | FX-OPS         | UAT service APP-A; alert rule OPS-RULE-v1; fixed clock 2026-08-03T09:00:00+07:00; backup BK-UAT-001; recovery point 08:55; expected rows 100/control total THB 107,000         |
-| FX-SEC         | Tenant UAT-A and UAT-B; user-a@example.test; Admin admin-a@example.test; Manager manager-a@example.test; A2 admin-a2@example.test; expiry 2026-08-04T17:00:00+07:00            |
+| FX-INT         | Connection INT-UAT-001; provider sandbox; contract/schema v1; credential REF-UAT-001; quota 100/min; timeout 30s; expected 3 records/THB 107,000                              |
+| FX-SEC         | Tenant UAT-A/B; control CTRL-UAT-001; secret REF-UAT-SEC-001; privacy request PRV-UAT-001; finding FIND-UAT-001; Manager A1/Admin A2; expiry 2026-08-04T17:00:00+07:00       |
+| FX-SUP         | Template MSG-UAT-001 v1; recipient support-a@example.test; broadcast audience 3; ticket TKT-UAT-001; article KB-UAT-001 v1; chatbot stub confidence 0.90                         |
 | FX-REP/AUD     | Report UAT-REP-1001; as-of 2026-08-03T17:00:00+07:00; three invoices; expected gross THB 107,000; immutable events EVT-1001 to EVT-1005                                        |
 | FX-RET         | Records REC-EXPIRED-01, REC-ACTIVE-01 and REC-HOLD-01; retention expiry 2026-07-31; Legal Hold HOLD-001 on REC-HOLD-01                                                         |
-| FX-GOV/EXC     | Controlled docs 24; form templates 18; valid ID SOP-MAT-001; duplicate test ID SOP-MAT-001-DUP; P1 detected 2026-08-03T09:00:00+07:00                                          |
+| FX-GOV/EXC     | Controlled docs 29; form templates 23; valid ID SOP-MAT-001; duplicate test ID SOP-MAT-001-DUP; P1 detected 2026-08-03T09:00:00+07:00                                          |
 
 Test seed ต้องใช้ reserved test identifiers และ example.test เท่านั้น
 ห้ามใช้ข้อมูล บุคคลจริง แต่ละ FX-CASE-ID clone Base Fixture แล้วใช้ delta ใน
@@ -112,6 +116,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 | CLI-04 to CLI-05 | STP-CLI-MAINT   | 1) Open source/surviving Clients and dependency count 2) submit merge/deactivate request 3) apply Scenario actor/authority 4) A1/A2 or Manager decides 5) Admin executes when approved 6) verify redirect/status/before-after events                                                                                                                                |
 | CLI-06           | STP-CLI-VIP-RET | 1) Open active Client 2) enter VIP/Retainer eligibility, period and terms 3) submit owner/approval 4) activate/renew 5) advance clock to review/expiry 6) verify lifecycle and evidence                                                                                                                                                                             |
 | CLI-07           | STP-CLI-NOTE    | 1) Create confidential Interaction/Note 2) finalize classification 3) sign in as out-of-scope user 4) attempt view/update/export 5) confirm denial 6) inspect access decision without exposed content                                                                                                                                                               |
+| CLI-08 to CLI-15 | STP-CLI-PORTAL  | 1) Client Service opens verified contact/membership 2) set exact Tenant/Client/Matter scope and publication/feedback Scenario 3) validate classification, source version and authority 4) A1/A2 decides when required 5) System publishes/withdraws/revokes/routes action 6) verify portal access, metadata safety, feedback and immutable evidence                                    |
 | MAT-01 to MAT-08 | STP-MAT-INTAKE  | 1) Open Client CLI-A-1001 2) start Matter intake 3) run duplicate/conflict/risk gates with Scenario delta 4) submit acceptance/transition 5) required A1/A2 decides 6) verify status, SLA and timeline                                                                                                                                                              |
 | MAT-09 to MAT-11 | STP-MAT-OPS     | 1) Open active/completed/closed Matter fixture 2) submit hold/resume/close/reopen request 3) load dependencies and authority 4) required approver decides 5) executor transitions or system blocks 6) verify checklist, notice and immutable event                                                                                                                  |
 | DOC-01 to DOC-07 | STP-DOC         | 1) Open Matter documents 2) create/upload FX-DOC 3) submit version/review action 4) approve/sign/share as Scenario actor 5) attempt negative/expiry/archive action 6) verify version/checksum/access events                                                                                                                                                         |
@@ -127,8 +132,11 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 | ADM-01 to ADM-10 | STP-ADM         | 1) Applicant/Operator opens onboarding or lifecycle request 2) apply identity/domain/package/seat/status Scenario delta 3) verify uniqueness, authority, dependencies and hold 4) Platform Owner/Manager/Admin decide as required 5) System provisions/changes/revokes idempotently 6) verify isolation, entitlement, counts, export/retention and immutable events |
 | ADM-11 to ADM-16 | STP-ADM-MST     | 1) Requester/Data Steward opens shared-master fixture 2) apply identity/source/hierarchy/effective/dependency Scenario delta 3) validate duplicate/scope/authority 4) Manager A1/Admin A2 decide exact version 5) System schedules/activates/deactivates/imports/rolls back 6) verify consumers, counts, snapshots and immutable events                             |
 | OPS-01 to OPS-08 | STP-OPS         | 1) Operator opens health/backup/recovery fixture 2) apply signal/job/manifest/restore Scenario delta 3) validate freshness/correlation/scope/authority 4) Operations Owner/Manager A1/Admin A2 decide as required 5) System triages/verifies/restores/reruns 6) verify isolation, integrity, business totals, RPO/RTO and immutable evidence                        |
+| INT-01 to INT-08 | STP-INT         | 1) Integration Owner opens connection/contract fixture 2) apply authorization/schema/provider/credential Scenario 3) validate scope, version, retry/quota and sandbox evidence 4) Manager A1/Admin A2 decide 5) System activates/retries/rotates/suspends/retires 6) verify idempotency, monitoring, consumer notice, reconciliation and immutable events                    |
 | SEC-01 to SEC-06 | STP-SEC         | 1) Admin opens access request 2) load FX user/role/scope 3) submit SoD/MFA validation 4) required approver decides 5) Admin grants/revokes or attempts Scenario access 6) verify Tenant denial, expiry, sessions and snapshots                                                                                                                                      |
-| REP-01 to REP-04 | STP-REP         | 1) Generate FX report 2) set filters/as-of 3) reconcile expected rows/totals 4) request export as Scenario actor 5) required authority decides/delivers 6) verify checksum, recipient and access log                                                                                                                                                                |
+| SEC-07 to SEC-14 | STP-SEC-PRV     | 1) Security Owner opens control/privacy/finding fixture 2) apply secret/request/scan/risk Scenario 3) validate identity, scope, hold/privilege and severity 4) A1/A2 decide where required 5) contain/fulfil/remediate/verify 6) confirm no raw secret/disclosure, independent evidence, expiry and immutable events                                                     |
+| SUP-01 to SUP-08 | STP-SUP         | 1) Service Support opens template/ticket/knowledge fixture 2) apply audience/delivery/SLA/chatbot Scenario 3) validate classification, preference, source and authority 4) approve/send/acknowledge/publish or hand off 5) retry/escalate/supersede as applicable 6) verify totals, clocks, citations, access scope and immutable evidence                                         |
+| REP-01 to REP-06 | STP-REP         | 1) Generate FX report 2) set filters/as-of 3) reconcile expected rows/totals 4) request export as Scenario actor 5) required authority decides/delivers 6) verify checksum, recipient and access log                                                                                                                                                                |
 | AUD-01 to AUD-03 | STP-AUD         | 1) Load EVT-1001 to EVT-1005 2) verify sequence/hash 3) introduce correction/integrity delta 4) run review 5) escalate failure or link correction 6) verify original remains immutable                                                                                                                                                                              |
 | RET-01 to RET-04 | STP-RET         | 1) Generate candidate population 2) calculate expiry 3) search dependency/Legal Hold 4) request dual approval 5) execute/block disposal per Scenario 6) verify counts, retained records and certificate                                                                                                                                                             |
 | GOV-01 to GOV-07 | STP-GOV         | 1) Load controlled set 2) run register/coverage/authority/status validation 3) introduce Scenario delta 4) attempt approve/release 5) correct or confirm block 6) verify source history and evidence                                                                                                                                                                |
@@ -145,6 +153,14 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 | CLI-05 | REQ-CLI-002 | Merge/deactivate โดยไม่มี authority               | ปฏิเสธ ไม่มีข้อมูลเปลี่ยน และมี denied event                |
 | CLI-06 | REQ-CLI-003 | สร้าง/ต่ออายุ VIP หรือ Retainer                   | eligibility, approval, period และ status history ครบ        |
 | CLI-07 | REQ-CLI-003 | เปิด confidential Interaction/Note โดยไม่มี scope | ปฏิเสธและบันทึก access decision                             |
+| CLI-08 | REQ-CLI-004 | เชิญ verified contact และ activate exact scope     | membership, Tenant/Client/Matter scope, expiry และ event ครบ |
+| CLI-09 | REQ-CLI-004 | identity หมดอายุ/ซ้ำ/ไม่ยืนยัน                    | ปฏิเสธ activation และไม่มี portal access                    |
+| CLI-10 | REQ-CLI-004 | Publish approved Matter/document/invoice snapshot  | exact source version/checksum และ metadata ที่อนุญาตเท่านั้น |
+| CLI-11 | REQ-CLI-004 | ข้าม Client/Matter/Tenant หรือ Restricted ไม่มี A2 | ปฏิเสธทั้ง content/metadata และบันทึก denied event          |
+| CLI-12 | REQ-CLI-005 | ส่ง feedback ที่ valid                              | acknowledge, owner, action และ lifecycle evidence ครบ       |
+| CLI-13 | REQ-CLI-005 | feedback เป็น complaint/deadline/security issue     | route exception โดยไม่แก้ source/business status อัตโนมัติ  |
+| CLI-14 | REQ-CLI-005 | source version เปลี่ยนหลัง publish                  | supersede/withdraw โดย snapshot เดิมยัง immutable           |
+| CLI-15 | REQ-CLI-005 | suspend/revoke portal membership                    | session/token/download ถูกตัดและมี access review evidence   |
 
 ## Matter Cases
 
@@ -286,6 +302,19 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 | OPS-07 | REQ-OPS-002 | restore/PITR ไป isolated target ด้วย A1/A2 และ executor แยก       | recovery point/target/provenance ครบ, outbound ถูก block และ technical/business totals ตรง |
 | OPS-08 | REQ-OPS-002 | recovery test เกิน RPO/RTO หรือ business total ไม่ตรงแล้ว rerun   | run เดิม Failed คงอยู่, corrective action/rerun เชื่อมกัน และ Passed เฉพาะรอบที่ reconcile |
 
+## API and Integration Cases
+
+| ID     | Requirement | Scenario                                                        | Expected Result / Evidence                                                    |
+| ------ | ----------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| INT-01 | REQ-INT-001 | เรียก API ตาม contract/schema/rate/timeout ที่อนุมัติ           | response/correlation, contract version, usage และ audit scope ครบ              |
+| INT-02 | REQ-INT-001 | unauthorized/cross-Tenant หรือเกิน rate limit                   | ปฏิเสธโดยไม่รั่ว metadata พร้อม denial/quota evidence                          |
+| INT-03 | REQ-INT-001 | retry, duplicate หรือ out-of-order message                      | idempotent result, ไม่มีรายการ/ยอดซ้ำ และ correlation ครบ                     |
+| INT-04 | REQ-INT-001 | payload ใช้ schema ที่ไม่ compatible                            | quarantine/reject พร้อม error evidence; ไม่มี silent drop                     |
+| INT-05 | REQ-INT-002 | provider review + sandbox UAT ผ่านและขอ activate                | A1/A2, contract/config/credential reference และ activation event ครบ          |
+| INT-06 | REQ-INT-002 | raw secret ใน log หรือ credential expired                       | block/revoke/rotate, redact secret และเปิด security exception                 |
+| INT-07 | REQ-INT-002 | provider outage ระหว่าง sync                                    | local state คงถูกต้อง, retry/fallback bounded และ reconcile เมื่อกลับมา       |
+| INT-08 | REQ-INT-002 | breaking change หรือ retire connection                          | consumer notice/overlap, final totals, credential revoke และ history ครบ      |
+
 ## Security and Access Cases
 
 | ID     | Requirement | Scenario                                     | Expected Result / Evidence                             |
@@ -296,6 +325,27 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 | SEC-04 | REQ-SEC-001 | Emergency Access ครบเวลา                     | auto-revoke, session revoke และ post-use review        |
 | SEC-05 | REQ-SEC-001 | Suspend/deactivate leaver                    | token/session revoked และ ownership reconciliation ครบ |
 | SEC-06 | REQ-SEC-001 | Quarterly recertification Keep/Modify/Revoke | decision และ before/after permission evidence ครบ      |
+| SEC-07 | REQ-SEC-002 | encryption/secret control evidence ยัง current   | control version/evidence ครบและไม่มี raw secret         |
+| SEC-08 | REQ-SEC-002 | secret stale หรือ scope กว้างเกิน                  | finding, containment และ rotation/revoke evidence ครบ   |
+| SEC-09 | REQ-SEC-002 | privacy request ผ่าน identity และ scope validation | population, redaction, decision และผลส่งมอบครบ          |
+| SEC-10 | REQ-SEC-002 | identity ไม่ผ่านหรือ Legal Hold/privilege ใช้บังคับ | block disclosure/deletion พร้อมเหตุผลและ authority      |
+| SEC-11 | REQ-SEC-003 | authorized audit/scan พบรายการซ้ำและรายการใหม่     | deduplicate finding, tool/rule version และ affected scope ครบ |
+| SEC-12 | REQ-SEC-003 | critical vulnerability ถูก exploit อยู่             | P1 containment/escalation โดยรักษาหลักฐาน               |
+| SEC-13 | REQ-SEC-003 | remediation ขอ verify โดยผู้แก้เอง                  | block self-verification; independent verifier จึงปิดได้  |
+| SEC-14 | REQ-SEC-003 | risk acceptance ครบ expiry แล้วยังไม่ remediate     | reopen/escalate อัตโนมัติ; ห้ามแสดง compliant/verified  |
+
+## Service Support and Communication Cases
+
+| ID     | Requirement | Scenario                                                    | Expected Result / Evidence                                                |
+| ------ | ----------- | ----------------------------------------------------------- | ------------------------------------------------------------------------- |
+| SUP-01 | REQ-SUP-001 | ส่ง approved/minimized template ตาม preference             | message/version/recipient และ delivery truth ครบ                          |
+| SUP-02 | REQ-SUP-001 | recipient/scope ผิดหรือถูก suppress                         | ไม่ส่งและไม่รั่ว content/metadata พร้อม suppression reason                |
+| SUP-03 | REQ-SUP-001 | broadcast ไป fixed audience แล้ว retry partial failure      | audience/control totals ตรงและผู้รับเดิมไม่ซ้ำ                            |
+| SUP-04 | REQ-SUP-001 | ค้น communication log ข้าม scope หรือแก้ revision           | ปฏิเสธ cross-scope; original immutable และ correction เชื่อมกลับ          |
+| SUP-05 | REQ-SUP-002 | รับ/classify/acknowledge/resolve/close ticket ตาม SLA        | owner, clock, events, resolution และ requester confirmation ครบ           |
+| SUP-06 | REQ-SUP-002 | P1 ticket ต้อง escalate และมี handoff                       | เชื่อม CTRL-EXC-001 โดยไม่ reset SLA clock                                |
+| SUP-07 | REQ-SUP-002 | publish แล้ว supersede/expire knowledge article             | approved source/version, review, expiry และ replacement link ครบ          |
+| SUP-08 | REQ-SUP-002 | chatbot confidence ต่ำหรือคำขอ sensitive/actionable         | อ้างเฉพาะ published source และ handoff คน; ไม่ทำ business action อัตโนมัติ |
 
 ## Report, Audit and Retention Cases
 
@@ -305,6 +355,8 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 | REP-02 | REQ-REP-001 | Reconcile report กับ source sample       | variance อยู่ในเกณฑ์หรือเปิด exception                  |
 | REP-03 | REQ-REP-001 | Sensitive export พร้อม approval/expiry   | checksum, recipient, delivery และ access log ครบ        |
 | REP-04 | REQ-REP-001 | Export โดย role/scope ไม่พอ              | ปฏิเสธและบันทึก denied export event                     |
+| REP-05 | REQ-REP-002 | Client/Matter analytics ตาม filter/as-of | rows/totals reconcile กับ source และ snapshot ครบ       |
+| REP-06 | REQ-REP-002 | analytics/export มี sensitive field หรือ actor ไม่มี scope | mask/deny หรือใช้ A1/A2 พร้อม recipient/access evidence |
 | AUD-01 | REQ-AUD-001 | ตรวจ immutable event chain               | integrity verification ผ่านและ sequence ครบ             |
 | AUD-02 | REQ-AUD-001 | Correct event/report โดยไม่เขียนทับ      | correction เชื่อม original และแสดง current view ถูกต้อง |
 | AUD-03 | REQ-AUD-001 | ตรวจพบ integrity failure                 | P1/P2 exception, preserve evidence และ escalation       |

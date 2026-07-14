@@ -23,6 +23,7 @@ export default {
         items: {
           index: 'Overview',
           'client-registration': 'Client Registration & Maintenance',
+          'client-portal': 'Client Portal & Feedback Management',
           'matter-lifecycle': 'Matter Lifecycle & Approvals',
           'matter-intake': 'Matter Intake & Opening',
           'matter-operations': 'Matter Operations & Closure',
@@ -37,7 +38,10 @@ export default {
           'tenant-onboarding': 'Tenant Onboarding & Package',
           'shared-master-data': 'Shared Master Data Management',
           'platform-operations': 'Platform Monitoring, Backup & Recovery',
+          'api-integration': 'API & Integration Lifecycle',
           'access-management': 'User, Role & Access Management',
+          'security-privacy': 'Security & Privacy Compliance',
+          'service-support': 'Service Support & Communications',
           'reports-audit': 'Reports, Export & Audit Review',
           'retention-disposal': 'Retention & Disposal',
           governance: {

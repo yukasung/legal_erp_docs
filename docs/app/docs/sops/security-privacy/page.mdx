@@ -1,0 +1,254 @@
+# Security & Privacy Compliance Operations
+
+| Document Control        | Value                 |
+| ----------------------- | --------------------- |
+| SOP ID                  | SOP-SEC-002           |
+| Status                  | Approved              |
+| Version                 | 1.0                   |
+| Process Owner           | Security Owner        |
+| Privacy Owner           | Data/Privacy Owner    |
+| System Owner            | Admin                 |
+| Approver                | Manager A1 + Admin A2 |
+| Effective Date          | 14 July 2026          |
+| Last Requirement Review | 14 July 2026          |
+
+> **Approval notice:** Encryption/secret assurance, sensitive-data/privacy
+> operations, compliance assessment, security audit และ vulnerability remediation
+> ได้รับการอนุมัติเป็น baseline เมื่อ 14 July 2026 การอ้าง compliance/certification
+> ต้องมี evidence จาก authority ห้ามอ้างจาก configuration เพียงอย่างเดียว
+
+## Purpose
+
+กำหนดวิธีประเมินและรักษา security/privacy controls จัดการข้อมูลอ่อนไหวและคำขอ
+เจ้าของข้อมูล ตรวจ security/vulnerability และติดตาม remediation/risk acceptance
+โดยไม่เปิดเผย secret หรือข้อมูลส่วนบุคคลใน evidence
+
+## Scope
+
+ครอบคลุม data/document encryption assurance, key/secret ownership review,
+sensitive-data classification, minimization, privacy/data-subject request,
+PDPA/GDPR/ISO control assessment, internal security audit, vulnerability scan/
+finding, remediation verification, risk acceptance, evidence และ escalation
+
+ไม่ครอบคลุม user/role/permission/MFA lifecycle ใน SOP-SEC-001, backup/restore ใน
+SOP-OPS-001, API/provider connection ใน SOP-INT-001 หรือ retention/disposal/
+Legal Hold ใน SOP-AUD-001
+
+## Roles
+
+| Role               | Responsibility                                                                            |
+| ------------------ | ----------------------------------------------------------------------------------------- |
+| Security Owner     | เป็น process owner กำหนด assessment/audit/finding/remediation และ security risk           |
+| Data/Privacy Owner | กำหนด classification, lawful purpose, data-subject request และ privacy decision           |
+| Control Owner      | รักษา control/evidence และแก้ finding ใน component/domain ของตน                            |
+| Security Reviewer  | ตรวจ evidence/scan/finding โดยเป็นอิสระจากผู้แก้                                           |
+| Manager A1         | อนุมัติ privacy/high-risk remediation/risk decision ทางธุรกิจ                              |
+| Admin A2           | อนุมัติ privileged/platform-wide exception และแยกจาก executor                             |
+| Admin/System       | ดำเนิน encryption/secret/config/remediation หลัง approval และเก็บ events                   |
+| Legal/Compliance   | ยืนยันข้อกำหนด การแจ้งภายนอก และ interpretation เมื่อจำเป็น                                |
+| Data Subject/User  | ส่ง privacy request พร้อมยืนยันตัวตนโดยไม่เพิ่มสิทธิ์เข้าถึง record อื่น                   |
+
+## Approved Status Baseline
+
+### Security Finding
+
+Open, Triaged, In Remediation, Risk Accepted, Verification, Verified และ Closed
+
+### Privacy Request
+
+Received, Identity Verification, In Review, In Fulfillment, Completed, Rejected
+และ Withdrawn
+
+- Risk Accepted ไม่เท่ากับ Verified และต้องมี owner/expiry/review
+- Control Owner ผู้แก้ห้าม verify งานตนเอง
+- Privacy request ห้ามเริ่มเปิดเผยข้อมูลก่อน identity/scope validation
+- Completed ต้องมี fulfillment/rejection evidence และ retention/notice result
+
+## Approved Control Decision
+
+| Decision ID | Approved Outcome                                                                                                                                                                                                                                              |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DEC-SEC-002 | Data/secret ใช้ classification, encryption/key reference, least exposure และ versioned evidence; privacy request ผ่าน identity/scope/legal review; compliance claim ต้อง evidence; security audit/finding แยก reviewer/remediator; high-risk/platform exception ใช้ A1/A2, expiry; remediation ต้อง independent verification ก่อน close |
+
+## Required Information
+
+- asset/system/Tenant/environment, owner, data classes/fields, purpose, location,
+  recipients และ retention/Legal Hold linkage
+- control/framework/requirement ID, design/config version, encryption/key/secret
+  reference, last rotation/review และ evidence checksum
+- privacy request ID/type, requester/subject, identity-verification result, scope,
+  systems/records, legal basis/exception, due times และ communication
+- audit/scan ID, tool/method/version, scope/time, finding/CVE/reference, severity,
+  exploitability, affected population และ evidence
+- remediation/change/test, owner/due date, compensating control, residual risk,
+  risk approver/expiry และ independent verification
+- requester/reviewer/Control Owner/A1/A2/executor/Legal-Compliance actors และ events
+
+## Procedure
+
+### 1. Maintain Security and Privacy Control Register
+
+**Responsible:** Security Owner, Data/Privacy Owner, Control Owners
+
+1. ระบุ assets, Tenant/environment, owners, data classification/location/flow
+2. map security/privacy requirement กับ control, procedure, evidence และ review date
+3. record encryption/key/secret reference โดยไม่เก็บ raw secret/key ใน register
+4. ระบุ retention/Legal Hold, processor/recipient และ cross-border dependency
+5. ทบทวนเมื่อ architecture/provider/data purpose/law/framework เปลี่ยน
+
+**Expected result:** control ownership/coverage/evidence gap ตรวจได้
+
+### 2. Review Encryption and Secret Assurance
+
+**Responsible:** Security Reviewer, Admin, Control Owner
+
+1. ตรวจ encryption at rest/in transit สำหรับ database/file/export/backup/traffic
+   ตาม classification/policy
+2. ตรวจ key/secret owner, approved store, scope, access, rotation/expiry/revoke
+3. sample configuration/event โดย mask identifier และห้าม export raw material
+4. missing/stale/over-scoped key/secret เปิด finding และ containment
+5. reviewer บันทึก pass/fail/limitation และ evidence checksum
+
+**Expected result:** encryption/secret claim มีหลักฐาน ไม่ใช่เพียงข้อความ config
+
+### 3. Classify and Minimize Sensitive Data
+
+**Responsible:** Data/Privacy Owner, Domain Owner
+
+1. classify field/record/file/export และระบุ purpose/authorized roles/recipients
+2. ตรวจ collection/processing/display/log/export ว่าจำเป็นและสัดส่วนเหมาะสม
+3. mask/tokenize/redact metadata/notification/log/test data ตาม policy
+4. unauthorized secondary use/recipient ต้องหยุดและเปิด privacy/security review
+5. link retention/Legal Hold/disposal rule โดยไม่ลด business/legal control
+
+**Expected result:** sensitive data มี purpose/access/display/retention boundary
+
+### 4. Receive and Verify Privacy Request
+
+**Responsible:** Data/Privacy Owner, Requester
+
+1. รับ request ประเภท access/correction/restriction/objection/portability/deletion
+   หรือ privacy inquiry พร้อม channel/time
+2. ยืนยัน subject identity ด้วย approved method โดยไม่ขอข้อมูลเกินจำเป็น
+3. ตรวจ scope/Tenant/records/authorized representative และ duplicate request
+4. กำหนด due time จาก applicable policy/law; หากไม่ชัดส่ง Legal/Compliance
+5. identity fail คง Identity Verification/Reject พร้อม reason ห้ามเปิดเผย existence
+   ของ record เกินสิทธิ์
+
+**Expected result:** request ถูกตัวบุคคล มี scope และ deadline ที่ควบคุมได้
+
+### 5. Review and Fulfill Privacy Request
+
+**Responsible:** Data/Privacy Owner, Domain/Data Owners, Legal/Compliance
+
+1. ค้นหา systems/records/exports/processors ตาม scope และเก็บ population/checksum
+2. ตรวจ rights, exemptions, confidentiality, other-person data, Legal Hold,
+   contract/professional duty และ financial/audit immutability
+3. approve fulfillment/rejection/partial result พร้อม redaction/reason
+4. execute correction/export/restriction/disposal ผ่าน SOP เจ้าของ record
+5. reconcile population/result, ส่งผ่าน controlled channel และบันทึก communication
+
+**Expected result:** result ถูกกฎหมาย/ขอบเขตและไม่ทำลาย immutable obligations
+
+### 6. Plan and Run Security Audit or Scan
+
+**Responsible:** Security Owner, Security Reviewer
+
+1. กำหนด scope/environment/assets/method/tool/version/window และ authorization
+2. ป้องกัน scan กระทบ availability/data; production intrusive test ต้อง change gate
+3. run approved checks และเก็บ raw result ใน restricted evidence store
+4. normalize/deduplicate finding, validate false positive และ assign severity/owner
+5. P1/P2 หรือ active compromise ส่ง CTRL-EXC-001 และ containment ทันที
+
+**Expected result:** finding มี provenance/severity/owner โดยไม่เปิดช่องโหว่สาธารณะ
+
+### 7. Remediate and Verify Finding
+
+**Responsible:** Control Owner, Admin/System, Security Reviewer
+
+1. Control Owner เสนอ remediation/change/test/fallback และ due date
+2. high-risk/platform/security exception ใช้ A1/A2 ตาม authority
+3. implement ใน controlled change และเก็บ before/after/config/build evidence
+4. Security Reviewer คนละ actor rerun test/scan และตรวจ side effect
+5. เป็น Verified เมื่อ finding ปิดจริง; failed verification กลับ In Remediation
+
+**Expected result:** remediation พิสูจน์ซ้ำได้และผู้แก้ไม่รับรองตนเอง
+
+### 8. Approve and Review Residual Risk
+
+**Responsible:** Security/Data Owner, Manager A1, Admin A2
+
+1. ใช้ risk acceptance เฉพาะเมื่อแก้ทันทีไม่ได้และมี compensating control
+2. ระบุ severity, exposure, affected data/service, owner, expiry/review และ plan
+3. high-risk/platform-wide/privacy material risk ใช้ A1+A2 และ Legal/Compliance
+   เมื่อมี external obligation
+4. System แจ้งก่อน expiry; expired acceptance กลับ Open/Triaged อัตโนมัติ
+5. ห้ามใช้ Risk Accepted แทน Verified หรืออ้าง compliance ผ่าน
+
+**Expected result:** residual risk มี authority/expiry และไม่ปิด finding ถาวร
+
+## Control Points
+
+| Control                         | Requirement                                                                 | Evidence                                              |
+| ------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------- |
+| Asset/data/control register     | scope/owner/classification/purpose/location/control/evidence version ครบ     | register snapshot and review event                    |
+| Encryption/secret evidence      | at-rest/in-transit/key-store/scope/rotation ตรวจจริงและไม่เก็บ raw material  | masked configuration, key reference and test result   |
+| Privacy identity/scope          | verify subject/representative/Tenant ก่อนค้นหา/เปิดเผย                       | verification and authorization result                 |
+| Rights/obligation reconciliation | fulfillment ไม่ขัด confidentiality/hold/immutable/legal obligations          | population, decision and result totals                |
+| Audit authorization/safety      | scope/tool/window/change approval และ restricted raw evidence                | plan, execution identity and evidence location        |
+| Reviewer independence           | remediator ห้าม verify/close งานตนเอง                                        | actor separation and verification event               |
+| Risk acceptance expiry          | owner/compensating control/A1/A2/expiry/review ไม่เท่ากับ Verified           | decision and expiry/reopen events                     |
+| Compliance claim boundary       | อ้าง compliance/certification เฉพาะ evidence/authority ที่อนุมัติ            | assessment result, limitation and authority reference |
+
+## Exceptions
+
+- **Raw secret/key พบใน log/evidence:** restrict/revoke/rotate preserve evidence
+  และเปิด security incident
+- **Encryption/control evidence ขาด:** status fail/gap ห้ามอ้าง compliant
+- **Privacy identity/scope ไม่ผ่าน:** reject/hold โดยไม่เปิดเผย record metadata
+- **Legal Hold/privilege/บุคคลอื่น:** partial/redacted/reject ตาม Legal/Compliance;
+  ห้าม delete/export ตรง
+- **Active exploit/compromise:** contain/revoke/isolate ตาม CTRL-EXC-001 และ
+  SOP-OPS-001
+- **Scan กระทบ production:** stop test preserve evidence และใช้ change/incident
+- **False positive disputed:** reviewer validate ด้วย reproducible evidence;
+  Control Owner ห้ามปิดเอง
+- **Risk acceptance หมดอายุ:** reopen finding และ escalate owner/authority
+
+## Completion Checklist
+
+- [ ] asset/Tenant/environment/owner/data classification/purpose/location ครบ
+- [ ] controls map requirement และมี current evidence/version
+- [ ] encryption/key/secret review ไม่เก็บ raw material
+- [ ] privacy request identity/scope/due time/decision/communication ครบ
+- [ ] population/result reconcile กับ hold/retention/immutable obligations
+- [ ] audit/scan มี authorization/tool/version/scope และ restricted evidence
+- [ ] finding severity/owner/due date/remediation ครบ
+- [ ] verifier แยกจาก remediator และ rerun evidence ผ่าน
+- [ ] risk acceptance มี A1/A2 ตาม risk, compensating control และ expiry
+- [ ] compliance/certification claim ไม่เกิน evidence
+
+## Related Documents
+
+- [User, Role & Access Management](/docs/sops/access-management)
+- [Platform Monitoring, Backup & Recovery](/docs/sops/platform-operations)
+- [API & Integration Lifecycle Management](/docs/sops/api-integration)
+- [Reports, Export & Audit Review](/docs/sops/reports-audit)
+- [Retention and Disposal of Audit Evidence](/docs/sops/retention-disposal)
+- [Role & Permission Alignment](/docs/sops/governance/role-permission-alignment)
+- [Exception & Escalation Matrix](/docs/sops/governance/exception-escalation)
+- [SOP UAT Scenarios & Test Cases](/docs/sops/governance/uat-test-cases)
+
+## Requirement Traceability
+
+| SOP Area                                      | Source                                                                 |
+| --------------------------------------------- | ---------------------------------------------------------------------- |
+| Encryption and sensitive-data operations     | ALT Pro - P3 (MatterSolv).xlsx, sheet Sub-Module, แถว 249-251, 261-265 |
+| Security audit and vulnerability scanning    | ไฟล์เดียวกัน, แถว 270-271                                              |
+| Compliance/encryption/audit workflow          | Manao Software Project Proposal, หน้า 64-67                            |
+| WAF, secret, audit and vulnerability baseline | ERP Web Application on Google Cloud.jpeg                               |
+
+## Approval Record
+
+- Manager A1 และ Admin A2 อนุมัติ
+- Effective Date: 14 July 2026

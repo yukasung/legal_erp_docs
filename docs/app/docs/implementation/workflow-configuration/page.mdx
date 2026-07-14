@@ -115,6 +115,26 @@ reason/impact Notification retry ห้ามสร้าง duplicate reminder 
 | Payment   | Received → Unallocated/Partially Allocated/Allocated | confirmed reference, currency and balance guard                            |
 | Payment   | Allocated → Reversed/Refunded                        | Manager approval, destination/reconciliation evidence                      |
 
+## Payroll and Leave Workflow
+
+| Workflow       | State / Command                                     | Authority / Guard                                                                  |
+| -------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Payroll Master | Draft → Approved → Active                           | HR prepare, Manager approve, Admin execute; version/effective date; no overwrite   |
+| Payroll Run    | Draft → Calculated                                  | HR; unique entity/period/currency; input/config/output snapshot reconciles         |
+| Payroll Run    | Calculated → Pending Approval                       | HR maker submits exact version/checksum                                            |
+| Payroll Run    | Pending Approval → Approved                         | Manager A1; privileged/org-wide also Admin A2 distinct from maker and A1           |
+| Payroll Run    | Approved → Posted                                   | System; exact approvals, expected version and idempotency key                      |
+| Payroll Run    | Posted → correction Draft                           | HR requests linked correction; original remains immutable                          |
+| Payroll Export | Posted → Requested → Approved → Generated/Delivered | Manager A1; Restricted individual/statutory export also Admin A2, recipient/expiry |
+| Leave Request  | Draft → Submitted                                   | Employee self-service or HR proxy; policy/balance/overlap validation               |
+| Leave Request  | Submitted → Approved/Rejected                       | team Manager or alternate HR; requester cannot approve                             |
+| Leave Request  | Approved → Cancelled                                | policy authority; atomic balance reversal and immutable event                      |
+| Leave Request  | Approved → Taken                                    | System on effective workday; idempotent payroll/calendar effect                    |
+
+Payroll calculation/post retry ต้องคืนผลเดิมและไม่สร้าง payslip/export ซ้ำ
+Finance query เห็นเฉพาะ approved aggregate export schema ที่ไม่มี employee-level
+payroll fields
+
 ## Access Workflow
 
 | Request                        | Approval                           | Execution / Expiry                                                  |

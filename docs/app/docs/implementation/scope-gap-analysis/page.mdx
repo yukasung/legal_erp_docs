@@ -40,9 +40,9 @@ capability ที่ต้องปิด policy/control gap ก่อน
 | Retention/Disposal                    | Governance baseline                                   | SOP-AUD-001, DEC-MAT-011/CLI-005, RET UAT                                        | Conditional | validate jurisdiction/client-specific schedules before production data                    |
 | Time Tracking & Timesheets            | Scope; Architecture Time Tracking Service; P3 115-139 | no SOP/Decision/status/authority/UAT                                             | Gap         | DSC-TIM-001                                                                               |
 | Finance Foundation                    | Scope; Architecture Finance Foundation                | invoice/payment only; no chart/tax/expense/journal close control                 | Gap         | DSC-FIN-001                                                                               |
-| Personnel/HR                          | Scope; Architecture Human Resource Service            | role boundary only; no employee lifecycle SOP/UAT                                | Gap         | DSC-HR-001                                                                                |
-| Payroll                               | Scope HR/Payroll                                      | no calculation/period/correction/approval/statutory SOP                          | Gap         | DSC-PAY-001                                                                               |
-| Leave Management                      | Scope HR/Leave                                        | role mention only; no accrual/request/approval/calendar/payroll policy           | Gap         | DSC-LVE-001                                                                               |
+| Personnel/HR                          | Scope; Architecture Human Resource Service            | role boundary only; employee lifecycle master remains unresolved                 | Gap         | DSC-HR-001                                                                                |
+| Payroll                               | Scope HR/Payroll                                      | SOP-HR-001, DEC-HR-001, IMP-HR-001/002 and HR-01 to HR-07                        | Ready       | implement controlled calculation/approval/post/payslip/export                             |
+| Leave Management                      | Scope HR/Leave                                        | SOP-HR-001, DEC-HR-001, IMP-HR-003 and HR-05                                     | Ready       | implement policy/balance/request/approval/cancel/payroll-effect workflow                  |
 | Tenant Onboarding/Package/User Limit  | Scope; Architecture Tenant Management                 | user limit check partly in SOP-SEC-001; no onboarding/package lifecycle SOP      | Gap         | DSC-TEN-001                                                                               |
 | E-signature Integration               | Scope; Architecture provider-neutral boundary         | document signing SOP/control defined; provider contract/evidence mapping pending | Conditional | DSC-ESG-001 before production signing                                                     |
 | Client Portal/External Role           | Roles baseline excludes current phase                 | controlled document sharing only                                                 | Future      | separate external identity/consent/access work package                                    |
@@ -76,18 +76,20 @@ Foundation ทั้งระบบ ต้องกำหนด:
 ห้ามใช้คำว่า general ledger หรือ financial statements พร้อมใช้งานจน DSC-FIN-001
 ผ่าน Definition of Ready
 
-## Gap 3: HR, Payroll and Leave
+## Gap 3: Personnel Foundation
 
-ต้องแยกสาม control domains:
+Payroll และ Leave ปิด discovery gate แล้วด้วย DEC-HR-001, SOP-HR-001, IMP-HR-001
+to 003 และ HR-01 to HR-07 แต่ Personnel foundation ยังต้องกำหนด:
 
-| Domain    | Minimum Decisions / Controls                                                                          |
-| --------- | ----------------------------------------------------------------------------------------------------- |
-| Personnel | employee identity/status, organization assignment, sensitive fields, joiner/mover/leaver, retention   |
-| Payroll   | earning/deduction/tax/social security, payroll period/lock, retro/correction, maker-checker, payslip  |
-| Leave     | leave type/accrual/balance, request/approval/cancel, overlap/calendar, payroll effect, year-end carry |
+| Domain    | Minimum Decisions / Controls                                                                               |
+| --------- | ---------------------------------------------------------------------------------------------------------- |
+| Personnel | employee identity/status, organization assignment, sensitive fields, joiner/mover/leaver, retention        |
+| Payroll   | ปิดแล้ว: earning/deduction/statutory rule snapshot, period lock, correction, maker-checker, payslip/export |
+| Leave     | ปิดแล้ว: policy/version, balance, request/approval/cancel, overlap, payroll effect                         |
 
-Data boundary ต้องยืนยันว่า Finance ไม่เห็น payroll รายบุคคล และ Manager เห็นตาม
-responsibility scope HR export ต้องมี purpose/recipient/approval/audit/expiry
+Personnel gap ที่เหลือคือ employee identity/status, organization assignment,
+sensitive fields, joiner/mover/leaver master, retention และ data migration ส่วน
+Finance/payroll boundary และ controlled export ถูกกำหนดใน SOP-HR-001 แล้ว
 
 ## Gap 4: Tenant Onboarding and Package
 
@@ -120,7 +122,7 @@ control
 | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | Architecture ใช้คำว่า Platform Admin สร้าง Tenant ซึ่งอาจถูกตีความเป็น Tenant role | Platform operator ใช้ separate service/support identity; initial Tenant Admin เป็น membership ของ Tenant หลัง verification |
 | Database/API pages ยังเป็น stub                                                    | MAP-IMP-001 เป็น logical baseline; physical schema/OpenAPI ต้องสร้างจาก backlog ก่อน coding                                |
-| Modules pages ยังเป็น stub และไม่มี Time/HR                                        | ใช้ gap items สร้าง domain docs พร้อม SOP ก่อนเพิ่ม implementation-ready menu                                              |
+| Modules pages ยังเป็น stub และไม่มี Time/Personnel foundation                      | ใช้ gap items สร้าง domain docs; Payroll/Leave ใช้ SOP-HR-001 และ IMP-HR set ได้แล้ว                                       |
 | Invoice/Payment อาจถูกตีความเท่ากับ Finance Foundation                             | จำกัด current readiness เป็น AR/payment collection จน DSC-FIN-001 เสร็จ                                                    |
 
 ## Closure Plan
@@ -131,9 +133,7 @@ control
 | 2     | DSC-TEN-001 | onboarding/package SOP + security/retention + UAT | Tenant created/changed/terminated without cross-boundary risk |
 | 3     | DSC-FIN-001 | accounting boundary + SOP/control + UAT           | posting/reconciliation/period controls approved               |
 | 4     | DSC-HR-001  | personnel lifecycle + privacy/retention + UAT     | employee data boundary approved                               |
-| 5     | DSC-LVE-001 | leave policy/workflow + calendar/payroll contract | balances/approvals/effects testable                           |
-| 6     | DSC-PAY-001 | payroll rules/period/approval/payslip + UAT       | statutory and maker-checker evidence approved                 |
-| 7     | DSC-ESG-001 | provider contract/stub conformance/security test  | production signing evidence meets SOP-DOC-001                 |
+| 5     | DSC-ESG-001 | provider contract/stub conformance/security test  | production signing evidence meets SOP-DOC-001                 |
 
 ## Gap Control Rules
 

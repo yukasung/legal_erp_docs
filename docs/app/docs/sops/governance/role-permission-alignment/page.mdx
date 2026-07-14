@@ -37,29 +37,29 @@ Senior Lawyer ใช้ Lawyer + permission bundle สำหรับ review/app
 baseline role ใหม่ และต้องผูกกับผู้ใช้ที่มี baseline role พร้อม scope ชัดเจน
 ข้อสรุปสุดท้าย (ไม่มี TBD หรือประเด็นเปิดค้างแล้ว): authority ทั้งสองรายการ เป็น
 assignment บน baseline role ไม่ใช่ role ใหม่ โดย High-risk A2 ใช้ **Manager A2**
-และ security/privacy/retention A2 ใช้ **Admin A2** ผู้อนุมัติ A2
+และ security/privacy/retention/payroll control A2 ใช้ **Admin A2** ผู้อนุมัติ A2
 ต้องเป็นคนละคนกับ A1 และ Admin A2 ต้องเป็นคนละบัญชีกับ Admin executor ของ
 รายการเดียวกัน
 
-| Authority / Responsibility | Baseline Mapping                                        | Required Permission / Boundary                                                   |
-| -------------------------- | ------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| Senior Lawyer              | Lawyer                                                  | Scoped document review/approve; ห้าม self-approve                                |
-| Manager A2                 | Manager                                                 | High-risk A2; จำกัด Tenant/practice scope; คนละคนกับ Manager A1                  |
-| Admin A2                   | Admin                                                   | Security/privacy/retention A2; คนละบัญชีกับ requester/executor ของรายการเดียวกัน |
-| Data Owner                 | Lawyer, Finance, HR หรือ Manager ตาม record domain      | Data quality/correction/disposal preparation                                     |
-| Document Owner             | Lawyer หรือ Assistant ตาม assignment                    | Document lifecycle ภายใน Matter scope                                            |
-| Task/Calendar Owner        | Lawyer, Assistant, Finance หรือ HR ตาม assignment       | Assigned task/calendar operation                                                 |
-| Report Owner               | Manager, Finance, HR หรือ designated analyst            | Report validation ภายใน data scope                                               |
-| QA Lead                    | Designated user; ไม่มี production approval โดยอัตโนมัติ | UAT administration and result sign-off                                           |
-| Authorized Signer          | Designated Lawyer/Manager/executive                     | Sign เฉพาะ document type และ entity scope ที่มอบหมาย                             |
-| Auditor                    | Admin หรือ independent reviewer                         | Read audit evidence; ห้ามแก้ source event                                        |
-| Product Owner              | Manager หรือ designated product responsibility          | Scope/requirement/backlog; ไม่เพิ่ม runtime permission อัตโนมัติ                 |
-| Technical Lead             | Designated engineering responsibility                   | Architecture/build approval; ไม่เป็น Business Approver                           |
-| Release Manager            | Manager หรือ Operations responsibility                  | Release coordination/evidence; Final Go ตาม CHK-REL-001                          |
-| Database Owner             | Designated engineering/Admin responsibility             | Migration/backup/restore; controlled support เมื่อแตะ Tenant data                |
-| Operations Owner           | Designated operations/Admin responsibility              | Runtime/monitoring/support; Emergency Access เมื่อแตะ Tenant data                |
-| Platform Owner             | Platform responsibility แยกจาก Tenant role              | Package/service policy; ไม่มี Tenant business authority                          |
-| Security Reviewer          | Admin หรือ independent security function                | Security evidence/risk review; ไม่มี business data edit                          |
+| Authority / Responsibility | Baseline Mapping                                        | Required Permission / Boundary                                                                            |
+| -------------------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Senior Lawyer              | Lawyer                                                  | Scoped document review/approve; ห้าม self-approve                                                         |
+| Manager A2                 | Manager                                                 | High-risk A2; จำกัด Tenant/practice scope; คนละคนกับ Manager A1                                           |
+| Admin A2                   | Admin                                                   | Security/privacy/retention/payroll control A2; คนละบัญชีกับ requester/maker/A1/executor ของรายการเดียวกัน |
+| Data Owner                 | Lawyer, Finance, HR หรือ Manager ตาม record domain      | Data quality/correction/disposal preparation                                                              |
+| Document Owner             | Lawyer หรือ Assistant ตาม assignment                    | Document lifecycle ภายใน Matter scope                                                                     |
+| Task/Calendar Owner        | Lawyer, Assistant, Finance หรือ HR ตาม assignment       | Assigned task/calendar operation                                                                          |
+| Report Owner               | Manager, Finance, HR หรือ designated analyst            | Report validation ภายใน data scope                                                                        |
+| QA Lead                    | Designated user; ไม่มี production approval โดยอัตโนมัติ | UAT administration and result sign-off                                                                    |
+| Authorized Signer          | Designated Lawyer/Manager/executive                     | Sign เฉพาะ document type และ entity scope ที่มอบหมาย                                                      |
+| Auditor                    | Admin หรือ independent reviewer                         | Read audit evidence; ห้ามแก้ source event                                                                 |
+| Product Owner              | Manager หรือ designated product responsibility          | Scope/requirement/backlog; ไม่เพิ่ม runtime permission อัตโนมัติ                                          |
+| Technical Lead             | Designated engineering responsibility                   | Architecture/build approval; ไม่เป็น Business Approver                                                    |
+| Release Manager            | Manager หรือ Operations responsibility                  | Release coordination/evidence; Final Go ตาม CHK-REL-001                                                   |
+| Database Owner             | Designated engineering/Admin responsibility             | Migration/backup/restore; controlled support เมื่อแตะ Tenant data                                         |
+| Operations Owner           | Designated operations/Admin responsibility              | Runtime/monitoring/support; Emergency Access เมื่อแตะ Tenant data                                         |
+| Platform Owner             | Platform responsibility แยกจาก Tenant role              | Package/service policy; ไม่มี Tenant business authority                                                   |
+| Security Reviewer          | Admin หรือ independent security function                | Security evidence/risk review; ไม่มี business data edit                                                   |
 
 Delivery responsibility bundle ไม่มอบ production access โดยตัวมันเอง ผู้ถือ
 responsibility ต้องได้รับ runtime role/grant แยกตาม SPEC-RBAC-001 และใช้
@@ -67,30 +67,33 @@ alternate เมื่อเป็นผู้จัดทำ artifact ที่
 
 ## Permission Alignment Matrix
 
-| Capability / Action                | Prepare / Execute                               | Approve / Confirm                                        | Scope / Control                                   |
-| ---------------------------------- | ----------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------- |
-| Client create/update               | Lawyer, Assistant                               | Manager เมื่อเป็น exception                              | Assigned team/Tenant, duplicate gate              |
-| Client merge/reverse merge         | Lawyer/Assistant/Manager request, Admin execute | Manager A1 + Admin A2                                    | DEC-CLI-003, before/after and surviving ID        |
-| Client deactivate/reactivate       | Lawyer/Assistant request, Admin execute         | Manager                                                  | DEC-CLI-003, dependency and status event          |
-| Compliance reactivation            | Manager request, Admin execute                  | Manager A1 + Admin A2                                    | DEC-CLI-003, compliance evidence and status event |
-| Matter draft/routine field update  | Lawyer, Assistant                               | ไม่ต้องอนุมัติเมื่อมี permission                         | Assigned Matter; audit core field change          |
-| Matter intake/core-field exception | Lawyer, Assistant request                       | Manager ตาม CTRL-MAT-001                                 | Validation, reassessment and decision evidence    |
-| High-risk acceptance               | Lawyer/Manager prepare                          | Manager A1 + Manager A2                                  | Approvers ต้องแยกจาก assessor                     |
-| Matter hold/close/reopen           | Responsible Lawyer request                      | Manager ตาม transition                                   | Immutable transition event                        |
-| Document create/version            | Lawyer, Assistant                               | Manager เมื่อ final                                      | Matter access and version immutability            |
-| Document sign/share/export         | Authorized user                                 | Manager; Restricted/Privileged ใช้ Manager A1 + Admin A2 | Recipient, purpose, expiry and access log         |
-| Task/Calendar create/update        | Lawyer, Assistant, scoped Finance/HR            | Owner/Manager เมื่อ override                             | Assignment/team scope                             |
-| Quotation prepare/revise           | Finance, Lawyer                                 | Manager                                                  | Creator ห้าม approve quotation ของตนเอง           |
-| Invoice/payment post               | Finance                                         | Manager เมื่อ adjustment/exception                       | Posting period, reconciliation and audit          |
-| Refund/write-off/void              | Finance                                         | Manager                                                  | Reason, amount, before/after and maker-checker    |
-| Payroll run                        | HR prepare                                      | Manager A1; privileged/org-wide ใช้ Manager A1 + Admin A2 | HR & Payroll scope; Finance excluded; Admin A2 คนละบัญชีจาก HR |
-| Leave request                      | Employee (self-service) หรือ HR                 | Manager หรือ HR                                          | Requester ห้ามเป็นผู้อนุมัติของตนเอง               |
-| Standard user/role grant           | Admin execute                                   | Manager/Tenant Authority                                 | Requester/approver/executor IDs                   |
-| Standard individual permission     | Admin execute                                   | Manager                                                  | Scope, reason, expiry and revoke event            |
-| Privileged permission              | Admin execute                                   | Manager A1 + Admin A2                                    | Expiry, SoD check and auto-revoke                 |
-| Emergency Access                   | Admin execute                                   | Authorized Manager                                       | Time bound, Acting Role, session review           |
-| Sensitive report/export            | Module-authorized user                          | Manager; Restricted/Privileged ใช้ Manager A1 + Admin A2 | Filter snapshot, purpose, recipient and expiry    |
-| Retention disposal                 | Data Owner prepare, Admin execute               | Manager A1 + Admin A2                                    | Legal Hold check and Destruction Certificate      |
+| Capability / Action                | Prepare / Execute                               | Approve / Confirm                                         | Scope / Control                                                  |
+| ---------------------------------- | ----------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------- |
+| Client create/update               | Lawyer, Assistant                               | Manager เมื่อเป็น exception                               | Assigned team/Tenant, duplicate gate                             |
+| Client merge/reverse merge         | Lawyer/Assistant/Manager request, Admin execute | Manager A1 + Admin A2                                     | DEC-CLI-003, before/after and surviving ID                       |
+| Client deactivate/reactivate       | Lawyer/Assistant request, Admin execute         | Manager                                                   | DEC-CLI-003, dependency and status event                         |
+| Compliance reactivation            | Manager request, Admin execute                  | Manager A1 + Admin A2                                     | DEC-CLI-003, compliance evidence and status event                |
+| Matter draft/routine field update  | Lawyer, Assistant                               | ไม่ต้องอนุมัติเมื่อมี permission                          | Assigned Matter; audit core field change                         |
+| Matter intake/core-field exception | Lawyer, Assistant request                       | Manager ตาม CTRL-MAT-001                                  | Validation, reassessment and decision evidence                   |
+| High-risk acceptance               | Lawyer/Manager prepare                          | Manager A1 + Manager A2                                   | Approvers ต้องแยกจาก assessor                                    |
+| Matter hold/close/reopen           | Responsible Lawyer request                      | Manager ตาม transition                                    | Immutable transition event                                       |
+| Document create/version            | Lawyer, Assistant                               | Manager เมื่อ final                                       | Matter access and version immutability                           |
+| Document sign/share/export         | Authorized user                                 | Manager; Restricted/Privileged ใช้ Manager A1 + Admin A2  | Recipient, purpose, expiry and access log                        |
+| Task/Calendar create/update        | Lawyer, Assistant, scoped Finance/HR            | Owner/Manager เมื่อ override                              | Assignment/team scope                                            |
+| Quotation prepare/revise           | Finance, Lawyer                                 | Manager                                                   | Creator ห้าม approve quotation ของตนเอง                          |
+| Invoice/payment post               | Finance                                         | Manager เมื่อ adjustment/exception                        | Posting period, reconciliation and audit                         |
+| Refund/write-off/void              | Finance                                         | Manager                                                   | Reason, amount, before/after and maker-checker                   |
+| Payroll run                        | HR prepare; System post                         | Manager A1; privileged/org-wide ใช้ Manager A1 + Admin A2 | Finance excluded; maker/A1/A2 แยกคน; Posted immutable            |
+| Payroll correction/export          | HR request; System execute                      | Manager A1; Restricted/individual ใช้ Admin A2            | Original immutable; aggregate Finance export ไม่มี employee data |
+| Payslip self-service               | Active employee account                         | ไม่ต้องอนุมัติ                                            | BUNDLE_EMPLOYEE_SELF_SERVICE; OWN_RECORD เท่านั้น                |
+| Leave request/cancel               | Employee self-service หรือ HR proxy             | Manager หรือ alternate HR                                 | Requester ห้ามอนุมัติเอง; balance update/reversal atomic         |
+| Leave balance/policy correction    | HR prepare                                      | Manager                                                   | Before/after event; policy version/effective date                |
+| Standard user/role grant           | Admin execute                                   | Manager/Tenant Authority                                  | Requester/approver/executor IDs                                  |
+| Standard individual permission     | Admin execute                                   | Manager                                                   | Scope, reason, expiry and revoke event                           |
+| Privileged permission              | Admin execute                                   | Manager A1 + Admin A2                                     | Expiry, SoD check and auto-revoke                                |
+| Emergency Access                   | Admin execute                                   | Authorized Manager                                        | Time bound, Acting Role, session review                          |
+| Sensitive report/export            | Module-authorized user                          | Manager; Restricted/Privileged ใช้ Manager A1 + Admin A2  | Filter snapshot, purpose, recipient and expiry                   |
+| Retention disposal                 | Data Owner prepare, Admin execute               | Manager A1 + Admin A2                                     | Legal Hold check and Destruction Certificate                     |
 
 ## SoD Rules
 

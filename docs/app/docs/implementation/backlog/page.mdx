@@ -78,24 +78,27 @@ UAT mapped cases Passed และ release evidence ถูกเก็บ
 | IMP-CAL-001 | Appointment, recurrence, timezone and conflict                     | REQ-CAL-001              | IMP-MAT-001, IMP-PLT-007 | CAL-01, CAL-02         |
 | IMP-CAL-002 | Provider-neutral calendar adapter, sandbox/stub and retry/recovery | REQ-CAL-001              | IMP-CAL-001              | CAL-03                 |
 
-## P2 Commercial and Assurance
+## P2 Commercial, HR and Assurance
 
-| Backlog ID  | Capability / Outcome                                              | Requirement | Depends On                            | UAT              |
-| ----------- | ----------------------------------------------------------------- | ----------- | ------------------------------------- | ---------------- |
-| IMP-BIL-001 | Quotation pricing/tax/terms/version calculation                   | REQ-BIL-001 | IMP-CLI-001, IMP-MAT-001              | BIL-01           |
-| IMP-BIL-002 | Quotation approval/client response/revision                       | REQ-BIL-001 | IMP-BIL-001, IMP-PLT-004              | BIL-02 to BIL-04 |
-| IMP-BIL-003 | Invoice posting and duplicate reference control                   | REQ-BIL-002 | IMP-BIL-002, IMP-PLT-005              | BIL-05, BIL-08   |
-| IMP-BIL-004 | Deposit/payment/receipt/allocation/reconciliation                 | REQ-BIL-002 | IMP-BIL-003                           | BIL-06, BIL-07   |
-| IMP-BIL-005 | Void/reverse/refund/write-off maker-checker                       | REQ-BIL-003 | IMP-BIL-004, IMP-PLT-004              | BIL-09, BIL-10   |
-| IMP-SEC-001 | User invitation/activation and standard role grant                | REQ-SEC-001 | IMP-PLT-002, IMP-PLT-003              | SEC-01           |
-| IMP-SEC-002 | Privileged/individual/emergency access lifecycle                  | REQ-SEC-001 | IMP-SEC-001, IMP-PLT-004, IMP-PLT-007 | SEC-03, SEC-04   |
-| IMP-SEC-003 | Leaver transfer and access recertification                        | REQ-SEC-001 | IMP-SEC-002                           | SEC-05, SEC-06   |
-| IMP-REP-001 | Domain report metadata/filter/as-of/reconciliation                | REQ-REP-001 | Domain P1/P2 data, IMP-PLT-009        | REP-01, REP-02   |
-| IMP-REP-002 | Sensitive export and scheduled delivery                           | REQ-REP-001 | IMP-REP-001, IMP-PLT-004              | REP-03, REP-04   |
-| IMP-AUD-001 | Audit/access review and correction workflow                       | REQ-AUD-001 | IMP-PLT-005, IMP-REP-001              | AUD-01 to AUD-03 |
-| IMP-RET-001 | Domain retention policy/configuration, control UI and certificate | REQ-RET-001 | IMP-PLT-010                           | RET-01, RET-03   |
-| IMP-GOV-001 | Register/link/coverage/authority/status validation                | REQ-GOV-001 | Documentation pipeline                | GOV-01 to GOV-07 |
-| IMP-EXC-001 | Exception record, SLA breach escalation and closure gate          | REQ-EXC-001 | IMP-PLT-007                           | EXC-01 to EXC-04 |
+| Backlog ID  | Capability / Outcome                                              | Requirement | Depends On                            | UAT                   |
+| ----------- | ----------------------------------------------------------------- | ----------- | ------------------------------------- | --------------------- |
+| IMP-BIL-001 | Quotation pricing/tax/terms/version calculation                   | REQ-BIL-001 | IMP-CLI-001, IMP-MAT-001              | BIL-01                |
+| IMP-BIL-002 | Quotation approval/client response/revision                       | REQ-BIL-001 | IMP-BIL-001, IMP-PLT-004              | BIL-02 to BIL-04      |
+| IMP-BIL-003 | Invoice posting and duplicate reference control                   | REQ-BIL-002 | IMP-BIL-002, IMP-PLT-005              | BIL-05, BIL-08        |
+| IMP-BIL-004 | Deposit/payment/receipt/allocation/reconciliation                 | REQ-BIL-002 | IMP-BIL-003                           | BIL-06, BIL-07        |
+| IMP-BIL-005 | Void/reverse/refund/write-off maker-checker                       | REQ-BIL-003 | IMP-BIL-004, IMP-PLT-004              | BIL-09, BIL-10        |
+| IMP-HR-001  | Payroll period/master snapshot, calculation and reconciliation    | REQ-HR-001  | IMP-PLT-005, IMP-PLT-008              | HR-01, HR-06          |
+| IMP-HR-002  | Payroll approval/post, payslip self-access and controlled export  | REQ-HR-001  | IMP-HR-001, IMP-PLT-004, IMP-PLT-009  | HR-02 to HR-04, HR-07 |
+| IMP-HR-003  | Leave policy, balance, request/approval/cancel and payroll effect | REQ-HR-001  | IMP-PLT-004, IMP-PLT-005              | HR-05                 |
+| IMP-SEC-001 | User invitation/activation and standard role grant                | REQ-SEC-001 | IMP-PLT-002, IMP-PLT-003              | SEC-01                |
+| IMP-SEC-002 | Privileged/individual/emergency access lifecycle                  | REQ-SEC-001 | IMP-SEC-001, IMP-PLT-004, IMP-PLT-007 | SEC-03, SEC-04        |
+| IMP-SEC-003 | Leaver transfer and access recertification                        | REQ-SEC-001 | IMP-SEC-002                           | SEC-05, SEC-06        |
+| IMP-REP-001 | Domain report metadata/filter/as-of/reconciliation                | REQ-REP-001 | Domain P1/P2 data, IMP-PLT-009        | REP-01, REP-02        |
+| IMP-REP-002 | Sensitive export and scheduled delivery                           | REQ-REP-001 | IMP-REP-001, IMP-PLT-004              | REP-03, REP-04        |
+| IMP-AUD-001 | Audit/access review and correction workflow                       | REQ-AUD-001 | IMP-PLT-005, IMP-REP-001              | AUD-01 to AUD-03      |
+| IMP-RET-001 | Domain retention policy/configuration, control UI and certificate | REQ-RET-001 | IMP-PLT-010                           | RET-01, RET-03        |
+| IMP-GOV-001 | Register/link/coverage/authority/status validation                | REQ-GOV-001 | Documentation pipeline                | GOV-01 to GOV-07      |
+| IMP-EXC-001 | Exception record, SLA breach escalation and closure gate          | REQ-EXC-001 | IMP-PLT-007                           | EXC-01 to EXC-04      |
 
 ## Item Readiness Manifest
 
@@ -141,6 +144,9 @@ dependency ผ่าน
 | IMP-BIL-003 | Billing Team / Finance             | DEC-BIL-002, SOP-BIL-002              | invoice post; posting/duplicate-reference evidence                                | R2     | Ready              |
 | IMP-BIL-004 | Billing Team / Finance             | DEC-BIL-002, SOP-BIL-002              | payment allocate/reconcile; allocation/control totals                             | R2     | Ready              |
 | IMP-BIL-005 | Billing Team / Finance             | DEC-BIL-002, SOP-BIL-002              | adjustment request/approve/execute; compensating entry                            | R2     | Ready              |
+| IMP-HR-001  | HR Team / HR                       | DEC-HR-001, SOP-HR-001                | calculation input/config/output snapshot; totals/reconciliation events            | R2     | Ready              |
+| IMP-HR-002  | HR Team / HR + Admin               | DEC-HR-001, SOP-HR-001                | A1/A2/post permissions; payslip access and classified export evidence             | R2     | Ready              |
+| IMP-HR-003  | HR Team / HR                       | DEC-HR-001, SOP-HR-001                | policy/balance/request/decision/cancel/payroll-effect events                      | R2     | Ready              |
 | IMP-SEC-001 | Identity Team / Admin              | DEC-SEC-001, SOP-SEC-001              | user/standard access workflow; MFA/grant snapshot                                 | R2     | Ready              |
 | IMP-SEC-002 | Identity Team / Admin              | DEC-SEC-001, SOP-SEC-001              | privileged/emergency split permissions; expiry/revoke events                      | R2     | Ready              |
 | IMP-SEC-003 | Identity Team / Admin              | DEC-SEC-001, SOP-SEC-001              | suspend/recertify actions; transfer/before-after evidence                         | R2     | Ready              |
@@ -158,8 +164,6 @@ dependency ผ่าน
 | DSC-TIM-001 | Time Tracking & Timesheets  | SOP, status, timer/manual edit, approval, rate/billing linkage, audit and UAT     | Product + Manager | Billable time                  |
 | DSC-FIN-001 | Finance Foundation          | accounting boundary, chart/tax/expense/journal/reconciliation SOP and authority   | Finance + Manager | Finance foundation beyond AR   |
 | DSC-HR-001  | Personnel & HR              | employee lifecycle, sensitive access, retention and UAT                           | HR + Admin        | Personnel records              |
-| DSC-PAY-001 | Payroll                     | calculation rules, periods, corrections, approval, payslip and statutory evidence | HR + Manager      | Payroll                        |
-| DSC-LVE-001 | Leave Management            | leave types, accrual, request/approval/cancel and payroll/calendar effects        | HR + Manager      | Leave                          |
 | DSC-TEN-001 | Tenant Onboarding & Package | signup, identity verification, domain, package, module/user limits and downgrade  | Platform Owner    | SaaS onboarding                |
 | DSC-ESG-001 | E-signature Provider        | provider-neutral contract, identity assurance, webhook/retry and evidence mapping | Product + Admin   | Production signing integration |
 
@@ -172,8 +176,8 @@ of Ready ผ่าน รายละเอียด gap และลำดั�
 2. Client + Matter intake/lifecycle
 3. Document + Task/Calendar
 4. Quotation + Invoice/Payment
-5. Reports + Retention + Governance automation
-6. Discovery domains หลัง SOP/Decision/UAT พร้อม
+5. Payroll/Leave + Reports + Retention + Governance automation
+6. Discovery domains ที่เหลือหลัง SOP/Decision/UAT พร้อม
 
 ## Backlog Controls
 

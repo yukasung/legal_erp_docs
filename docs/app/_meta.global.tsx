@@ -28,6 +28,7 @@ export default {
           'matter-operations': 'Matter Operations & Closure',
           'document-management': 'Document & Template Management',
           'task-calendar': 'Task & Calendar Management',
+          'time-tracking': 'Time Tracking & Timesheet Approval',
           'quotation-engagement': 'Quotation & Engagement Approval',
           'invoice-payment': 'Invoice, Payment & Adjustment',
           'personnel-lifecycle': 'Personnel Lifecycle & Employee Data',

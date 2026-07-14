@@ -1,0 +1,239 @@
+# Time Tracking & Timesheet Approval
+
+| Document Control        | Value        |
+| ----------------------- | ------------ |
+| SOP ID                  | SOP-TIM-001  |
+| Status                  | Approved     |
+| Version                 | 1.0          |
+| Process Owner           | Manager      |
+| System Owner            | Admin        |
+| Approver                | Manager      |
+| Effective Date          | 14 July 2026 |
+| Last Requirement Review | 14 July 2026 |
+
+> **Approval notice:** Live Timer, Manual/Start-End Time Entry, Timesheet
+> Approval, Time Locking, reporting และ Billing/Calendar integration
+> ได้รับการอนุมัติเป็น baseline เมื่อ 14 July 2026
+
+## Purpose
+
+กำหนดวิธีบันทึก ตรวจสอบ อนุมัติ แก้ไข และล็อกเวลาทำงานให้ถูกต้อง
+ตรวจสอบย้อนหลังได้ และส่งเฉพาะเวลาที่อนุมัติแล้วไปใช้คำนวณค่าบริการ รายงาน
+ต้นทุน และ workload โดยป้องกันเวลาซ้ำ การอนุมัติตนเอง และการแก้รายการที่ถูก
+นำไปวางบิลแล้ว
+
+## Scope
+
+ครอบคลุม Live Timer, Manual Time Entry, Start/End Time Entry, category, tag,
+work type, billable/non-billable classification, การผูก Client/Matter/Task/
+Document, Timesheet Approval, Time Locking, edit notification, daily/weekly/
+monthly summary, Matter analysis, cost calculation, Calendar Sync และ export
+Excel/PDF/CSV
+
+ไม่ครอบคลุมการตั้งราคาหรือออก Invoice ซึ่งอยู่ใน SOP-BIL-001/002 และไม่ใช้
+Calendar event เป็นหลักฐานอนุมัติเวลาโดยอัตโนมัติ
+
+## Roles
+
+| Role       | Responsibility                                                                                             |
+| ---------- | ---------------------------------------------------------------------------------------------------------- |
+| Timekeeper | Lawyer, Assistant, Manager หรือผู้ได้รับมอบหมาย บันทึกและส่งเวลาของตนเอง                                   |
+| Manager    | ตรวจ Matter, work type, narrative, duration และ billable classification; approve/reject โดยไม่อนุมัติตนเอง |
+| Finance    | รับเฉพาะ Approved/Locked billing fields และ rate/cost snapshot ที่ได้รับอนุญาต                             |
+| Admin      | ดูแล category, work type, policy และ integration configuration; ไม่แก้หรืออนุมัติ business time entry      |
+| System     | ตรวจ overlap/status/scope, คำนวณ duration, lock, publish integration event และเก็บ immutable history       |
+
+## Approved Status Baseline
+
+Draft, Submitted, Approved, Rejected, Locked และ Voided
+
+- Draft แก้ไขได้โดย Timekeeper และยังส่ง Billing/รายงาน final ไม่ได้
+- Submitted ถูก freeze ตาม version ที่ส่งและรอ Manager decision
+- Rejected ต้องมีเหตุผลและกลับไปแก้เป็น Draft revision ใหม่ก่อน resubmit
+- Approved แก้ค่าต้นฉบับไม่ได้และพร้อมส่ง downstream
+- Locked หมายถึงถูกนำเข้า billing period/invoice หรือ period lock แล้ว
+- Voided ใช้ยกเลิกโดยเก็บ original; ห้าม hard delete
+
+## Approved Control Decision
+
+| Decision ID | Approved Outcome                                                                                                                                                                                                                                        |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DEC-TIM-001 | Time Entry รองรับ Live/Manual/Start-End; ต้องผูก actor/date/timezone/work type และ scope; block overlap/invalid Matter; Timekeeper ห้าม self-approve; Approved/Locked immutable; correction ใช้ revision/adjustment; Billing/Calendar/export idempotent |
+
+## Required Information
+
+- Time Entry ID, Tenant, Timekeeper และ source mode (Live/Manual/Start-End/
+  Calendar suggestion)
+- work date, start/end/duration, timezone และ timer session reference
+- Client/Matter และ Task/Document เมื่อเกี่ยวข้อง
+- work type, category, tag, billable/non-billable, narrative และ reason
+- rate/cost rule/version/effective date ที่ใช้คำนวณ โดย Timekeeper แก้ rate
+  snapshot เองไม่ได้
+- status, version, requester, approver, decision/reason และ timestamps
+- billing/export/calendar reference, lock reason, correction/void link และ
+  idempotency key
+
+## Procedure
+
+### 1. Record Time with Live Timer
+
+**Responsible:** Timekeeper
+
+1. เลือก Tenant, Client/Matter และ work type ก่อนเริ่ม timer
+2. ระบบตรวจว่า Timekeeper ไม่มี active timer อื่นและมีสิทธิ์ใน Matter
+3. เริ่ม timer พร้อม server timestamp/timezone; pause/resume/stop ต้องสร้าง
+   event
+4. เมื่อ stop ให้ระบบคำนวณ duration และสร้าง Draft Time Entry
+5. Timekeeper เติม narrative, category, tag, Task/Document และ billable status
+
+**Expected result:** ได้ Draft จาก timer หนึ่งรายการโดยไม่มีช่วงเวลาซ้ำหรือ
+duration ที่ผู้ใช้แก้โดยไม่มีเหตุผล
+
+### 2. Record Manual or Start/End Time
+
+**Responsible:** Timekeeper
+
+1. เลือก Manual Duration หรือ Start/End mode
+2. ระบุ work date/timezone, duration หรือ start/end และ scope ที่เกี่ยวข้อง
+3. ระบบคำนวณ duration ของ Start/End mode และตรวจค่าติดลบ ศูนย์ overlap duplicate
+   และ threshold ตาม active policy
+4. Manual entry หรือ backdate ที่เข้าเงื่อนไข policy ต้องระบุ reason/evidence
+5. บันทึกเป็น Draft พร้อม source mode และ policy version
+
+**Expected result:** Manual/Start-End entry มีข้อมูลและเหตุผลครบโดยไม่ปะปนกับ
+timer event
+
+### 3. Validate and Classify Time
+
+**Responsible:** Timekeeper, System
+
+1. ตรวจ Client/Matter/Task/Document อยู่ Tenant เดียวกันและ Timekeeper มี scope
+2. billable entry ใช้ได้เฉพาะ Matter ที่อนุญาตให้ปฏิบัติงาน/บันทึก billable time
+   ตาม CTRL-MAT-001; Intake Draft, Rejected หรือ Closed ถูก block
+3. เลือก work type/category/tag จาก active master data
+4. ตรวจ narrative, billable/non-billable และ rate/cost source ตาม policy
+5. แก้ validation error ให้ครบก่อน submit
+
+**Expected result:** Time Entry พร้อมอนุมัติมี classification และ business scope
+ที่ถูกต้อง
+
+### 4. Submit and Approve Timesheet
+
+**Responsible:** Timekeeper (submit), Manager (decide)
+
+1. Timekeeper รวม Draft ตามรอบที่กำหนดและ submit exact version
+2. ระบบ freeze Submitted version และแจ้ง Manager ตาม team/Matter authority
+3. Manager ตรวจ duration, narrative, Matter, work type, billable status, overlap
+   และ exception
+4. Manager approve หรือ reject พร้อม reason; ผู้ส่งหรือเจ้าของเวลา ห้าม approve
+   รายการของตนเอง
+5. Reject สร้าง decision event และเปิด Draft revision; Approve สร้าง immutable
+   approval snapshot
+
+**Expected result:** Approved time มี maker-checker และ version/evidence ครบ
+
+### 5. Lock and Send Approved Time
+
+**Responsible:** System, Finance
+
+1. ส่งเฉพาะ Approved entry ไป Billing ด้วย idempotency key
+2. snapshot duration, billable classification, rate/cost rule/version และ amount
+   ที่ downstream คำนวณ
+3. เมื่อผูก billing period/invoice แล้วเปลี่ยนเป็น Locked พร้อม reference
+4. Calendar Sync ใช้สร้าง suggestion/reference ได้ แต่ห้ามสร้าง Approved time
+   อัตโนมัติ
+5. export ใช้ SOP-REP-001 และส่งเฉพาะ field/scope ที่ผู้ขอมีสิทธิ์
+
+**Expected result:** Billing/Calendar/export ไม่รับ Draft/Rejected และ retry
+ไม่สร้างรายการซ้ำ
+
+### 6. Correct or Void Time
+
+**Responsible:** Timekeeper/Manager (request), Manager (approve), System
+(execute)
+
+1. Draft แก้ได้โดยเก็บ updated timestamp; Submitted ต้อง withdraw/reject ตาม
+   authority และสร้าง edit notification
+2. Approved correction สร้าง revision ที่อ้าง original พร้อม before/after/reason
+3. Locked correction/void ต้องมี Manager approval และส่ง adjustment/reversal ไป
+   Billing; ห้ามแก้ original หรือ invoice โดยตรง
+4. ระบบ reconcile original, correction และ downstream reference ก่อนปิดรายการ
+
+**Expected result:** ประวัติเดิมไม่หายและยอดเวลา/ค่าบริการไม่ถูกนับซ้ำ
+
+### 7. Review Time Reports
+
+**Responsible:** Timekeeper, Manager, Finance ตาม scope
+
+1. Timekeeper ดู daily/weekly/monthly summary ของตนเอง
+2. Manager ดู team/Matter summary และ utilization ภายใน authority
+3. Finance ดูเฉพาะ Approved/Locked billing/cost fields ที่จำเป็น
+4. ตรวจ total duration ตาม entry, user, Matter, status และ period ให้ reconcile
+5. export ต้องเก็บ filter/as-of, row count, totals, requester และ checksum
+
+**Expected result:** รายงาน trace กลับไป Time Entry/version ได้และ total ตรงกัน
+
+## Control Points
+
+| Control                   | Requirement                                                                 | Evidence                                              |
+| ------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------- |
+| Source and server time    | เก็บ mode, server timestamp, timezone และ timer events                      | timer/manual/start-end event chain                    |
+| Scope and Matter gate     | Tenant/access/Matter status ต้องอนุญาตก่อนบันทึก billable time              | authorization and Matter status result                |
+| Duration integrity        | block negative/zero/overlap/duplicate และใช้ active policy threshold        | validation result and policy version                  |
+| Maker-checker             | Timekeeper/submitter ห้าม approve entry ของตนเอง                            | submitter, owner, approver and decision event         |
+| Approval immutability     | Submitted freeze exact version; Approved/Locked แก้ผ่าน revision/adjustment | original/revision/approval/lock links                 |
+| Billing boundary          | ส่งเฉพาะ Approved และ lock เมื่อ downstream รับแล้ว                         | idempotency key, billing reference and reconciliation |
+| Report and export control | totals/filter/as-of ต้อง reconcile และ export ตาม role/scope                | report/export metadata and checksum                   |
+
+## Exceptions
+
+- **Active timer ค้าง:** System แจ้งเตือนและให้ Timekeeper stop/correct พร้อม
+  reason; ห้ามเดาเวลาสิ้นสุดหรือ auto-approve
+- **Overlap/duplicate:** block จนแก้ช่วงเวลา หรือ Manager อนุมัติ documented
+  exception ที่ policy อนุญาต
+- **Backdate/เกิน threshold:** ต้องมี reason/evidence และ route ตาม policy
+- **Matter On Hold:** บันทึกได้เฉพาะ activity ที่ authority อนุญาตและต้องมี
+  reason; Intake Draft, Rejected และ Closed ห้าม billable entry
+- **Manager ไม่พร้อม:** route ไป alternate Manager ที่มี team/Matter authority
+- **Billing integration fail:** คง Approved, retry ด้วย idempotency key และเปิด
+  exception; ห้าม lock จน reconcile สำเร็จ
+- **Locked time ผิด:** สร้าง correction/void + billing adjustment ห้าม unlock
+  หรือเขียนทับ original
+
+## Completion Checklist
+
+- [ ] source mode, server time/timezone, owner และ scope ครบ
+- [ ] duration/overlap/duplicate/Matter status validation ผ่าน
+- [ ] work type/category/tag และ billable classification ใช้ active policy
+- [ ] submitter/time owner และ Manager approver แยก actor
+- [ ] Submitted exact version และ Approved/Locked original immutable
+- [ ] Billing/Calendar/export ใช้ idempotency และรับเฉพาะข้อมูลตาม authority
+- [ ] correction/void เชื่อม original และ downstream adjustment ครบ
+- [ ] daily/weekly/monthly, Matter และ cost totals reconcile
+
+## Related Documents
+
+- [Matter Lifecycle & Approval Rules](/docs/sops/matter-lifecycle)
+- [Matter Operations & Status Maintenance](/docs/sops/matter-operations)
+- [Task & Calendar Management](/docs/sops/task-calendar)
+- [Quotation & Engagement Approval](/docs/sops/quotation-engagement)
+- [Invoice, Payment & Adjustment](/docs/sops/invoice-payment)
+- [Reports, Export & Audit Review](/docs/sops/reports-audit)
+- [Role & Permission Alignment](/docs/sops/governance/role-permission-alignment)
+- [SOP UAT Scenarios & Test Cases](/docs/sops/governance/uat-test-cases)
+
+## Requirement Traceability
+
+| SOP Area                                           | Source                                                        |
+| -------------------------------------------------- | ------------------------------------------------------------- |
+| Live/Manual/Start-End, category/tag                | ALT Pro - P3 (MatterSolv).xlsx, sheet Sub-Module, แถว 115-121 |
+| Client/Matter/Task/Document/work type linkage      | ไฟล์เดียวกัน, แถว 122-125                                     |
+| Approval, locking and edit notification            | ไฟล์เดียวกัน, แถว 126-129                                     |
+| Summary, Matter analysis, cost and dashboard       | ไฟล์เดียวกัน, แถว 130-134                                     |
+| Billing, Calendar Sync and Excel/PDF/CSV export    | ไฟล์เดียวกัน, แถว 135-138                                     |
+| Timer/manual approval and Billing service boundary | Scope and Architecture Time Tracking Service                  |
+
+## Approval Record
+
+- Manager อนุมัติ
+- Effective Date: 14 July 2026

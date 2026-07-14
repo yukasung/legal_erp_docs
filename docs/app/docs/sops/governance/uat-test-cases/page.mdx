@@ -1,0 +1,256 @@
+# SOP UAT Scenarios & Test Cases
+
+| Document Control        | Value        |
+| ----------------------- | ------------ |
+| Document ID             | UAT-SOP-001  |
+| Status                  | Approved     |
+| Version                 | 1.0          |
+| Process Owner           | QA Lead      |
+| Approver                | Manager      |
+| Effective Date          | 14 July 2026 |
+| Last Requirement Review | 14 July 2026 |
+
+## Purpose
+
+กำหนด UAT ที่พิสูจน์ว่า requirement, workflow, permission, audit และ exception
+ใน SOP ทำงานครบก่อน release โดยทุกผลทดสอบต้อง map กลับ Requirement ID ได้
+
+## Entry Criteria
+
+- Build และ release scope ถูกระบุและ deployment สำเร็จใน UAT environment
+- Requirement, SOP, role/permission และ test data version ถูก freeze
+  สำหรับรอบทดสอบ
+- มี Tenant แยกอย่างน้อยสองรายเพื่อทดสอบ isolation
+- มีผู้ใช้ Admin, Lawyer, Assistant, Finance, HR, Manager และ dual approver ตาม
+  scope
+- Integration stub/sandbox, clock/timezone และ notification channel พร้อม
+- Test data ไม่มีข้อมูลจริงที่ไม่ได้รับอนุญาต
+
+## Execution Record
+
+แต่ละ case ต้องบันทึก Test Run ID, build, environment, tester, role, Tenant,
+test data IDs, executed at, expected/actual result, status, defect/exception ID
+และ evidence ตาม FRM-UAT-001
+
+## Standard Test Procedure
+
+ทุก case ใช้ขั้นตอนซ้ำได้ดังนี้ โดย Scenario ในตารางเป็น action/input variation
+ของขั้นตอนที่ 3:
+
+1. Reset test data ตาม profile และบันทึก before snapshot/reference
+2. Sign in ด้วย Actor role ใน Tenant A และยืนยัน permission/assignment
+   prerequisite
+3. ทำ Scenario ด้วย input IDs/values ที่บันทึกใน FRM-UAT-001 ตามลำดับ UI/API
+   จริง
+4. ตรวจ status, validation, authority, calculation, notification และ side
+   effects
+5. Query audit/evidence reference และตรวจ
+   actor/action/object/time/outcome/Tenant
+6. เปรียบเทียบ Actual กับ Expected Result และบันทึก Passed/Failed/Blocked
+7. สำหรับ negative/isolation case ตรวจว่า source record ไม่เปลี่ยนและ Tenant B
+   ไม่เปิดเผยทั้ง content และ metadata
+
+Evidence package ใช้ ID รูปแบบ UAT-BUILD-CASE-RUN และต้องมี input snapshot,
+screen/API result, record IDs และ audit event reference ไม่ใช้ screenshot
+อย่างเดียว
+
+## Execution Profiles
+
+| Case Prefix | Actor / Preconditions                                                | Required Test Inputs                                                                  |
+| ----------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| CLI         | Lawyer/Assistant + Manager; Client candidates ใน Tenant A/B          | Client type, identity fields, duplicate score band and dependencies                   |
+| MAT         | Lawyer + Manager + Executive A2; Client Active                       | Matter type, conflict parties, risk band, SLA clock and transition                    |
+| DOC         | Assistant/Lawyer + Manager + Data/Compliance                         | Matter access, document/version/checksum, classification and recipient                |
+| TSK/CAL     | Assigned user + Manager; timezone/sync sandbox พร้อม                 | owner, deadline, recurrence, conflict and sync response                               |
+| BIL         | Finance maker + Manager approver; pricing/tax master พร้อม           | quotation/invoice/payment amounts, currency, tax and posting reference                |
+| SEC         | Admin executor + Manager/Data/Compliance approvers; Tenant A/B users | role/action/scope, expiry, MFA and session/token                                      |
+| REP/AUD     | Report owner/Admin + Manager/Data/Compliance                         | source population, filters/as-of, expected totals and event chain                     |
+| RET         | Data Owner + dual approvers; expired/non-expired/held records        | retention rule, trigger, hold and disposal population                                 |
+| GOV/EXC     | QA Lead + document/control owners                                    | controlled document set, broken/valid samples, severity clock and escalation contacts |
+
+## Fixture Reference Rule
+
+ทุก case อ้าง Step Set ตาม Case Range ในตาราง Authored Step Sets และ Fixture ID
+แบบ FX-CASE-ID เช่น CLI-03 ใช้ STP-CLI-REG + FX-CLI-03 ห้าม tester คิดค่าใหม่
+ระหว่าง run ค่าใน Scenario เป็น delta เดียวจาก Base Fixture ด้านล่าง ส่วนค่าอื่น
+คงเดิมและต้อง export seed manifest/checksum แนบ FRM-UAT-001
+
+## Base Fixture Catalog
+
+| Fixture Prefix | Fixed Synthetic Data                                                                                                                                                         |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FX-CLI         | Tenant UAT-A; Organization UAT Legal A Co., Ltd.; Registration UAT-REG-1001; Country TH; Email legal-a@example.test; duplicate candidate CLI-A-1001                          |
+| FX-MAT         | Client CLI-A-1001 Active; Matter UAT-MAT-1001; type Advisory; Responsible Lawyer lawyer-a@example.test; counterparty UAT Counterparty 1; SLA start 2026-08-03T09:00:00+07:00 |
+| FX-DOC         | Matter UAT-MAT-1001; Document UAT-DOC-1001; version 1.0; classification Internal; recipient reviewer-a@example.test; share expiry 2026-08-10T17:00:00+07:00                  |
+| FX-TSK/CAL     | Matter UAT-MAT-1001; task UAT-TSK-1001 due 2026-08-05T17:00:00+07:00; appointment UAT-CAL-1001 at 2026-08-04T10:00:00+07:00; timezone Asia/Bangkok                           |
+| FX-BIL         | Quotation UAT-QUO-1001; service fee THB 100,000; discount 10%; VAT 7%; invoice UAT-INV-1001; payment UAT-PAY-1001 amount THB 53,500                                          |
+| FX-SEC         | Tenant UAT-A and UAT-B; user-a@example.test; Admin admin-a@example.test; Manager manager-a@example.test; A2 compliance-a@example.test; expiry 2026-08-04T17:00:00+07:00      |
+| FX-REP/AUD     | Report UAT-REP-1001; as-of 2026-08-03T17:00:00+07:00; three invoices; expected gross THB 107,000; immutable events EVT-1001 to EVT-1005                                      |
+| FX-RET         | Records REC-EXPIRED-01, REC-ACTIVE-01 and REC-HOLD-01; retention expiry 2026-07-31; Legal Hold HOLD-001 on REC-HOLD-01                                                       |
+| FX-GOV/EXC     | Controlled docs 18; form templates 12; valid ID SOP-MAT-001; duplicate test ID SOP-MAT-001-DUP; P1 detected 2026-08-03T09:00:00+07:00                                        |
+
+Test seed ต้องใช้ reserved test identifiers และ example.test เท่านั้น
+ห้ามใช้ข้อมูล บุคคลจริง แต่ละ FX-CASE-ID clone Base Fixture แล้วใช้ delta ใน
+Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี่ยน Risk เป็น High
+และ FX-SEC-02 สลับ resource ไป Tenant UAT-B
+
+## Authored Step Sets
+
+| Case Range       | Step Set        | Ordered Actions                                                                                                                                                                                                                                    |
+| ---------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CLI-01 to CLI-03 | STP-CLI-REG     | 1) Sign in as Assistant 2) search legal name/identifier 3) start Organization Client with FX values 4) apply Scenario field/duplicate delta 5) submit validation and Manager review when routed 6) reopen Client/audit history                     |
+| CLI-04 to CLI-05 | STP-CLI-MAINT   | 1) Open source/surviving Clients and dependency count 2) submit merge/deactivate request 3) apply Scenario actor/authority 4) A1/A2 or Manager decides 5) Admin executes when approved 6) verify redirect/status/before-after events               |
+| CLI-06           | STP-CLI-VIP-RET | 1) Open active Client 2) enter VIP/Retainer eligibility, period and terms 3) submit owner/approval 4) activate/renew 5) advance clock to review/expiry 6) verify lifecycle and evidence                                                            |
+| CLI-07           | STP-CLI-NOTE    | 1) Create confidential Interaction/Note 2) finalize classification 3) sign in as out-of-scope user 4) attempt view/update/export 5) confirm denial 6) inspect access decision without exposed content                                              |
+| MAT-01 to MAT-08 | STP-MAT-INTAKE  | 1) Open Client CLI-A-1001 2) start Matter intake 3) run duplicate/conflict/risk gates with Scenario delta 4) submit acceptance/transition 5) required A1/A2 decides 6) verify status, SLA and timeline                                             |
+| MAT-09 to MAT-11 | STP-MAT-OPS     | 1) Open active/completed/closed Matter fixture 2) submit hold/resume/close/reopen request 3) load dependencies and authority 4) required approver decides 5) executor transitions or system blocks 6) verify checklist, notice and immutable event |
+| DOC-01 to DOC-07 | STP-DOC         | 1) Open Matter documents 2) create/upload FX-DOC 3) submit version/review action 4) approve/sign/share as Scenario actor 5) attempt negative/expiry/archive action 6) verify version/checksum/access events                                        |
+| TSK-01 to TSK-03 | STP-TSK         | 1) Open Matter tasks 2) create/assign FX task 3) set reminder/status 4) apply completion/cancellation/overdue Scenario 5) advance fixed clock 6) verify owner, warning and history                                                                 |
+| CAL-01 to CAL-03 | STP-CAL         | 1) Open team calendar 2) create recurring FX appointment 3) apply timezone/conflict/provider response 4) sync or authorize override 5) retry/recover where specified 6) verify instants, attendees and sync events                                 |
+| BIL-01 to BIL-04 | STP-BIL-QUO     | 1) Open Client quotation 2) enter FX fee/discount/tax/terms 3) calculate and submit 4) Manager approves or system blocks self/limit 5) record client response/revision 6) verify totals/version/events                                             |
+| BIL-05 to BIL-08 | STP-BIL-POST    | 1) Open approved commercial basis 2) create/post FX invoice 3) record payment/deposit 4) allocate per Scenario 5) reconcile invoice/payment/receipt 6) verify balances/status/posting events                                                       |
+| BIL-09 to BIL-10 | STP-BIL-ADJ     | 1) Open posted FX transaction 2) enter void/reverse/refund/write-off reason and amount 3) submit as Finance maker 4) Manager or self-actor attempts approval 5) execute compensating entry when approved 6) verify before/after and reconciliation |
+| SEC-01 to SEC-06 | STP-SEC         | 1) Admin opens access request 2) load FX user/role/scope 3) submit SoD/MFA validation 4) required approver decides 5) Admin grants/revokes or attempts Scenario access 6) verify Tenant denial, expiry, sessions and snapshots                     |
+| REP-01 to REP-04 | STP-REP         | 1) Generate FX report 2) set filters/as-of 3) reconcile expected rows/totals 4) request export as Scenario actor 5) required authority decides/delivers 6) verify checksum, recipient and access log                                               |
+| AUD-01 to AUD-03 | STP-AUD         | 1) Load EVT-1001 to EVT-1005 2) verify sequence/hash 3) introduce correction/integrity delta 4) run review 5) escalate failure or link correction 6) verify original remains immutable                                                             |
+| RET-01 to RET-04 | STP-RET         | 1) Generate candidate population 2) calculate expiry 3) search dependency/Legal Hold 4) request dual approval 5) execute/block disposal per Scenario 6) verify counts, retained records and certificate                                            |
+| GOV-01 to GOV-07 | STP-GOV         | 1) Load controlled set 2) run register/coverage/authority/status validation 3) introduce Scenario delta 4) attempt approve/release 5) correct or confirm block 6) verify source history and evidence                                               |
+| EXC-01 to EXC-04 | STP-EXC         | 1) Open P1/P2 exception at fixed time 2) assign owner/authority 3) advance clock to Scenario threshold 4) execute containment/escalation/closure attempt 5) record decision 6) verify SLA events, notices and closure block/package                |
+
+## Client Cases
+
+| ID     | Requirement | Scenario                                          | Expected Result / Evidence                                  |
+| ------ | ----------- | ------------------------------------------------- | ----------------------------------------------------------- |
+| CLI-01 | REQ-CLI-001 | สร้าง Client เมื่อ required fields ครบ            | ได้ Pending Verification/Active ตาม gate และมี create event |
+| CLI-02 | REQ-CLI-001 | ส่งข้อมูลขาด conditional field                    | ระบบ block และระบุ field/rule ที่ไม่ผ่าน                    |
+| CLI-03 | REQ-CLI-001 | สร้าง Client ที่ตรง duplicate threshold           | ระบบ block/route review พร้อม candidates และ score          |
+| CLI-04 | REQ-CLI-002 | Merge Client ที่ dependency พร้อม                 | surviving ID ทำงานและเก็บ before/after/approval             |
+| CLI-05 | REQ-CLI-002 | Merge/deactivate โดยไม่มี authority               | ปฏิเสธ ไม่มีข้อมูลเปลี่ยน และมี denied event                |
+| CLI-06 | REQ-CLI-003 | สร้าง/ต่ออายุ VIP หรือ Retainer                   | eligibility, approval, period และ status history ครบ        |
+| CLI-07 | REQ-CLI-003 | เปิด confidential Interaction/Note โดยไม่มี scope | ปฏิเสธและบันทึก access decision                             |
+
+## Matter Cases
+
+| ID     | Requirement | Scenario                                               | Expected Result / Evidence                            |
+| ------ | ----------- | ------------------------------------------------------ | ----------------------------------------------------- |
+| MAT-01 | REQ-MAT-001 | Intake ผ่าน duplicate/conflict/risk Low                | Manager approve และ transition ตาม lifecycle          |
+| MAT-02 | REQ-MAT-001 | Conflict Status เป็น Escalated/Prohibited              | หยุด gate และส่ง authority พร้อม assessment           |
+| MAT-03 | REQ-MAT-001 | High risk acceptance                                   | ต้องมี Manager A1 + Executive A2 แยกคน                |
+| MAT-04 | REQ-MAT-001 | Prohibited risk/conflict                               | Reject/no override และไม่มี Active transition         |
+| MAT-05 | REQ-MAT-001 | SLA pause/resume/warning/breach                        | clock และ event ถูกต้อง ไม่มี auto-approval           |
+| MAT-06 | REQ-MAT-002 | Matter duplicate ต่ำกว่า review threshold              | เปิดต่อได้และเก็บ rule version/score                  |
+| MAT-07 | REQ-MAT-002 | Matter duplicate review/block threshold                | block และ Manager disposition ก่อนดำเนินการ           |
+| MAT-08 | REQ-MAT-002 | เปลี่ยน status โดย requester/approver ไม่ถูก authority | ปฏิเสธและไม่มี transition                             |
+| MAT-09 | REQ-MAT-003 | On Hold และ Resume ตาม authority                       | status, reason, approval และ notifications ครบ        |
+| MAT-10 | REQ-MAT-003 | Close เมื่อยังมี task/document/billing dependency      | block และแสดง dependency checklist                    |
+| MAT-11 | REQ-MAT-003 | Reopen Closed Matter                                   | ใช้ approved path และสร้าง immutable transition event |
+
+## Document Cases
+
+| ID     | Requirement | Scenario                                   | Expected Result / Evidence                            |
+| ------ | ----------- | ------------------------------------------ | ----------------------------------------------------- |
+| DOC-01 | REQ-DOC-001 | Generate/upload พร้อม metadata             | Document ID, source/template version และ checksum ครบ |
+| DOC-02 | REQ-DOC-001 | สร้าง version ใหม่จาก Approved/Signed      | version chain ใหม่ ไม่เขียนทับต้นฉบับ                 |
+| DOC-03 | REQ-DOC-001 | Review/approve โดย role ที่ถูกต้อง         | reviewer/approver/time/decision ถูกบันทึก             |
+| DOC-04 | REQ-DOC-001 | Assistant พยายาม final approve             | ปฏิเสธและบันทึก denied event                          |
+| DOC-05 | REQ-DOC-002 | Sign ด้วย identity และ method ที่อนุญาต    | signature evidence ผูก version/checksum               |
+| DOC-06 | REQ-DOC-002 | Share external พร้อม recipient/expiry      | access จำกัดเวลาและมี view/download log               |
+| DOC-07 | REQ-DOC-002 | ถอน share/expire/archive ภายใต้ Legal Hold | share ถูกถอน แต่ archive/disposal ไม่ละเมิด Hold      |
+
+## Task and Calendar Cases
+
+| ID     | Requirement | Scenario                                   | Expected Result / Evidence                         |
+| ------ | ----------- | ------------------------------------------ | -------------------------------------------------- |
+| TSK-01 | REQ-TSK-001 | Create/assign task พร้อม due date/reminder | owner, scope, status และ assignment event ครบ      |
+| TSK-02 | REQ-TSK-001 | Complete/cancel task พร้อม reason          | terminal status และ history ถูกต้อง                |
+| TSK-03 | REQ-TSK-001 | Task overdue/escalation                    | warning/escalation ตาม SLA ไม่มี status เปลี่ยนเอง |
+| CAL-01 | REQ-CAL-001 | Create recurring appointment ข้าม timezone | recurrence instant และ display time ถูกต้อง        |
+| CAL-02 | REQ-CAL-001 | ตรวจ scheduling conflict และ override      | warning, decision authority และ reason ถูกเก็บ     |
+| CAL-03 | REQ-CAL-001 | External sync fail/retry/recover           | local record ไม่หาย มี retry/result/exception log  |
+
+## Billing and Payment Cases
+
+| ID     | Requirement | Scenario                                      | Expected Result / Evidence                       |
+| ------ | ----------- | --------------------------------------------- | ------------------------------------------------ |
+| BIL-01 | REQ-BIL-001 | สร้าง quotation พร้อม pricing/terms           | totals, currency, tax และ version คำนวณถูกต้อง   |
+| BIL-02 | REQ-BIL-001 | Maker submit และ Manager approve              | maker-checker และ approval event แยกกัน          |
+| BIL-03 | REQ-BIL-001 | Self-approve หรือ discount เกิน authority     | ปฏิเสธ/route alternate approver                  |
+| BIL-04 | REQ-BIL-001 | Client accept/reject/expire และ revise        | response evidence และ superseded version ถูกต้อง |
+| BIL-05 | REQ-BIL-002 | Post invoice จาก approved commercial basis    | posting ID, amount, tax และ balance ถูกต้อง      |
+| BIL-06 | REQ-BIL-002 | Record deposit/payment และ allocate เต็มจำนวน | receipt/allocation/reconciliation ครบ            |
+| BIL-07 | REQ-BIL-002 | Partial/multi-invoice allocation              | balances และ payment status ถูกต้อง              |
+| BIL-08 | REQ-BIL-002 | Duplicate payment/reference                   | block/review โดยไม่เพิ่มยอดซ้ำ                   |
+| BIL-09 | REQ-BIL-003 | Void/reverse/refund พร้อม Manager approval    | before/after, reason และ compensating entry ครบ  |
+| BIL-10 | REQ-BIL-003 | Write-off/refund โดย Finance self-approve     | ปฏิเสธ ไม่มี posting และมี denied event          |
+
+## Security and Access Cases
+
+| ID     | Requirement | Scenario                                     | Expected Result / Evidence                             |
+| ------ | ----------- | -------------------------------------------- | ------------------------------------------------------ |
+| SEC-01 | REQ-SEC-001 | Invite/activate standard user พร้อม MFA      | Tenant/role/scope ถูกต้องและ activation event ครบ      |
+| SEC-02 | REQ-SEC-001 | ข้าม Tenant หรือ Matter scope                | ปฏิเสธทั้ง view/update/export และไม่รั่ว metadata      |
+| SEC-03 | REQ-SEC-001 | Grant privileged permission                  | A1/A2, expiry, snapshot และ executor แยกกัน            |
+| SEC-04 | REQ-SEC-001 | Emergency Access ครบเวลา                     | auto-revoke, session revoke และ post-use review        |
+| SEC-05 | REQ-SEC-001 | Suspend/deactivate leaver                    | token/session revoked และ ownership reconciliation ครบ |
+| SEC-06 | REQ-SEC-001 | Quarterly recertification Keep/Modify/Revoke | decision และ before/after permission evidence ครบ      |
+
+## Report, Audit and Retention Cases
+
+| ID     | Requirement | Scenario                                 | Expected Result / Evidence                              |
+| ------ | ----------- | ---------------------------------------- | ------------------------------------------------------- |
+| REP-01 | REQ-REP-001 | Generate report ด้วย filters/as-of       | result, metadata, row count และ filter snapshot ครบ     |
+| REP-02 | REQ-REP-001 | Reconcile report กับ source sample       | variance อยู่ในเกณฑ์หรือเปิด exception                  |
+| REP-03 | REQ-REP-001 | Sensitive export พร้อม approval/expiry   | checksum, recipient, delivery และ access log ครบ        |
+| REP-04 | REQ-REP-001 | Export โดย role/scope ไม่พอ              | ปฏิเสธและบันทึก denied export event                     |
+| AUD-01 | REQ-AUD-001 | ตรวจ immutable event chain               | integrity verification ผ่านและ sequence ครบ             |
+| AUD-02 | REQ-AUD-001 | Correct event/report โดยไม่เขียนทับ      | correction เชื่อม original และแสดง current view ถูกต้อง |
+| AUD-03 | REQ-AUD-001 | ตรวจพบ integrity failure                 | P1/P2 exception, preserve evidence และ escalation       |
+| RET-01 | REQ-RET-001 | คำนวณ retention expiry                   | rule, trigger, later-of dependency และ date ถูกต้อง     |
+| RET-02 | REQ-RET-001 | Disposal candidate อยู่ภายใต้ Legal Hold | block และไม่มีข้อมูลถูกทำลาย                            |
+| RET-03 | REQ-RET-001 | Disposal ปกติพร้อม dual approval         | A1/A2, count, method และ Destruction Certificate ครบ    |
+| RET-04 | REQ-RET-001 | Correction/duplicate disposal request    | idempotent/block และรักษาประวัติเดิม                    |
+
+## Governance and Escalation Cases
+
+| ID     | Requirement | Scenario                                      | Expected Result / Evidence                              |
+| ------ | ----------- | --------------------------------------------- | ------------------------------------------------------- |
+| GOV-01 | REQ-GOV-001 | ตรวจ controlled document ID ซ้ำ/field ขาด     | block register approval และระบุ ID/field ที่ผิด         |
+| GOV-02 | REQ-GOV-001 | เปิด URL ทุกแถวใน Master Register             | canonical URL ตอบสำเร็จและ H1/ID ตรง register           |
+| GOV-03 | REQ-GOV-001 | Requirement ไม่มี controlled policy/UAT       | coverage check fail และสร้าง owner/action               |
+| GOV-04 | REQ-GOV-001 | Toxic role/permission และ self-approval       | alignment check block พร้อม SoD evidence                |
+| GOV-05 | REQ-GOV-001 | ใช้ form version เก่าหรือ field/evidence ขาด  | submission block หรือเปิด controlled exception          |
+| GOV-06 | REQ-GOV-001 | ใช้ alias/status ที่ไม่อยู่ canonical set     | validation/mapping fail พร้อม canonical suggestion      |
+| GOV-07 | REQ-GOV-001 | เปลี่ยน Approved document โดยไม่เพิ่ม version | change control block และ original ไม่ถูกเขียนทับ        |
+| EXC-01 | REQ-EXC-001 | เปิด P1 cross-Tenant incident                 | P1 clock, immediate containment และ notifications เริ่ม |
+| EXC-02 | REQ-EXC-001 | Owner ไม่ acknowledge ภายใน SLA               | escalate authority ตาม cadence และเก็บ event            |
+| EXC-03 | REQ-EXC-001 | Workaround หมดอายุ/ทำซ้ำเกินสองครั้ง          | เพิ่ม severity และเปิด corrective action                |
+| EXC-04 | REQ-EXC-001 | ปิด P1/P2 โดย evidence/root cause ไม่ครบ      | block closure จน sign-off และ package ครบ               |
+
+## Result Status
+
+| Status  | Meaning                                                    |
+| ------- | ---------------------------------------------------------- |
+| Not Run | ยังไม่เริ่ม                                                |
+| Passed  | Actual ตรง expected และ evidence ครบ                       |
+| Failed  | Actual ไม่ตรง expected หรือ control/evidence ขาด           |
+| Blocked | ทดสอบไม่ได้เพราะ dependency/environment พร้อม defect/owner |
+
+ห้ามใช้ Passed เมื่อมีเพียง screenshot แต่ไม่มี audit/record reference ที่ case
+กำหนด และห้ามเปลี่ยน Failed เป็น Passed โดยไม่ rerun หลังแก้ไข
+
+## Exit Criteria
+
+- UAT cases ใน release scope ถูก execute ครบและ map Requirement ID ได้
+- P1/P2 defect เป็นศูนย์ และ P3 ที่เหลือมี accepted exception/owner/due date
+- Security, cross-Tenant, financial posting, Legal Hold และ audit integrity
+  cases ผ่านทั้งหมด
+- Regression ของ workflow ที่ได้รับผลกระทบผ่าน
+- Evidence เปิดอ่านได้และ Test Run/Build/Data ID ครบ
+- QA Lead สรุปผล และ Business/Process Owner ยืนยัน release readiness
+
+## Related Documents
+
+- [Requirements Traceability Matrix](/docs/sops/governance/traceability-matrix)
+- [Forms, Checklists & Evidence Templates](/docs/sops/governance/forms-evidence-templates)
+- [Exception & Escalation Matrix](/docs/sops/governance/exception-escalation)
+- [Terminology & Status Standard](/docs/sops/governance/terminology-status-standard)

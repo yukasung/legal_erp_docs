@@ -1,0 +1,196 @@
+# Quotation & Engagement Approval
+
+| Document Control        | Value        |
+| ----------------------- | ------------ |
+| SOP ID                  | SOP-BIL-001  |
+| Status                  | Approved     |
+| Version                 | 1.0          |
+| Process Owner           | Finance      |
+| System Owner            | Admin        |
+| Approver                | Manager      |
+| Effective Date          | 14 July 2026 |
+| Last Requirement Review | 14 July 2026 |
+
+> **Approval notice:** Quotation lifecycle, pricing approval, client response,
+> revision และ Engagement linkage ได้รับการอนุมัติเมื่อ 14 July 2026
+
+## Purpose
+
+กำหนดวิธีจัดทำ ตรวจ อนุมัติ ส่ง และติดตาม Quotation/Engagement ให้ขอบเขตบริการ
+ราคา ส่วนลด เงื่อนไขการชำระ และการยอมรับของ Client ตรวจสอบย้อนหลังได้
+
+## Scope
+
+ครอบคลุม service catalog, pricing model, quotation draft/revision, internal
+approval, send/response, expiry/cancellation, export และการเชื่อม accepted
+Quotation หรือ signed Engagement Letter กับ Matter Commercial Readiness
+
+## Roles
+
+| Role      | Responsibility                                                  |
+| --------- | --------------------------------------------------------------- |
+| Lawyer    | ระบุ scope, service, assumptions และ legal delivery terms       |
+| Assistant | เตรียมข้อมูล Client/Matter และเอกสารประกอบ                      |
+| Finance   | จัดทำราคา ภาษี สกุลเงิน payment terms และ validation            |
+| Manager   | อนุมัติ Quotation, discount, special term และ exception         |
+| Admin     | ตั้ง numbering, template, catalog, pricing/approval master data |
+
+Admin ห้ามอนุมัติราคา/เงื่อนไขเชิงพาณิชย์ และผู้จัดทำห้ามอนุมัติ revision
+ของตนเอง
+
+## Quotation Status
+
+| Status            | Meaning                               |
+| ----------------- | ------------------------------------- |
+| Draft             | กำลังจัดทำและยังไม่ส่งอนุมัติ         |
+| Pending Approval  | ข้อมูลครบและรอ internal approval      |
+| Changes Requested | ผู้อนุมัติส่งกลับแก้พร้อมเหตุผล       |
+| Approved          | อนุมัติแล้วแต่ยังไม่ส่ง Client        |
+| Sent              | ส่ง approved revision ให้ Client แล้ว |
+| Accepted          | Client ยอมรับ revision ที่ส่ง         |
+| Declined          | Client ปฏิเสธพร้อม response evidence  |
+| Expired           | พ้น validity date                     |
+| Cancelled         | ยกเลิกก่อน Client ยอมรับพร้อมเหตุผล   |
+| Superseded        | มี revision ใหม่แทน                   |
+
+## Required Information
+
+- Quotation ID/number, Tenant ID, revision และ status
+- Client ID, Matter ID เมื่อมี, billing contact และ recipient email
+- Service scope, exclusions, assumptions, deliverables และ validity
+- Pricing model: Fixed Fee, Hourly Rate หรือ Mixed
+- Line items, quantity/rate, discount, tax, currency, exchange-rate source/date
+- Payment terms, deposit, special terms และ schedule
+- Prepared by, reviewers, approver และ timestamps
+- Template/version, service catalog version และ linked Engagement Document ID
+
+## Procedure
+
+### 1. Prepare the Quotation
+
+**Responsible:** Lawyer/Finance, Assistant (Support)
+
+1. ค้นหา Quotation เดิมของ Client/Matter และเลือก active template
+2. ระบุ Client, Matter, service scope, deliverables, exclusions และ assumptions
+3. เลือก active service catalog, pricing model, currency และ payment terms
+4. คำนวณ line items, discount, tax, deposit และ total
+5. ตรวจ exchange-rate source/date เมื่อมีหลายสกุลเงิน
+6. เชื่อม Engagement/เอกสารสนับสนุนด้วย Document ID
+7. บันทึก Draft และ preview
+
+**Expected result:** Draft quotation มี scope และยอดคำนวณครบ
+
+### 2. Validate and Submit for Approval
+
+**Responsible:** Finance
+
+1. ตรวจ header, Client/Matter, scope, price, tax, payment terms และ total
+2. ตรวจ numbering uniqueness, template/catalog/pricing rule versions
+3. ตรวจ discount/special term เทียบ approval matrix ตาม amount, service และ BU
+4. ห้าม submit เมื่อ required fields หรือ approval route ไม่ครบ
+5. เปลี่ยนเป็น Pending Approval และ assign Manager/authorized approver
+
+**Expected result:** Quotation เข้าคิวผู้อนุมัติที่ถูกต้องพร้อม validation
+evidence
+
+### 3. Review and Approve
+
+**Responsible:** Manager หรือผู้อนุมัติตาม active matrix
+
+1. ตรวจ scope, capacity, pricing, margin, discount, tax และ special terms
+2. Approve revision ที่ได้รับมอบหมาย หรือ Changes Requested พร้อม reason
+3. ผู้จัดทำ/แก้ revision ห้ามอนุมัติ revision เดียวกัน
+4. เมื่อแก้รายการที่ถูกส่งกลับ ให้เพิ่ม revision และ submit ใหม่
+5. เก็บ decision, reason, route/version และ approved at
+
+**Expected result:** Approved revision พร้อมส่ง Client หรือมีเหตุผลให้แก้ไข
+
+### 4. Send and Capture Client Response
+
+**Responsible:** Lawyer/Finance
+
+1. ตรวจว่า status เป็น Approved และ recipient email ถูกต้อง
+2. สร้าง final PDF/checksum และส่งผ่านช่องทางที่อนุมัติ
+3. บันทึก send history แบบ read-only
+4. Capture Accepted/Declined พร้อม actor, method, timestamp และ evidence
+5. แจ้ง owner เมื่อ Client ตอบหรือเมื่อ Quotation ใกล้หมดอายุ
+6. Expire อัตโนมัติหลัง validity date โดยห้าม auto-accept
+
+**Expected result:** Client response อ้างอิง revision ที่ส่งจริง
+
+### 5. Revise, Cancel or Duplicate
+
+**Responsible:** Lawyer/Finance, Manager (Approver)
+
+1. การแก้ Approved/Sent quotation ต้องสร้าง revision ใหม่
+2. Revision ใหม่กลับ Draft และต้องผ่าน approval ใหม่ก่อนส่ง
+3. Revision เดิมเป็น Superseded แต่ send/response history ต้องคงอยู่
+4. Cancel ได้ก่อน Accepted โดยต้องมี reason และ Manager approval
+5. Duplicate ต้องสร้าง Quotation number ใหม่และเริ่มเป็น Draft
+
+**Expected result:** Revision/cancellation ไม่ทำลายประวัติหรือ client evidence
+
+### 6. Confirm Commercial Readiness
+
+**Responsible:** Lawyer/Finance
+
+1. ใช้เฉพาะ Accepted Quotation revision หรือ Signed Engagement Letter
+2. ตรวจว่า Client/Matter, scope และ currency ตรงกับ Matter
+3. เชื่อม Document/Quotation ID กับ Commercial Readiness record
+4. หาก scope เปลี่ยนหลัง Accepted ให้สร้าง revision/engagement amendment ใหม่
+5. ห้ามใช้ Expired, Declined, Cancelled หรือ Superseded เป็นหลักฐาน readiness
+
+**Expected result:** Matter อ้างอิง commercial evidence ที่มีผลจริง
+
+## Control Points
+
+| Control              | Requirement                                                  | Evidence                               |
+| -------------------- | ------------------------------------------------------------ | -------------------------------------- |
+| Master data          | ใช้ active template, catalog, currency และ payment term      | Master-data IDs/versions               |
+| Calculation          | Line total, discount, tax, deposit และ grand total reconcile | Calculation result                     |
+| Approval routing     | Route ตาม amount/service/BU และ preparer แยก approver        | Matrix version, route และ SoD result   |
+| Revision control     | Approved/Sent edit ต้องสร้าง revision และ re-approve         | Revision chain และ approval records    |
+| Client response      | Response ต้องผูก revision, recipient และ evidence            | Send/response event และ checksum       |
+| External release     | ส่งได้เฉพาะ Approved revision                                | Status validation และ send history     |
+| Commercial readiness | ใช้ Accepted/Signed evidence ที่ตรง Matter                   | Quotation/Document ID และ validation   |
+| Immutable audit      | Status, price, approval, send และ response ห้ามแก้ย้อนหลัง   | Event chain และ integrity verification |
+
+## Exceptions
+
+- **Approval route ไม่พบ:** หยุด submit และให้ Admin แก้ configuration
+- **Discount เกิน policy:** ต้องได้รับ Manager approval ตาม matrix
+- **หลายสกุลเงิน:** เก็บ rate source/date และห้ามเปลี่ยนย้อนหลัง
+- **Client ขอแก้หลัง Sent:** สร้าง revision ใหม่ ห้ามแก้ไฟล์ที่ส่งแล้ว
+- **Accepted หลัง expiry:** สร้าง revision/validity ใหม่และ re-approve
+- **ผู้อนุมัติไม่อยู่:** ใช้ Alternate Approver ตาม active matrix
+- **ส่งผิดผู้รับ:** ระงับ link บันทึก incident และแจ้ง Data/Compliance Owner
+
+## Completion Checklist
+
+- [ ] Client/Matter, scope และ service catalog ถูกต้อง
+- [ ] Price, discount, tax, currency และ payment terms reconcile
+- [ ] Approval route/version และ SoD ผ่าน
+- [ ] Approved revision ถูกตรึงก่อนส่ง
+- [ ] Send history และ Client response evidence ครบ
+- [ ] Revision/cancellation เก็บ reason และ history
+- [ ] Commercial Readiness อ้างอิง Accepted/Signed evidence ที่มีผล
+- [ ] Audit และ retention policy ถูกผูก
+
+## Related Documents
+
+- [Matter Intake & Opening](/docs/sops/matter-intake)
+- [Document & Template Management](/docs/sops/document-management)
+- [Invoice, Payment & Adjustment](/docs/sops/invoice-payment)
+
+## Requirement Traceability
+
+| SOP Area                                           | Source                                                                                |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Draft, approval, send, response, revision, reports | Manao Software Project Proposal-Alt Pro-Legal ERP-Phase_1_V1_20260525.pdf, หน้า 23-30 |
+| Service fee, terms, discount, e-quotation          | ALT Pro - P3 (MatterSolv).xlsx, sheet Sub-Module, แถว 48-69 และ 176-185               |
+| Quotation approval separation                      | Permissions baseline, Quotation approval matrix                                       |
+
+## Approval Record
+
+- Manager อนุมัติ
+- Effective Date: 14 July 2026

@@ -1,0 +1,122 @@
+# Terminology & Status Standard
+
+| Document Control        | Value        |
+| ----------------------- | ------------ |
+| Document ID             | STD-SOP-001  |
+| Status                  | Approved     |
+| Version                 | 1.0          |
+| Process Owner           | Manager      |
+| Approver                | Manager      |
+| Effective Date          | 14 July 2026 |
+| Last Requirement Review | 14 July 2026 |
+
+## Purpose
+
+กำหนดคำศัพท์ ชื่อสถานะ รูปแบบวันที่ และกติกาลิงก์มาตรฐานสำหรับ SOP, หน้าจอ,
+รายงาน, event และ test case เพื่อป้องกันความหมายเดียวกันแต่ใช้คนละคำ
+
+## Canonical Terms
+
+| Canonical Term     | Meaning                                                       | Do Not Substitute With                 |
+| ------------------ | ------------------------------------------------------------- | -------------------------------------- |
+| Tenant             | องค์กรลูกค้าหนึ่งรายและขอบเขตข้อมูลสูงสุด                     | Company เมื่อหมายถึง security boundary |
+| Client             | ลูกความหรือผู้รับบริการที่อาจมีหลาย Matter                    | Customer/Contact ใน workflow หลัก      |
+| Matter             | แฟ้มงานกฎหมายหนึ่งเรื่องที่มี lifecycle และ access scope      | Case เมื่อหมายถึง entity ในระบบ        |
+| Responsible Lawyer | Lawyer เจ้าของความรับผิดชอบหลักของ Matter                     | Owner โดยไม่ระบุชนิด                   |
+| Process Owner      | ผู้รับผิดชอบมาตรฐานกระบวนการ                                  | System Owner                           |
+| System Owner       | ผู้รับผิดชอบ configuration/operation ของระบบ                  | Business Approver                      |
+| Requester          | ผู้ยื่นคำขอ action                                            | Approver                               |
+| Approver           | ผู้ตัดสินใจอนุมัติ/ปฏิเสธตาม authority                        | Reviewer เมื่อเป็น final decision      |
+| Executor           | ผู้หรือระบบที่ดำเนินการหลังอนุมัติ                            | Approver                               |
+| Evidence           | ข้อมูลที่พิสูจน์ actor/action/object/time/outcome             | Attachment ที่ไม่มี context            |
+| Immutable Event    | Event ที่แก้ทับไม่ได้และ correction ต้องเชื่อมกลับ            | Editable history                       |
+| Sensitive Export   | การส่งออกข้อมูลที่ต้องมี purpose, approval หรือ access log    | Report download ทั่วไป                 |
+| Emergency Access   | สิทธิ์ชั่วคราวแบบ time-bound เพื่อแก้ incident/access problem | Permanent permission                   |
+| Legal Hold         | คำสั่งระงับ disposal แม้ครบ retention                         | Archive                                |
+
+UI อาจแสดงคำแปลไทย แต่ API, database, audit event และเอกสารควบคุมต้องรักษา
+canonical term และ ID เดียวกัน
+
+## Canonical Status Sets
+
+| Entity               | Approved Status Sequence / Set                                                                                        |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Controlled Document  | Draft, In Review, Approved, Superseded, Retired                                                                       |
+| Client               | Pending Verification, Active, Inactive, Merged                                                                        |
+| Matter               | Intake Draft, Conflict Review, Risk Review, Pending Approval, Active, On Hold, Completed, Closed, Rejected, Cancelled |
+| Conflict             | Not Started, In Review, Cleared, Escalated, Prohibited                                                                |
+| Risk                 | Low, Medium, High, Prohibited                                                                                         |
+| Acceptance           | Pending, Approved, Rejected                                                                                           |
+| Commercial Readiness | Pending, Accepted/Signed, Not Required, Waived                                                                        |
+| Document             | Draft, In Review, Changes Requested, Approved, Pending Signature, Signed, Expired, Superseded, Cancelled              |
+| Task                 | Draft, Open, In Progress, Waiting, Blocked, Completed, Cancelled                                                      |
+| Appointment          | Draft, Scheduled, Completed, Cancelled, No-show, Rescheduled                                                          |
+| Quotation            | Draft, Pending Approval, Changes Requested, Approved, Sent, Accepted, Declined, Expired, Cancelled, Superseded        |
+| Invoice              | Draft, Posted, Partially Paid, Paid, Overdue, Voided, Written Off                                                     |
+| Payment              | Received, Unallocated, Partially Allocated, Allocated, Refunded, Reversed                                             |
+| Account              | Pending Invite, Active, Locked, Suspended, Inactive                                                                   |
+| Form Request         | Draft, Submitted, Approved, Rejected, Cancelled, Completed                                                            |
+| Exception            | Open, Contained, In Remediation, Resolved, Closed, Cancelled                                                          |
+| UAT                  | Not Run, Passed, Failed, Blocked                                                                                      |
+
+แต่ละ entity ใช้ status set ของตน ห้ามใช้ Approved แทน Active หรือ Cancelled แทน
+Voided หากความหมายทางธุรกิจต่างกัน
+
+## Decision and Transition Language
+
+- ใช้ approve/reject กับ decision และใช้ transition กับการเปลี่ยน status
+- ใช้ deactivate/reactivate กับ Client/User; ใช้ close/reopen กับ Matter
+- ใช้ void กับ financial document ที่ยกเลิกผลทางบัญชี และใช้ reverse
+  กับรายการชดเชยทางการเงิน
+- ใช้ supersede เมื่อมี version ใหม่แทน; archive หมายถึงย้ายสู่ controlled
+  storage ไม่ใช่ disposal
+- ใช้ delete เฉพาะข้อมูลชั่วคราวที่ policy อนุญาต ข้อมูลสำคัญใช้ cancel,
+  deactivate, void หรือ supersede
+
+## Identifier Standard
+
+| Type           | Pattern / Example                                |
+| -------------- | ------------------------------------------------ |
+| SOP            | SOP-DOMAIN-NNN เช่น SOP-MAT-001                  |
+| Control        | CTRL-DOMAIN-NNN เช่น CTRL-RBAC-001               |
+| Decision       | DEC-DOMAIN-NNN เช่น DEC-MAT-013                  |
+| Register       | REG-DOMAIN-NNN                                   |
+| Template       | FRM-DOMAIN-NNN หรือ TPL-DOMAIN-NNN               |
+| Requirement    | REQ-DOMAIN-NNN                                   |
+| UAT Case       | DOMAIN-NN เช่น MAT-01                            |
+| Runtime Record | System-generated immutable UUID/ID within Tenant |
+
+## Date, Time and Number Standard
+
+- Controlled documents ใช้วันที่แบบ 14 July 2026 เพื่ออ่านตรงกันข้าม locale
+- System timestamp และ integration ใช้ ISO 8601 พร้อม timezone เช่น
+  2026-07-14T09:00:00+07:00
+- Calendar/deadline ต้องเก็บ timezone และแสดง locale ของผู้ใช้โดยไม่เปลี่ยน
+  instant
+- จำนวนเงินต้องมี currency; rate/discount/tax ต้องเก็บหน่วยและ precision
+- Report ต้องมี as-of timestamp, filters และ data source/version
+
+## Link and Naming Rules
+
+- ลิงก์ภายในใช้ canonical route ที่ขึ้นต้นด้วย /docs และไม่ใส่นามสกุลไฟล์
+- Related Documents ใช้ชื่อ H1 จริงของหน้าปลายทาง
+- เมื่อเปลี่ยนชื่อ/route ต้องทำ redirect และตรวจ broken links ก่อน release
+- เมนูใช้ชื่อสั้นที่ยังคงความหมายเดียวกับ H1 และจัด Governance ไว้หลัง
+  operational SOP
+- ห้ามสร้างหน้าใหม่ชื่อใกล้เคียงเพื่อแก้คำผิด ให้แก้ canonical page และ link
+  เดิม
+
+## Standardization Checklist
+
+- [ ] Entity และ role ใช้ canonical term
+- [ ] Status ตรงกับ status set และ transition rule
+- [ ] ID ไม่ซ้ำและตรงกับ Master Register
+- [ ] วันที่ เวลา timezone จำนวนเงินและ currency ชัดเจน
+- [ ] Related Documents และ menu link เปิดได้
+- [ ] API/UI/report/audit event map กลับ canonical term ได้
+
+## Related Documents
+
+- [SOP Master Register](/docs/sops/governance/master-register)
+- [Requirements Traceability Matrix](/docs/sops/governance/traceability-matrix)
+- [Role & Permission Alignment](/docs/sops/governance/role-permission-alignment)

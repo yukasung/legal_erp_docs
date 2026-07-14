@@ -1,0 +1,115 @@
+# Role & Permission Alignment
+
+| Document Control        | Value                           |
+| ----------------------- | ------------------------------- |
+| Document ID             | CTRL-RBAC-001                   |
+| Status                  | Approved                        |
+| Version                 | 1.0                             |
+| Process Owner           | Data/Compliance Owner           |
+| System Owner            | Admin                           |
+| Approver                | Manager + Data/Compliance Owner |
+| Effective Date          | 14 July 2026                    |
+| Last Requirement Review | 14 July 2026                    |
+
+## Purpose
+
+ยืนยันว่า role และ permission baseline ตรงกับ authority ใน SOP พร้อมกำหนด scope,
+maker-checker และข้อห้ามสำหรับสิทธิ์สำคัญ
+
+## Approved Role Baseline
+
+| Role      | Primary Scope                                           | Explicit Boundary                                                  |
+| --------- | ------------------------------------------------------- | ------------------------------------------------------------------ |
+| Admin     | Tenant configuration, users, roles, security, execution | ไม่อนุมัติ business decision หรือเปิดดู legal content โดยไม่มีเหตุ |
+| Lawyer    | Assigned Matter, Client, Document, Task                 | ไม่อนุมัติสิทธิ์ การเงิน หรือ Matter ของตนเองเมื่อ SOP ให้แยกคน    |
+| Assistant | Assigned operational support                            | ไม่อนุมัติเอกสารขั้นสุดท้าย การเงิน หรือ access privilege          |
+| Finance   | Quotation, invoice, payment and finance records         | ไม่ต้องเห็น legal content เกิน billing need                        |
+| HR        | Personnel, payroll and leave                            | ไม่เห็น Matter, legal document หรือ client billing                 |
+| Manager   | Scoped oversight, assignment and business approval      | ไม่ได้สิทธิ์เห็นทุก Tenant/ทีมโดยอัตโนมัติ                         |
+
+Senior Lawyer ใช้ Lawyer + permission bundle สำหรับ review/approve ไม่สร้าง role
+หลักเพิ่มใน baseline นี้ Admin หมายถึง Tenant Admin ส่วน platform operator
+ต้องใช้ service/support access ที่แยกและมี Emergency Access control
+
+## Responsibility and Authority Mapping
+
+ชื่อด้านล่างเป็น responsibility assignment หรือ permission bundle ไม่ใช่
+baseline role ใหม่ และต้องผูกกับผู้ใช้ที่มี baseline role พร้อม scope ชัดเจน
+
+| Authority / Responsibility | Baseline Mapping                                        | Required Permission / Boundary                       |
+| -------------------------- | ------------------------------------------------------- | ---------------------------------------------------- |
+| Senior Lawyer              | Lawyer                                                  | Scoped document review/approve; ห้าม self-approve    |
+| Executive Approver         | Manager หรือ executive ที่ได้รับมอบหมาย                 | High-risk A2; จำกัด Tenant/practice scope            |
+| Data/Compliance Owner      | Manager หรือ compliance function ที่ได้รับมอบหมาย       | Security, privacy, retention and A2 review           |
+| Data Owner                 | Lawyer, Finance, HR หรือ Manager ตาม record domain      | Data quality/correction/disposal preparation         |
+| Document Owner             | Lawyer หรือ Assistant ตาม assignment                    | Document lifecycle ภายใน Matter scope                |
+| Task/Calendar Owner        | Lawyer, Assistant, Finance หรือ HR ตาม assignment       | Assigned task/calendar operation                     |
+| Report Owner               | Manager, Finance, HR หรือ designated analyst            | Report validation ภายใน data scope                   |
+| QA Lead                    | Designated user; ไม่มี production approval โดยอัตโนมัติ | UAT administration and result sign-off               |
+| Authorized Signer          | Designated Lawyer/Manager/executive                     | Sign เฉพาะ document type และ entity scope ที่มอบหมาย |
+| Auditor                    | Data/Compliance หรือ independent reviewer               | Read audit evidence; ห้ามแก้ source event            |
+
+## Permission Alignment Matrix
+
+| Capability / Action                | Prepare / Execute                               | Approve / Confirm                                                  | Scope / Control                                   |
+| ---------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------- |
+| Client create/update               | Lawyer, Assistant                               | Manager เมื่อเป็น exception                                        | Assigned team/Tenant, duplicate gate              |
+| Client merge/reverse merge         | Lawyer/Assistant/Manager request, Admin execute | Manager A1 + Data/Compliance A2                                    | DEC-CLI-003, before/after and surviving ID        |
+| Client deactivate/reactivate       | Lawyer/Assistant request, Admin execute         | Manager                                                            | DEC-CLI-003, dependency and status event          |
+| Compliance reactivation            | Manager request, Admin execute                  | Manager A1 + Data/Compliance A2                                    | DEC-CLI-003, compliance evidence and status event |
+| Matter draft/routine field update  | Lawyer, Assistant                               | ไม่ต้องอนุมัติเมื่อมี permission                                   | Assigned Matter; audit core field change          |
+| Matter intake/core-field exception | Lawyer, Assistant request                       | Manager ตาม CTRL-MAT-001                                           | Validation, reassessment and decision evidence    |
+| High-risk acceptance               | Lawyer/Manager prepare                          | Manager A1 + Executive Approver A2                                 | Approvers ต้องแยกจาก assessor                     |
+| Matter hold/close/reopen           | Responsible Lawyer request                      | Manager/Executive ตาม transition                                   | Immutable transition event                        |
+| Document create/version            | Lawyer, Assistant                               | Senior Lawyer/Manager เมื่อ final                                  | Matter access and version immutability            |
+| Document sign/share/export         | Authorized user                                 | Manager; Restricted/Privileged ใช้ Manager A1 + Data/Compliance A2 | Recipient, purpose, expiry and access log         |
+| Task/Calendar create/update        | Lawyer, Assistant, scoped Finance/HR            | Owner/Manager เมื่อ override                                       | Assignment/team scope                             |
+| Quotation prepare/revise           | Finance, Lawyer                                 | Manager                                                            | Creator ห้าม approve quotation ของตนเอง           |
+| Invoice/payment post               | Finance                                         | Manager เมื่อ adjustment/exception                                 | Posting period, reconciliation and audit          |
+| Refund/write-off/void              | Finance                                         | Manager                                                            | Reason, amount, before/after and maker-checker    |
+| Standard user/role grant           | Admin execute                                   | Manager/Tenant Authority                                           | Requester/approver/executor IDs                   |
+| Standard individual permission     | Admin execute                                   | Manager                                                            | Scope, reason, expiry and revoke event            |
+| Privileged permission              | Admin execute                                   | Manager A1 + Data/Compliance A2                                    | Expiry, SoD check and auto-revoke                 |
+| Emergency Access                   | Admin execute                                   | Authorized Manager                                                 | Time bound, Acting Role, session review           |
+| Sensitive report/export            | Module-authorized user                          | Manager; Restricted/Privileged ใช้ Manager A1 + Data/Compliance A2 | Filter snapshot, purpose, recipient and expiry    |
+| Retention disposal                 | Data Owner prepare                              | Manager A1 + Data/Compliance A2                                    | Legal Hold check and Destruction Certificate      |
+
+## SoD Rules
+
+- Requester, approver และ executor ต้องเก็บเป็นคนละ audit field
+  แม้บางกรณีบุคคลซ้ำได้ตาม matrix
+- ผู้สร้างห้ามเป็นผู้อนุมัติรายการ High risk, privileged access,
+  refund/write-off หรือ disposal ของตนเอง
+- Admin เป็น executor ด้านระบบ ห้ามแทน Business Approver
+- Acting Role ต้องแสดง role ที่ใช้ในธุรกรรมและเก็บ role ปกติของผู้ใช้ไว้ด้วย
+- Emergency Access ห้ามใช้อนุมัติ business decision และต้องมี post-use review
+- Permission aggregation ต้องตรวจ toxic combination เช่น create + approve +
+  execute ในรายการเดียวกัน
+
+## Alignment Findings and Resolution
+
+| Finding                                                              | Resolution                                                                     | Status   |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | -------- |
+| Permission baseline เดิมให้ Admin อนุมัติ permission change ได้กว้าง | ใช้ Admin เป็น executor; privileged change ใช้ Manager A1 + Data/Compliance A2 | Resolved |
+| Senior Lawyer ยังไม่เป็น role แยก                                    | ใช้ Lawyer + scoped approve permission                                         | Resolved |
+| Client external role ยังไม่มี control พร้อม                          | อยู่นอก baseline; ใช้ controlled external sharing เท่านั้น                     | Resolved |
+| Sales role ยังไม่อยู่ใน phase ปัจจุบัน                               | ให้ Lawyer/Finance prepare และ Manager approve quotation                       | Resolved |
+| SaaS Admin กับ Tenant Admin ยังไม่แยกชื่อ                            | Admin baseline = Tenant Admin; platform support ใช้ controlled support access  | Resolved |
+| Manager อาจถูกตีความว่าเห็นทุกข้อมูล                                 | ทุก permission ต้องมี Tenant/team/Matter scope                                 | Resolved |
+
+## Access Review Checklist
+
+- [ ] Role สอดคล้องกับหน้าที่และ employment/engagement status
+- [ ] Tenant, team, Matter และ record scope ถูกจำกัด
+- [ ] Approval permission แยกจาก prepare/execute ตาม matrix
+- [ ] Individual access มี expiry; privileged access มี A1/A2
+- [ ] Dormant, leaver และ transferred user ไม่มีสิทธิ์ตกค้าง
+- [ ] Toxic combination และ self-approval ถูกป้องกัน
+- [ ] Before/after permission snapshot และ revoke event ตรวจย้อนหลังได้
+
+## Related Documents
+
+- [User Roles](/docs/roles/roles)
+- [Permissions](/docs/roles/permissions)
+- [User, Role & Access Management](/docs/sops/access-management)
+- [Exception & Escalation Matrix](/docs/sops/governance/exception-escalation)

@@ -22,8 +22,29 @@ export default {
         title: 'SOPs',
         items: {
           index: 'Overview',
+          'client-registration': 'Client Registration & Maintenance',
           'matter-lifecycle': 'Matter Lifecycle & Approvals',
-          'matter-intake': 'Matter Intake & Opening'
+          'matter-intake': 'Matter Intake & Opening',
+          'matter-operations': 'Matter Operations & Closure',
+          'document-management': 'Document & Template Management',
+          'task-calendar': 'Task & Calendar Management',
+          'quotation-engagement': 'Quotation & Engagement Approval',
+          'invoice-payment': 'Invoice, Payment & Adjustment',
+          'access-management': 'User, Role & Access Management',
+          'reports-audit': 'Reports, Export & Audit Review',
+          'retention-disposal': 'Retention & Disposal',
+          governance: {
+            title: 'Governance & Assurance',
+            items: {
+              'master-register': 'SOP Master Register',
+              'traceability-matrix': 'Requirements Traceability',
+              'role-permission-alignment': 'Role & Permission Alignment',
+              'forms-evidence-templates': 'Forms & Evidence Templates',
+              'exception-escalation': 'Exception & Escalation',
+              'terminology-status-standard': 'Terminology & Status Standard',
+              'uat-test-cases': 'UAT Scenarios & Test Cases'
+            }
+          }
         }
       },
       roles: {

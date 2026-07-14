@@ -1,0 +1,181 @@
+# Retention and Disposal of Audit Evidence
+
+| Document Control        | Value                           |
+| ----------------------- | ------------------------------- |
+| SOP ID                  | SOP-AUD-001                     |
+| Status                  | Approved                        |
+| Version                 | 1.0                             |
+| Process Owner           | Data/Compliance Owner           |
+| System Owner            | Admin                           |
+| Approver                | Manager + Data/Compliance Owner |
+| Effective Date          | 14 July 2026                    |
+| Last Requirement Review | 14 July 2026                    |
+
+> **Approval notice:** Retention Schedule, Legal Hold, archive และ disposal
+> controls ได้รับการอนุมัติตาม DEC-MAT-011 และ Client Interaction/Note baseline
+> ได้รับการอนุมัติตาม DEC-CLI-005 แล้ว Legal/Compliance ยืนยันให้ใช้ระยะเวลาที่
+> ยาวกว่าระหว่าง baseline, กฎหมาย, ข้อกำหนดวิชาชีพ, สัญญา และ Client requirement
+> โดยเอกสารมีผลใช้ตั้งแต่ 14 July 2026
+
+## Purpose
+
+กำหนดวิธีเก็บรักษา archive ระงับการทำลาย และทำลาย Matter records, control
+records, audit events และหลักฐานอย่างตรวจสอบย้อนหลังได้
+
+## Scope
+
+ครอบคลุม Matter, Client, Document, Task/Calendar, Quotation/Engagement,
+Invoice/Payment, User/Access, Report/Export, control records, immutable audit
+event, Correction/Revision Event และ Destruction Certificate
+
+## Roles
+
+| Role                  | Responsibility                                                  |
+| --------------------- | --------------------------------------------------------------- |
+| Data/Compliance Owner | ดูแล Retention Policy, Legal Hold และอนุมัติ disposal           |
+| Manager               | ยืนยัน business dependency และอนุมัติ disposal ร่วม             |
+| Admin                 | ดูแล archive และดำเนินการทำลายหลังได้รับอนุมัติครบ              |
+| Legal/Compliance      | ยืนยันข้อกฎหมาย ข้อกำหนดวิชาชีพ สัญญา และ preservation request  |
+| Auditor               | ตรวจ policy version, hold, approval และ Destruction Certificate |
+
+Admin ห้ามอนุมัติการทำลายรายการที่ตนเป็นผู้ดำเนินการ
+
+## Retention Schedule
+
+ใช้ระยะเวลาที่นานกว่าระหว่าง baseline ในตาราง กฎหมาย ข้อกำหนดวิชาชีพ สัญญา และ
+Client requirement
+
+| Record                                        | Retention Baseline                                                |
+| --------------------------------------------- | ----------------------------------------------------------------- |
+| Matter ที่ Active, On Hold หรือ Completed     | ตลอดอายุ Matter                                                   |
+| Matter ที่ Closed                             | 10 ปีนับจาก Closed at                                             |
+| Matter ที่ Rejected หรือ Cancelled            | 7 ปีนับจาก terminal date                                          |
+| Conflict/Risk/Acceptance records              | เท่ากับระยะเวลาของ Matter ที่เกี่ยวข้อง                           |
+| Status Transition และ immutable audit event   | เท่ากับระยะเวลาของ Matter ที่เกี่ยวข้อง                           |
+| Commercial Readiness evidence                 | 10 ปีนับจาก Closed at                                             |
+| Permission change/Emergency Access log        | 7 ปีนับจาก Event                                                  |
+| Correction Event                              | เท่ากับ Event ต้นฉบับ                                             |
+| Destruction Certificate                       | 10 ปีนับจากวันที่ทำลาย                                            |
+| Client Interaction/Note ที่เชื่อม Matter      | เท่ากับ Matter ที่เกี่ยวข้อง                                      |
+| Client-only Interaction/Note                  | ตลอด Client Active และ 7 ปีหลัง Inactive/relationship termination |
+| Retainer/commercial Interaction/attachment    | 10 ปีหลัง subscription terminal date                              |
+| Interaction Correction และ Note revision      | เท่ากับ record ต้นฉบับ                                            |
+| Interaction access/classification/export log  | 7 ปีนับจาก Event                                                  |
+| Document/version/signature ที่เชื่อม Matter   | เท่ากับ Matter ที่เกี่ยวข้อง                                      |
+| Standalone Document/version/signature         | 10 ปีหลัง Expired/Superseded/Cancelled                            |
+| Task/Appointment ที่เชื่อม Matter             | เท่ากับ Matter ที่เกี่ยวข้อง                                      |
+| Standalone Task/Appointment                   | 7 ปีหลัง Completed/Cancelled                                      |
+| Quotation/Engagement และ response evidence    | 10 ปีหลัง terminal date หรือ Matter period ที่ยาวกว่า             |
+| Invoice/Payment/Receipt/Adjustment            | 10 ปีหลัง transaction/fiscal close หรือระยะกฎหมายที่ยาวกว่า       |
+| User/Role/Permission/Emergency/Security event | 7 ปีหลัง Event หรือ Account Inactive แล้วแต่ว่าวันใดช้ากว่า       |
+| Report definition/lineage/validated snapshot  | เท่ากับ source record ที่อ้างอิง                                  |
+| Report export/delivery/download log           | 7 ปีนับจาก Event                                                  |
+
+เมื่อ Client record เชื่อมหลาย Matter หรือเข้าหลายประเภท ให้ใช้ disposal date
+ที่ช้าที่สุด Client status Merged ห้ามเริ่ม retention ใหม่หรือลดระยะเวลา และ
+Inactive ห้ามทำให้ disposal เกิดอัตโนมัติ
+
+## Legal Hold
+
+- ระงับการทำลายเมื่อมีข้อพิพาท การสอบสวน Audit คำสั่งศาล หรือ preservation
+  request
+- Legal Hold ต้องเก็บ reason, scope, requester, approver, started at และ
+  released at
+- Legal Hold มีผลเหนือ Retention Schedule
+- เมื่อยกเลิก Hold ต้องคำนวณ disposal eligibility ใหม่
+
+## Archive Controls
+
+- Archive ต้องรักษา Event ID, linkage, metadata, evidence และ integrity
+  verification
+- ข้อมูลต้องเข้ารหัส ใช้ permission ตาม Matter/Tenant และค้นคืนได้ตลอด Retention
+  Period
+- การย้ายระบบหรือ format ต้องมี reconciliation และ immutable migration event
+
+## Disposal Procedure
+
+### 1. Identify Eligible Records
+
+**Responsible:** Admin
+
+1. คำนวณ disposal eligibility จาก terminal date, record type และ Policy version
+2. แจ้งรายการที่ใกล้ครบกำหนดล่วงหน้า 90 วัน
+3. ระบุ primary storage, archive, backup และ dependency ที่เกี่ยวข้อง
+
+### 2. Check Legal Hold and Dependencies
+
+**Responsible:** Data/Compliance Owner
+
+1. ตรวจ Legal Hold, dispute, investigation, Audit และ preservation request
+2. ตรวจข้อกำหนดกฎหมาย วิชาชีพ สัญญา และ Client requirement
+3. เมื่อมี Hold ให้ระงับ disposal และบันทึกเหตุผล
+
+### 3. Approve Disposal
+
+**Responsible:** Manager และ Data/Compliance Owner
+
+1. Manager ยืนยันว่าไม่มี business dependency ที่ต้องเก็บต่อ
+2. Data/Compliance Owner ยืนยัน Retention และ Legal Hold
+3. บันทึกผลอนุมัติแบบ Dual Control
+
+Admin ห้ามดำเนินการก่อนผลอนุมัติครบและห้ามอนุมัติรายการเอง
+
+### 4. Dispose and Certify
+
+**Responsible:** Admin
+
+1. ทำลายข้อมูลจาก primary storage และ archive ตาม scope ที่อนุมัติ
+2. ทำให้ข้อมูลหมดอายุจาก backup ตามรอบการจัดการ backup
+3. สร้าง immutable Destruction Event/Certificate ที่ระบุ scope, approvers,
+   method และ timestamp
+4. ตรวจว่าข้อมูลที่ทำลายแล้วไม่กลับมาใช้งานในกระบวนการปกติ
+
+## Exceptions
+
+- **มี Legal Hold:** ระงับ disposal จนกว่าจะมี released at แล้วคำนวณ eligibility
+  ใหม่
+- **พบ dependency:** ส่งกลับ Manager ระบุเหตุผลและกำหนด review date ใหม่
+- **ย้ายระบบหรือ format:** ทำ reconciliation และ immutable migration event
+  ก่อนลบข้อมูลต้นทาง
+- **ทำลายไม่ครบ:** บันทึก failure event, ระงับ Certificate และดำเนินการแก้ไข ตาม
+  incident process
+
+## Completion Checklist
+
+- [ ] ระบุ Policy version และ retention baseline ถูกต้อง
+- [ ] ใช้ระยะเวลาที่ยาวกว่าตามกฎหมาย วิชาชีพ สัญญา หรือ Client requirement
+- [ ] ตรวจ Legal Hold และ dependency แล้ว
+- [ ] Manager และ Data/Compliance Owner อนุมัติครบ
+- [ ] Admin ไม่ได้เป็นผู้อนุมัติรายการ
+- [ ] ครอบคลุม primary storage, archive และ backup lifecycle
+- [ ] สร้าง immutable Destruction Event/Certificate แล้ว
+- [ ] Integrity verification และ Audit Log ผ่าน
+- [ ] Client Interaction/Note ใช้ baseline และ linkage ที่ถูกต้อง
+- [ ] Correction/Revision ใช้ retention เท่ากับ record ต้นฉบับ
+- [ ] Document/signature และ Task/Appointment ใช้ Matter linkage เมื่อเกี่ยวข้อง
+- [ ] Quotation/Invoice/Payment ใช้ commercial/financial baseline ที่ยาวกว่า
+- [ ] Access/Security และ Report/Export events ใช้ baseline ที่ถูกต้อง
+
+## Decision Authority
+
+Matter retention และ disposal control ได้รับการอนุมัติตาม DEC-MAT-011 วันที่ 13
+July 2026 ซึ่งบันทึกใน
+[Matter Lifecycle & Approval Rules](/docs/sops/matter-lifecycle) ส่วน Client
+Interaction/Note confidentiality และ retention ได้รับการอนุมัติตาม DEC-CLI-005
+วันที่ 14 July 2026 ซึ่งบันทึกใน
+[Client Registration & Maintenance](/docs/sops/client-registration)
+
+Operational baseline สำหรับ Document, Task/Calendar, Quotation, Invoice/Payment,
+Access และ Report/Export ได้รับการอนุมัติใน SOP-DOC-001, SOP-TSK-001,
+SOP-BIL-001, SOP-BIL-002, SOP-SEC-001 และ SOP-REP-001 วันที่ 14 July 2026
+
+Requirement ต้นทางระบุ capability ด้าน Matter, permission และ document/audit
+traceability แต่ไม่ได้กำหนด Retention Period ตัวเลข Legal/Compliance จึงยืนยัน
+baseline และกติกาใช้ระยะเวลาที่ยาวกว่าก่อนประกาศใช้จริงเมื่อ 14 July 2026
+
+## Review Rules
+
+- Retention Schedule ต้องเป็น Tenant Policy ที่มี version และ effective date
+- การลดระยะเวลาไม่มีผลกับข้อมูลย้อนหลังโดยอัตโนมัติ
+- ทบทวนนโยบายอย่างน้อยปีละครั้ง
+- ทบทวนทันทีเมื่อกฎหมาย ข้อกำหนดวิชาชีพ สัญญา หรือ Client requirement เปลี่ยน

@@ -69,9 +69,6 @@ export default {
           finance: 'Finance'
         }
       },
-      implementation: {
-        display: 'hidden'
-      },
       _technical: {
         type: 'separator',
         title: <Section>Technical</Section>

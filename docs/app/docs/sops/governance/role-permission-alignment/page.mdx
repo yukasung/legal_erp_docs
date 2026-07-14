@@ -53,17 +53,17 @@ assignment บน baseline role ไม่ใช่ role ใหม่ โดย H
 | QA Lead                    | Designated user; ไม่มี production approval โดยอัตโนมัติ | UAT administration and result sign-off                                                                    |
 | Authorized Signer          | Designated Lawyer/Manager/executive                     | Sign เฉพาะ document type และ entity scope ที่มอบหมาย                                                      |
 | Auditor                    | Admin หรือ independent reviewer                         | Read audit evidence; ห้ามแก้ source event                                                                 |
-| Product Owner              | Manager หรือ designated product responsibility          | Scope/requirement/backlog; ไม่เพิ่ม runtime permission อัตโนมัติ                                          |
+| Product Owner              | Manager หรือ designated product responsibility          | Scope/requirement; ไม่เพิ่ม runtime permission อัตโนมัติ                                                  |
 | Technical Lead             | Designated engineering responsibility                   | Architecture/build approval; ไม่เป็น Business Approver                                                    |
-| Release Manager            | Manager หรือ Operations responsibility                  | Release coordination/evidence; Final Go ตาม CHK-REL-001                                                   |
+| Release Manager            | Manager หรือ Operations responsibility                  | SOP publication coordination/evidence; approval ตาม Master Register                                       |
 | Database Owner             | Designated engineering/Admin responsibility             | Migration/backup/restore; controlled support เมื่อแตะ Tenant data                                         |
 | Operations Owner           | Designated operations/Admin responsibility              | Runtime/monitoring/support; Emergency Access เมื่อแตะ Tenant data                                         |
 | Platform Owner             | Platform responsibility แยกจาก Tenant role              | Package/service policy; ไม่มี Tenant business authority                                                   |
 | Security Reviewer          | Admin หรือ independent security function                | Security evidence/risk review; ไม่มี business data edit                                                   |
 
 Delivery responsibility bundle ไม่มอบ production access โดยตัวมันเอง ผู้ถือ
-responsibility ต้องได้รับ runtime role/grant แยกตาม SPEC-RBAC-001 และใช้
-alternate เมื่อเป็นผู้จัดทำ artifact ที่ตนต้องอนุมัติ
+responsibility ต้องได้รับ runtime role/grant แยกตาม Role & Permission Alignment
+และใช้ alternate เมื่อเป็นผู้จัดทำ artifact ที่ตนต้องอนุมัติ
 
 ## Permission Alignment Matrix
 

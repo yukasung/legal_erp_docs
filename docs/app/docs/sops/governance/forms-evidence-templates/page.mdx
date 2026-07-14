@@ -51,6 +51,7 @@ fields/authority/evidence ต้องเพิ่ม Version ในแถวท
 | FRM-BIL-001 | Quotation & Engagement Approval   | Finance | 1.0     | Approved | 14 July 2026 | SOP-BIL-001  | Pricing version, discount, terms, Manager decision                                    |
 | FRM-BIL-002 | Billing Transaction & Adjustment  | Finance | 1.0     | Approved | 14 July 2026 | SOP-BIL-002  | Posting/allocation, before/after, approval/reconciliation                             |
 | FRM-HR-001  | Payroll Run & Leave Request       | HR      | 1.0     | Approved | 14 July 2026 | SOP-HR-001   | Calculation snapshot, A1/A2/post, correction/export, payslip and leave balance events |
+| FRM-HR-002  | Personnel Lifecycle Record        | HR      | 1.0     | Approved | 14 July 2026 | SOP-HR-002   | Employee identity, assignment, effective event, approval, revision and reconciliation |
 | FRM-SEC-001 | Access Request & Recertification  | Admin   | 1.0     | Approved | 14 July 2026 | SOP-SEC-001  | Role/action/scope, SoD, expiry, grant/revoke snapshot                                 |
 | FRM-REP-001 | Report, Audit Review & Export     | Manager | 1.0     | Approved | 14 July 2026 | SOP-REP-001  | Filter/as-of, validation, findings, recipient/export log                              |
 | FRM-AUD-001 | Legal Hold / Disposal Certificate | Admin   | 1.0     | Approved | 14 July 2026 | SOP-AUD-001  | Search population, holds, A1/A2, destruction evidence                                 |
@@ -218,6 +219,20 @@ fields/authority/evidence ต้องเพิ่ม Version ในแถวท
 - Leave Request ID, policy/version, leave type, period/units, overlap result,
   balance ก่อน/หลัง, requester, approver, cancellation/reversal และ payroll
   effect
+
+## FRM-HR-002 Personnel Lifecycle Record
+
+- Employee ID, Tenant, user/membership binding และ employment episode
+- legal/display name, employment type, legal entity, organization/team,
+  position, manager, work location และ start/end/effective time
+- lifecycle type (joiner/mover/leave/suspend/leaver/correction), reason และ
+  before/after revision reference
+- sensitive field classification และ evidence reference โดยไม่แนบ raw value ใน
+  general audit record
+- HR requester/maker, current/new Manager approver, Admin/System executor และ
+  idempotency key
+- access, ownership, task/calendar, payroll/leave, retention และ Legal Hold
+  reconciliation result
 - Export batch ID, classification, purpose, recipient, A1/A2, expiry, checksum,
   delivery result และ aggregate schema ที่ส่งให้ Finance
 

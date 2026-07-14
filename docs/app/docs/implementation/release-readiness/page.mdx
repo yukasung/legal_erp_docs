@@ -24,19 +24,19 @@ risk/exceptions, migration/rollback version และ decision timestamp
 
 ## Evidence Package
 
-| Evidence ID | Evidence                                                                        | Owner              |
-| ----------- | ------------------------------------------------------------------------------- | ------------------ |
-| REL-SCP     | frozen scope, backlog IDs, dependencies and excluded gaps                       | Product Owner      |
-| REL-TRC     | Requirement → Decision → SOP → implementation → UAT coverage                    | Product + QA       |
-| REL-BLD     | build artifact digest, dependency/SBOM and source commit                        | Technical Lead     |
-| REL-SEC     | RBAC/tenant/security tests, vulnerability and secret scan                       | Admin              |
-| REL-MIG     | schema/data migration dry run, counts, timing and rollback result               | Database Owner     |
-| REL-UAT     | Test Run IDs, manifest checksum, Passed/Failed/Blocked and defects              | QA Lead            |
-| REL-HR      | payroll/leave master versions, reconciliation, SoD and export boundary evidence | HR + Admin         |
-| REL-OPS     | monitoring, alerts, runbook, capacity, backup/restore and support rota          | Operations         |
-| REL-ROL     | rollback trigger, steps, artifact/data compatibility and rehearsal              | Technical Lead     |
-| REL-COM     | user/client/internal communication and training acknowledgement                 | Product/Operations |
-| REL-DEC     | signed go/no-go decision, exceptions and residual risk                          | Release Approvers  |
+| Evidence ID | Evidence                                                                                     | Owner              |
+| ----------- | -------------------------------------------------------------------------------------------- | ------------------ |
+| REL-SCP     | frozen scope, backlog IDs, dependencies and excluded gaps                                    | Product Owner      |
+| REL-TRC     | Requirement → Decision → SOP → implementation → UAT coverage                                 | Product + QA       |
+| REL-BLD     | build artifact digest, dependency/SBOM and source commit                                     | Technical Lead     |
+| REL-SEC     | RBAC/tenant/security tests, vulnerability and secret scan                                    | Admin              |
+| REL-MIG     | schema/data migration dry run, counts, timing and rollback result                            | Database Owner     |
+| REL-UAT     | Test Run IDs, manifest checksum, Passed/Failed/Blocked and defects                           | QA Lead            |
+| REL-HR      | personnel/payroll/leave versions, lifecycle reconciliation, privacy, SoD and export evidence | HR + Admin         |
+| REL-OPS     | monitoring, alerts, runbook, capacity, backup/restore and support rota                       | Operations         |
+| REL-ROL     | rollback trigger, steps, artifact/data compatibility and rehearsal                           | Technical Lead     |
+| REL-COM     | user/client/internal communication and training acknowledgement                              | Product/Operations |
+| REL-DEC     | signed go/no-go decision, exceptions and residual risk                                       | Release Approvers  |
 
 ## Scope and Traceability Gate
 
@@ -99,6 +99,7 @@ risk/exceptions, migration/rollback version และ decision timestamp
 | Document sharing    | DOC-04, DOC-06, DOC-07       | ต้อง Passed                                      |
 | Financial integrity | BIL-03, BIL-08 to BIL-10     | ต้อง Passed                                      |
 | Payroll integrity   | HR-02 to HR-04, HR-06, HR-07 | ต้อง Passed เมื่อ release มี Payroll/Leave scope |
+| Personnel integrity | HR-09 to HR-14               | ต้อง Passed เมื่อ release มี Personnel scope     |
 | Audit integrity     | AUD-01 to AUD-03             | ต้อง Passed; integrity failure blocks release    |
 | Retention/Hold      | RET-02 to RET-04             | ต้อง Passed; hold bypass blocks release          |
 | Governance          | GOV-01 to GOV-07             | ต้อง Passed for controlled artifact changes      |
@@ -148,15 +149,15 @@ sustained error/latency ที่เกิน approved threshold
 
 ## Go/No-Go Authority
 
-| Decision Area              | Sign-off                                                                                               |
-| -------------------------- | ------------------------------------------------------------------------------------------------------ |
-| Scope/business readiness   | Product Owner                                                                                          |
-| Build/migration/rollback   | Technical Lead + Database Owner                                                                        |
-| UAT/defect status          | QA Lead                                                                                                |
-| Payroll/leave readiness    | HR + Manager; Admin concurrence when Payroll/Leave is in release scope                                 |
-| Security/privacy/retention | Admin                                                                                                  |
-| Operations/support         | Operations Owner                                                                                       |
-| Final Go                   | Product Owner + Technical Lead + Admin concurrence for every production release covered by CHK-REL-001 |
+| Decision Area                     | Sign-off                                                                                               |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Scope/business readiness          | Product Owner                                                                                          |
+| Build/migration/rollback          | Technical Lead + Database Owner                                                                        |
+| UAT/defect status                 | QA Lead                                                                                                |
+| Personnel/payroll/leave readiness | HR + Manager; Admin concurrence when Personnel, Payroll or Leave is in release scope                   |
+| Security/privacy/retention        | Admin                                                                                                  |
+| Operations/support                | Operations Owner                                                                                       |
+| Final Go                          | Product Owner + Technical Lead + Admin concurrence for every production release covered by CHK-REL-001 |
 
 CHK-REL-001 ครอบคลุมทุก release ไป environment ที่มีผู้ใช้จริงตาม Purpose
 ดังนั้น Admin concurrence เป็น mandatory sign-off ไม่มี production exemption;

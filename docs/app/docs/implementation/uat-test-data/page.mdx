@@ -45,6 +45,7 @@ expected controls และ cleanup สำหรับ UAT 69 cases โดยไ
 | FX-USR-HR-A     | hr-a@example.test        | HR                                    | Tenant UAT-A HR only; negative Legal Core access      |
 | FX-USR-EMP-A    | employee-a@example.test  | Lawyer + BUNDLE_EMPLOYEE_SELF_SERVICE | Employee EMP-A-1001; payslip/leave own records only   |
 | FX-USR-MGR-A    | manager-a@example.test   | Manager A1                            | Team LEGAL-A and scoped management                    |
+| FX-USR-MGR-B    | manager-b@example.test   | Manager A1                            | Team LEGAL-B and scoped management                    |
 | FX-USR-MGR-A2   | manager-a2@example.test  | Manager + BUNDLE_MANAGER_A2           | High-risk acceptance only                             |
 | FX-USR-ADMIN-A2 | admin-a2@example.test    | Admin + BUNDLE_ADMIN_A2               | security, payroll, restricted share/export, retention |
 | FX-USR-QA-A     | qa-a@example.test        | QA Lead                               | UAT administration; no production-style approval      |
@@ -59,28 +60,29 @@ BUNDLE_ADMIN_A2
 
 ## Business Record Fixtures
 
-| Fixture ID    | Records / Fixed Values                                                                        | Expected Baseline                                                   |
-| ------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| FX-CLI-BASE   | CLI-A-1001 Organization UAT Legal A Co., Ltd.; Registration UAT-REG-1001; Country TH          | Active, no duplicate unresolved                                     |
-| FX-CLI-DUP    | CLI-A-1002 normalized name/identifier variants of CLI-A-1001                                  | exact/high duplicate candidate                                      |
-| FX-CLI-CONF   | CLI-A-1003 with Restricted Interaction/Note                                                   | only explicit scoped users can view                                 |
-| FX-MAT-BASE   | UAT-MAT-1001 Advisory; Client CLI-A-1001; Lawyer-A; Team LEGAL-A                              | Active, Low risk, Commercial Accepted/Signed                        |
-| FX-MAT-INTAKE | UAT-MAT-1002 Intake Draft with counterparty UAT Counterparty 1                                | ready for duplicate/conflict/risk variants                          |
-| FX-MAT-HIGH   | UAT-MAT-1003 Risk High                                                                        | Pending Approval requires A1 + Manager A2                           |
-| FX-MAT-CLOSE  | UAT-MAT-1004 Completed with one open task/invoice                                             | closure blocked until dependencies resolved                         |
-| FX-DOC-BASE   | UAT-DOC-1001 v1.0 Internal; fixed content checksum                                            | Draft; assigned Lawyer author                                       |
-| FX-DOC-SIGNED | UAT-DOC-1002 v2.0 Restricted; signed checksum                                                 | immutable; share needs A1/A2                                        |
-| FX-TSK-BASE   | UAT-TSK-1001 due 5 Aug 2026 17:00 Asia/Bangkok                                                | Open, assigned Lawyer-A                                             |
-| FX-CAL-BASE   | UAT-CAL-1001 4 Aug 2026 10:00-11:00 Asia/Bangkok                                              | Scheduled; recurrence/sync variants available                       |
-| FX-QUO-BASE   | UAT-QUO-1001 fee THB 100,000; discount 10%; VAT 7%                                            | expected subtotal 100,000; net 90,000; VAT 6,300; total 96,300      |
-| FX-INV-BASE   | UAT-INV-1001 gross THB 107,000; due 31 Aug 2026                                               | Posted, unpaid                                                      |
-| FX-PAY-BASE   | UAT-PAY-1001 received THB 53,500                                                              | Unallocated; unique reference UAT-PAYREF-1001                       |
-| FX-HR-PAYROLL | UAT-PR-1001 period 2026-08; EMP-A-1001 base 30,000 + OT 2,000 + allowance 1,000 + bonus 5,000 | gross 38,000; tax 1,500 + social 750 + fund 1,900; net 33,850       |
-| FX-HR-LEAVE   | UAT-LV-1001 Annual Leave 4-5 Aug 2026; policy LV-ANNUAL-v1; opening balance 10 days           | 2 requested days; approved balance 8; cancellation restores 10      |
-| FX-REP-BASE   | UAT-REP-1001 rows INV-R1=50,000, INV-R2=32,000, INV-R3=25,000                                 | expected gross total THB 107,000 at fixed as-of                     |
-| FX-AUD-BASE   | EVT-1001 to EVT-1005 valid chain                                                              | integrity pass; correction/failure clones available                 |
-| FX-RET-BASE   | REC-EXPIRED-01, REC-ACTIVE-01, REC-HOLD-01                                                    | only expired non-held record eligible                               |
-| FX-EXC-BASE   | P1 opened 3 Aug 2026 09:00 +07:00                                                             | due ack 09:15, contain 10:00, restore 13:00, resolution 4 Aug 09:00 |
+| Fixture ID      | Records / Fixed Values                                                                        | Expected Baseline                                                   |
+| --------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| FX-CLI-BASE     | CLI-A-1001 Organization UAT Legal A Co., Ltd.; Registration UAT-REG-1001; Country TH          | Active, no duplicate unresolved                                     |
+| FX-CLI-DUP      | CLI-A-1002 normalized name/identifier variants of CLI-A-1001                                  | exact/high duplicate candidate                                      |
+| FX-CLI-CONF     | CLI-A-1003 with Restricted Interaction/Note                                                   | only explicit scoped users can view                                 |
+| FX-MAT-BASE     | UAT-MAT-1001 Advisory; Client CLI-A-1001; Lawyer-A; Team LEGAL-A                              | Active, Low risk, Commercial Accepted/Signed                        |
+| FX-MAT-INTAKE   | UAT-MAT-1002 Intake Draft with counterparty UAT Counterparty 1                                | ready for duplicate/conflict/risk variants                          |
+| FX-MAT-HIGH     | UAT-MAT-1003 Risk High                                                                        | Pending Approval requires A1 + Manager A2                           |
+| FX-MAT-CLOSE    | UAT-MAT-1004 Completed with one open task/invoice                                             | closure blocked until dependencies resolved                         |
+| FX-DOC-BASE     | UAT-DOC-1001 v1.0 Internal; fixed content checksum                                            | Draft; assigned Lawyer author                                       |
+| FX-DOC-SIGNED   | UAT-DOC-1002 v2.0 Restricted; signed checksum                                                 | immutable; share needs A1/A2                                        |
+| FX-TSK-BASE     | UAT-TSK-1001 due 5 Aug 2026 17:00 Asia/Bangkok                                                | Open, assigned Lawyer-A                                             |
+| FX-CAL-BASE     | UAT-CAL-1001 4 Aug 2026 10:00-11:00 Asia/Bangkok                                              | Scheduled; recurrence/sync variants available                       |
+| FX-QUO-BASE     | UAT-QUO-1001 fee THB 100,000; discount 10%; VAT 7%                                            | expected subtotal 100,000; net 90,000; VAT 6,300; total 96,300      |
+| FX-INV-BASE     | UAT-INV-1001 gross THB 107,000; due 31 Aug 2026                                               | Posted, unpaid                                                      |
+| FX-PAY-BASE     | UAT-PAY-1001 received THB 53,500                                                              | Unallocated; unique reference UAT-PAYREF-1001                       |
+| FX-HR-PAYROLL   | UAT-PR-1001 period 2026-08; EMP-A-1001 base 30,000 + OT 2,000 + allowance 1,000 + bonus 5,000 | gross 38,000; tax 1,500 + social 750 + fund 1,900; net 33,850       |
+| FX-HR-LEAVE     | UAT-LV-1001 Annual Leave 4-5 Aug 2026; policy LV-ANNUAL-v1; opening balance 10 days           | 2 requested days; approved balance 8; cancellation restores 10      |
+| FX-HR-PERSONNEL | EMP-A-1001 Active in LEGAL-A under Manager-A; EMP-J-1002 Draft start 4 Aug 2026 09:00 +07:00  | unique binding; classified fields; lifecycle/revision seeds         |
+| FX-REP-BASE     | UAT-REP-1001 rows INV-R1=50,000, INV-R2=32,000, INV-R3=25,000                                 | expected gross total THB 107,000 at fixed as-of                     |
+| FX-AUD-BASE     | EVT-1001 to EVT-1005 valid chain                                                              | integrity pass; correction/failure clones available                 |
+| FX-RET-BASE     | REC-EXPIRED-01, REC-ACTIVE-01, REC-HOLD-01                                                    | only expired non-held record eligible                               |
+| FX-EXC-BASE     | P1 opened 3 Aug 2026 09:00 +07:00                                                             | due ack 09:15, contain 10:00, restore 13:00, resolution 4 Aug 09:00 |
 
 ## Case Fixture Resolution
 
@@ -99,6 +101,7 @@ BUNDLE_ADMIN_A2
 | TSK-01 to CAL-03 | FX-TSK-BASE/FX-CAL-BASE      | assignment/status/clock/timezone/conflict/provider response variants                             |
 | BIL-01 to BIL-10 | FX-QUO/INV/PAY bases         | self-approval, response, allocation, duplicate ref and adjustment variants                       |
 | HR-01 to HR-07   | FX-HR-PAYROLL/FX-HR-LEAVE    | calculation, SoD, post/payslip, leave balance, correction/idempotency and export boundary        |
+| HR-08 to HR-14   | FX-HR-PERSONNEL              | joiner, duplicate, mover, leaver, field privacy, SoD/revision, idempotency and Legal Hold        |
 | SEC-01 to SEC-06 | user/tenant fixtures         | MFA, cross-Tenant, privileged expiry, emergency clock, leaver, recertification                   |
 | REP-01 to AUD-03 | report/audit bases           | filter/as-of, variance, restricted export, correction and broken hash variants                   |
 | RET-01 to RET-04 | FX-RET-BASE                  | expiry, active Hold, dual approval and duplicate execution variants                              |
@@ -111,84 +114,91 @@ BUNDLE_ADMIN_A2
 Fixture และ seed manifest ต้องเก็บ resolved JSON/checksum แม้เอกสารนี้ไม่แสดง
 JSON
 
-| Case   | Exact Delta / Expected Anchor                                                                                                                                              |
-| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| CLI-01 | clone Client with Registration UAT-REG-2001, Country TH, all conditional fields; status reaches Active after verification                                                  |
-| CLI-02 | clone CLI-01 and set Country null; validation error field=country; no Client created                                                                                       |
-| CLI-03 | new name variant UAT LEGAL A CO LTD + Registration UAT-REG-1001; exact candidate CLI-A-1001 score 100; creation blocked                                                    |
-| CLI-04 | source CLI-A-2004 + target CLI-A-1001, zero unresolved dependencies, Manager A1 + Admin A2; source Merged and redirects                                                    |
-| CLI-05 | run FX-CLI-05A merge request and FX-CLI-05B deactivate request by Assistant-A; same actor attempts approval in each; both denied and snapshots unchanged                   |
-| CLI-06 | CLI-A-1001 VIP=true and Retainer 1 Aug 2026–31 Jul 2027 with Manager approval; lifecycle/expiry event expected                                                             |
-| CLI-07 | Finance-A requests Restricted note NOTE-A-1001 without grant; denied with no content/metadata exposure                                                                     |
-| MAT-01 | UAT-MAT-2001, duplicate score 40, Conflict Cleared, Risk Low, Commercial Accepted/Signed; Manager approves Active                                                          |
-| MAT-02 | UAT-MAT-2002 Conflict Escalated for UAT Counterparty 1 then Prohibited; cannot leave gate for Active                                                                       |
-| MAT-03 | UAT-MAT-1003 Risk High; Manager-A1 + Manager-A2 required; one approval alone remains Pending Approval                                                                      |
-| MAT-04 | UAT-MAT-2004 Risk Prohibited; override flag false; Acceptance Rejected and no Active transition                                                                            |
-| MAT-05 | UAT-MAT-2005 conflict Standard starts CLK-MAT-SLA; one 75% warning and one breach, no approval/status mutation                                                             |
-| MAT-06 | UAT-MAT-2006 duplicate score 60; create allowed and rule/version evidence stored                                                                                           |
-| MAT-07 | UAT-MAT-2007 duplicate score 95 against UAT-MAT-1001; blocked until Manager disposition                                                                                    |
-| MAT-08 | Assistant-A requests unauthorized Closed → Active direct transition; denied and status/event sequence unchanged                                                            |
-| MAT-09 | UAT-MAT-1001 Active → On Hold reason UAT-DEPENDENCY review 10 Aug, then approved resume; two transition events                                                             |
-| MAT-10 | UAT-MAT-1004 has Open UAT-TSK-1001 + unpaid UAT-INV-1001; close blocked with two dependencies                                                                              |
-| MAT-11 | run FX-MAT-11A Closed → Conflict Review and FX-MAT-11B Completed → Active; Responsible Lawyer requests, Manager approves, exact next status/event asserted                 |
-| DOC-01 | upload UAT-DOC-2001 content UAT-DOC-CONTENT-1, Internal, Matter 1001; checksum equals seeded SHA-256                                                                       |
-| DOC-02 | create v2.1 from UAT-DOC-1002 Signed; signed v2.0 unchanged and linked as prior version                                                                                    |
-| DOC-03 | Lawyer-A prepares v1.0, Manager-A approves exact checksum; approver/time/version event present                                                                             |
-| DOC-04 | Assistant-A attempts final approval of UAT-DOC-2004; denied and remains In Review                                                                                          |
-| DOC-05 | signer lawyer-a@example.test completes request SIG-UAT-1001 before 10 Aug; Signed + provider evidence/checksum                                                             |
-| DOC-06 | Restricted UAT-DOC-1002 shared to recipient@example.test until 10 Aug with Manager A1 + Admin A2; access log expected                                                      |
-| DOC-07 | UAT-DOC-1002 under HOLD-001; revoke share succeeds, disposal/archive deletion is blocked                                                                                   |
-| TSK-01 | create UAT-TSK-2001 due 5 Aug 17:00 +07, assign Lawyer-A, reminder 1 hour; Open + assignment event                                                                         |
-| TSK-02 | run FX-TSK-02A Complete reason UAT-DONE and FX-TSK-02B Cancel reason UAT-DUPLICATE; each terminal history preserved                                                        |
-| TSK-03 | UAT-TSK-1001 clock advances past 17:00; one overdue event + Lawyer/Manager notifications                                                                                   |
-| CAL-01 | weekly appointment every Tuesday 10:00 Asia/Bangkok for 3 instances starting 4 Aug; stored UTC instants match                                                              |
-| CAL-02 | new appointment overlaps UAT-CAL-1001 10:30–11:30; conflict shown; Manager override reason UAT-COURT                                                                       |
-| CAL-03 | provider response 503, 503, 200 for UAT-CAL-1001; one external record and three attempt events                                                                             |
-| BIL-01 | UAT-QUO-1001 fee 100,000, discount 10%, VAT 7%; subtotal 100,000, net 90,000, VAT 6,300, total 96,300                                                                      |
-| BIL-02 | Finance-A maker + Manager-A approver on quotation v1.0; Approved event actors differ                                                                                       |
-| BIL-03 | Finance-A maker attempts approve and discount 40% above authority; denied with no version state change                                                                     |
-| BIL-04 | client accepts v1.0 then revision v2.0 created; v1.0 Superseded and response evidence linked                                                                               |
-| BIL-05 | post UAT-INV-1001 gross 107,000 with unique ref; Posted balance 107,000 and posting event                                                                                  |
-| BIL-06 | confirm UAT-PAY-2006 amount 107,000 and allocate fully to INV-1001; invoice Paid, payment Allocated                                                                        |
-| BIL-07 | payment 60,000 allocates 53,500 to INV-1001 clone and 6,500 to INV-1002; both balances reconcile                                                                           |
-| BIL-08 | second payment uses UAT-PAYREF-1001; duplicate blocked and receivable totals unchanged                                                                                     |
-| BIL-09 | Finance requests refund 5,350 from PAY-1001; Manager approves; compensating entry and balance reconcile                                                                    |
-| BIL-10 | Finance-A creates write-off then self-approves; denied and no posting created                                                                                              |
-| HR-01  | calculate UAT-PR-1001 with rule TAX-TH-v1/SSO-TH-v1/FUND-A-v1; gross 38,000, deductions 4,150, net 33,850; employee/control totals reconcile and checksum stored           |
-| HR-02  | HR-A submits exact UAT-PR-1001 version then attempts A1; denied, remains Pending Approval, denied event contains no other employee payroll values                          |
-| HR-03  | UAT-PR-1001 org-wide: HR-A maker, Manager-A A1 and Admin-A2 A2 are three distinct accounts; System posts once and status becomes Posted                                    |
-| HR-04  | EMP-A opens own UAT-PR-1001 payslip net 33,850 then requests another employee payslip; own succeeds, other denied with zero metadata leakage                               |
-| HR-05  | run FX-HR-05A approve UAT-LV-1001 to balance 8 and FX-HR-05B cancel same approved request to balance 10; self-approval/overlap variants denied                             |
-| HR-06  | create correction UAT-PR-1001-C1 changing bonus +1,000; original checksum/net 33,850 unchanged; duplicate post key returns original result and no duplicate payslip/export |
-| HR-07  | Manager-A approves aggregate export totals only for Finance-A; Finance-A cannot access employee lines; Restricted statutory export requires Admin-A2 and expiry            |
-| SEC-01 | invite new-user-a@example.test to ROLE_LAWYER TEAM LEGAL-A; MFA verified; Active grant snapshot                                                                            |
-| SEC-02 | Lawyer-A requests Client/Matter/object from UAT-B; generic denial and zero content/count/object-key leakage                                                                |
-| SEC-03 | request report.export privileged for user-a until 4 Aug 17:00; Manager A1 + Admin-A2 approve, Admin-A execute                                                              |
-| SEC-04 | Emergency grant document.view for Admin-A expires 4 Aug 17:00; grant/session auto-revoked once and reviewed                                                                |
-| SEC-05 | FX-USR-LEAVER suspended at 3 Aug 12:00; sessions revoked and MAT/TSK/CAL ownership count becomes zero                                                                      |
-| SEC-06 | campaign RECERT-2026-Q3: active grant Keep, dormant Modify, expired Revoke; before/after evidence for all three                                                            |
-| REP-01 | run REP-1001 at fixed as-of with three rows INV-R1=50,000, INV-R2=32,000, INV-R3=25,000; total 107,000                                                                     |
-| REP-02 | source INV-R3 changed to 25,100 while expected snapshot remains 25,000; variance 100 opens finding                                                                         |
-| REP-03 | Restricted export of REP-1001 to recipient@example.test, expiry 10 Aug, Manager A1 + Admin A2; checksum/log                                                                |
-| REP-04 | Lawyer-B attempts export of UAT-A report; denied with no row count/filter metadata exposure                                                                                |
-| AUD-01 | EVT-1001…1005 sequence/hash untouched; integrity result Passed and count 5                                                                                                 |
-| AUD-02 | correction CORR-1001 changes current interpretation of EVT-1003 reason only; original hash/row unchanged                                                                   |
-| AUD-03 | clone chain with EVT-1004 previous_hash=INVALID; integrity Failed and P1 exception opened                                                                                  |
-| RET-01 | REC-EXPIRED-01 trigger/expiry 31 Jul 2026, no dependency/hold; eligibility true on 1 Aug                                                                                   |
-| RET-02 | REC-HOLD-01 has active HOLD-001; disposal blocked and object/evidence remains readable                                                                                     |
-| RET-03 | batch REC-EXPIRED-01 only, Manager A1 + Admin A2; certificate count 1/checksum stored                                                                                      |
-| RET-04 | rerun same disposal idempotency key; no second deletion/certificate and original result returned                                                                           |
-| GOV-01 | manifest duplicates SOP-MAT-001 ID; register validation fails with duplicate IDs                                                                                           |
-| GOV-02 | PLAN-IMP-001 URL changed to /docs/missing; link validation fails with exact source/target                                                                                  |
-| GOV-03 | REQ-DOC-001 clone removes UAT mapping; coverage validation fails and owner action created                                                                                  |
-| GOV-04 | one membership receives billing.adjust.request + approve + execute for same record; toxic grant rejected                                                                   |
-| GOV-05 | submit FRM-UAT-001 v0.9 while catalog current=1.0; blocked/controlled exception required                                                                                   |
-| GOV-06 | Matter status Pending Acceptance submitted; rejected with canonical Pending Approval suggestion                                                                            |
-| GOV-07 | overwrite Approved SOP content without version increment; pipeline blocks and original checksum remains                                                                    |
-| EXC-01 | cross-Tenant incident at 3 Aug 09:00; severity forced P1, due milestones match FX-EXC-BASE                                                                                 |
-| EXC-02 | no acknowledge by 09:15:00; escalation event at/after 09:15 and Decision Authority notified                                                                                |
-| EXC-03 | workaround expires/repeats three times; severity increases and corrective action opens                                                                                     |
-| EXC-04 | attempt close P1 without root cause/Admin sign-off; closure blocked and status remains Resolved                                                                            |
+| Case   | Exact Delta / Expected Anchor                                                                                                                                                            |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CLI-01 | clone Client with Registration UAT-REG-2001, Country TH, all conditional fields; status reaches Active after verification                                                                |
+| CLI-02 | clone CLI-01 and set Country null; validation error field=country; no Client created                                                                                                     |
+| CLI-03 | new name variant UAT LEGAL A CO LTD + Registration UAT-REG-1001; exact candidate CLI-A-1001 score 100; creation blocked                                                                  |
+| CLI-04 | source CLI-A-2004 + target CLI-A-1001, zero unresolved dependencies, Manager A1 + Admin A2; source Merged and redirects                                                                  |
+| CLI-05 | run FX-CLI-05A merge request and FX-CLI-05B deactivate request by Assistant-A; same actor attempts approval in each; both denied and snapshots unchanged                                 |
+| CLI-06 | CLI-A-1001 VIP=true and Retainer 1 Aug 2026–31 Jul 2027 with Manager approval; lifecycle/expiry event expected                                                                           |
+| CLI-07 | Finance-A requests Restricted note NOTE-A-1001 without grant; denied with no content/metadata exposure                                                                                   |
+| MAT-01 | UAT-MAT-2001, duplicate score 40, Conflict Cleared, Risk Low, Commercial Accepted/Signed; Manager approves Active                                                                        |
+| MAT-02 | UAT-MAT-2002 Conflict Escalated for UAT Counterparty 1 then Prohibited; cannot leave gate for Active                                                                                     |
+| MAT-03 | UAT-MAT-1003 Risk High; Manager-A1 + Manager-A2 required; one approval alone remains Pending Approval                                                                                    |
+| MAT-04 | UAT-MAT-2004 Risk Prohibited; override flag false; Acceptance Rejected and no Active transition                                                                                          |
+| MAT-05 | UAT-MAT-2005 conflict Standard starts CLK-MAT-SLA; one 75% warning and one breach, no approval/status mutation                                                                           |
+| MAT-06 | UAT-MAT-2006 duplicate score 60; create allowed and rule/version evidence stored                                                                                                         |
+| MAT-07 | UAT-MAT-2007 duplicate score 95 against UAT-MAT-1001; blocked until Manager disposition                                                                                                  |
+| MAT-08 | Assistant-A requests unauthorized Closed → Active direct transition; denied and status/event sequence unchanged                                                                          |
+| MAT-09 | UAT-MAT-1001 Active → On Hold reason UAT-DEPENDENCY review 10 Aug, then approved resume; two transition events                                                                           |
+| MAT-10 | UAT-MAT-1004 has Open UAT-TSK-1001 + unpaid UAT-INV-1001; close blocked with two dependencies                                                                                            |
+| MAT-11 | run FX-MAT-11A Closed → Conflict Review and FX-MAT-11B Completed → Active; Responsible Lawyer requests, Manager approves, exact next status/event asserted                               |
+| DOC-01 | upload UAT-DOC-2001 content UAT-DOC-CONTENT-1, Internal, Matter 1001; checksum equals seeded SHA-256                                                                                     |
+| DOC-02 | create v2.1 from UAT-DOC-1002 Signed; signed v2.0 unchanged and linked as prior version                                                                                                  |
+| DOC-03 | Lawyer-A prepares v1.0, Manager-A approves exact checksum; approver/time/version event present                                                                                           |
+| DOC-04 | Assistant-A attempts final approval of UAT-DOC-2004; denied and remains In Review                                                                                                        |
+| DOC-05 | signer lawyer-a@example.test completes request SIG-UAT-1001 before 10 Aug; Signed + provider evidence/checksum                                                                           |
+| DOC-06 | Restricted UAT-DOC-1002 shared to recipient@example.test until 10 Aug with Manager A1 + Admin A2; access log expected                                                                    |
+| DOC-07 | UAT-DOC-1002 under HOLD-001; revoke share succeeds, disposal/archive deletion is blocked                                                                                                 |
+| TSK-01 | create UAT-TSK-2001 due 5 Aug 17:00 +07, assign Lawyer-A, reminder 1 hour; Open + assignment event                                                                                       |
+| TSK-02 | run FX-TSK-02A Complete reason UAT-DONE and FX-TSK-02B Cancel reason UAT-DUPLICATE; each terminal history preserved                                                                      |
+| TSK-03 | UAT-TSK-1001 clock advances past 17:00; one overdue event + Lawyer/Manager notifications                                                                                                 |
+| CAL-01 | weekly appointment every Tuesday 10:00 Asia/Bangkok for 3 instances starting 4 Aug; stored UTC instants match                                                                            |
+| CAL-02 | new appointment overlaps UAT-CAL-1001 10:30–11:30; conflict shown; Manager override reason UAT-COURT                                                                                     |
+| CAL-03 | provider response 503, 503, 200 for UAT-CAL-1001; one external record and three attempt events                                                                                           |
+| BIL-01 | UAT-QUO-1001 fee 100,000, discount 10%, VAT 7%; subtotal 100,000, net 90,000, VAT 6,300, total 96,300                                                                                    |
+| BIL-02 | Finance-A maker + Manager-A approver on quotation v1.0; Approved event actors differ                                                                                                     |
+| BIL-03 | Finance-A maker attempts approve and discount 40% above authority; denied with no version state change                                                                                   |
+| BIL-04 | client accepts v1.0 then revision v2.0 created; v1.0 Superseded and response evidence linked                                                                                             |
+| BIL-05 | post UAT-INV-1001 gross 107,000 with unique ref; Posted balance 107,000 and posting event                                                                                                |
+| BIL-06 | confirm UAT-PAY-2006 amount 107,000 and allocate fully to INV-1001; invoice Paid, payment Allocated                                                                                      |
+| BIL-07 | payment 60,000 allocates 53,500 to INV-1001 clone and 6,500 to INV-1002; both balances reconcile                                                                                         |
+| BIL-08 | second payment uses UAT-PAYREF-1001; duplicate blocked and receivable totals unchanged                                                                                                   |
+| BIL-09 | Finance requests refund 5,350 from PAY-1001; Manager approves; compensating entry and balance reconcile                                                                                  |
+| BIL-10 | Finance-A creates write-off then self-approves; denied and no posting created                                                                                                            |
+| HR-01  | calculate UAT-PR-1001 with rule TAX-TH-v1/SSO-TH-v1/FUND-A-v1; gross 38,000, deductions 4,150, net 33,850; employee/control totals reconcile and checksum stored                         |
+| HR-02  | HR-A submits exact UAT-PR-1001 version then attempts A1; denied, remains Pending Approval, denied event contains no other employee payroll values                                        |
+| HR-03  | UAT-PR-1001 org-wide: HR-A maker, Manager-A A1 and Admin-A2 A2 are three distinct accounts; System posts once and status becomes Posted                                                  |
+| HR-04  | EMP-A opens own UAT-PR-1001 payslip net 33,850 then requests another employee payslip; own succeeds, other denied with zero metadata leakage                                             |
+| HR-05  | run FX-HR-05A approve UAT-LV-1001 to balance 8 and FX-HR-05B cancel same approved request to balance 10; self-approval/overlap variants denied                                           |
+| HR-06  | create correction UAT-PR-1001-C1 changing bonus +1,000; original checksum/net 33,850 unchanged; duplicate post key returns original result and no duplicate payslip/export               |
+| HR-07  | Manager-A approves aggregate export totals only for Finance-A; Finance-A cannot access employee lines; Restricted statutory export requires Admin-A2 and expiry                          |
+| HR-08  | HR-A prepares EMP-J-1002, Manager-A approves, Admin-A executes access; at 4 Aug 09:00 System activates once with separate actor events                                                   |
+| HR-09  | clone EMP-A-1001 Employee ID or user binding and omit manager on EMP-J-1002; validation blocks both variants before Preboarding with no active duplicate                                 |
+| HR-10  | move EMP-A-1001 from LEGAL-A/Manager-A to LEGAL-B/Manager-B at 5 Aug 09:00; both Managers approve; old grants/owners reach zero and new scoped revision activates                        |
+| HR-11  | terminate FX-USR-LEAVER at 3 Aug 12:00 with Manager-A approval; sessions/grants and open ownership reach zero, payroll/leave finalization linked, master remains Terminated              |
+| HR-12  | EMP-A/Manager-A/Finance-A request bank/tax fields: deny/mask with zero raw-value leakage; HR-A purpose-bound read succeeds and access event stores field IDs only                        |
+| HR-13  | HR-A prepares bank correction and leaver event then self-approves; both denied; Manager-approved correction creates revision v2 while v1 hash remains unchanged                          |
+| HR-14  | retry EMP-J-1002 activation with same key returns original event; terminate/archive held employee then attempt disposal under HOLD-HR-001; disposal blocked without duplicate transition |
+| SEC-01 | invite new-user-a@example.test to ROLE_LAWYER TEAM LEGAL-A; MFA verified; Active grant snapshot                                                                                          |
+| SEC-02 | Lawyer-A requests Client/Matter/object from UAT-B; generic denial and zero content/count/object-key leakage                                                                              |
+| SEC-03 | request report.export privileged for user-a until 4 Aug 17:00; Manager A1 + Admin-A2 approve, Admin-A execute                                                                            |
+| SEC-04 | Emergency grant document.view for Admin-A expires 4 Aug 17:00; grant/session auto-revoked once and reviewed                                                                              |
+| SEC-05 | FX-USR-LEAVER suspended at 3 Aug 12:00; sessions revoked and MAT/TSK/CAL ownership count becomes zero                                                                                    |
+| SEC-06 | campaign RECERT-2026-Q3: active grant Keep, dormant Modify, expired Revoke; before/after evidence for all three                                                                          |
+| REP-01 | run REP-1001 at fixed as-of with three rows INV-R1=50,000, INV-R2=32,000, INV-R3=25,000; total 107,000                                                                                   |
+| REP-02 | source INV-R3 changed to 25,100 while expected snapshot remains 25,000; variance 100 opens finding                                                                                       |
+| REP-03 | Restricted export of REP-1001 to recipient@example.test, expiry 10 Aug, Manager A1 + Admin A2; checksum/log                                                                              |
+| REP-04 | Lawyer-B attempts export of UAT-A report; denied with no row count/filter metadata exposure                                                                                              |
+| AUD-01 | EVT-1001…1005 sequence/hash untouched; integrity result Passed and count 5                                                                                                               |
+| AUD-02 | correction CORR-1001 changes current interpretation of EVT-1003 reason only; original hash/row unchanged                                                                                 |
+| AUD-03 | clone chain with EVT-1004 previous_hash=INVALID; integrity Failed and P1 exception opened                                                                                                |
+| RET-01 | REC-EXPIRED-01 trigger/expiry 31 Jul 2026, no dependency/hold; eligibility true on 1 Aug                                                                                                 |
+| RET-02 | REC-HOLD-01 has active HOLD-001; disposal blocked and object/evidence remains readable                                                                                                   |
+| RET-03 | batch REC-EXPIRED-01 only, Manager A1 + Admin A2; certificate count 1/checksum stored                                                                                                    |
+| RET-04 | rerun same disposal idempotency key; no second deletion/certificate and original result returned                                                                                         |
+| GOV-01 | manifest duplicates SOP-MAT-001 ID; register validation fails with duplicate IDs                                                                                                         |
+| GOV-02 | PLAN-IMP-001 URL changed to /docs/missing; link validation fails with exact source/target                                                                                                |
+| GOV-03 | REQ-DOC-001 clone removes UAT mapping; coverage validation fails and owner action created                                                                                                |
+| GOV-04 | one membership receives billing.adjust.request + approve + execute for same record; toxic grant rejected                                                                                 |
+| GOV-05 | submit FRM-UAT-001 v0.9 while catalog current=1.0; blocked/controlled exception required                                                                                                 |
+| GOV-06 | Matter status Pending Acceptance submitted; rejected with canonical Pending Approval suggestion                                                                                          |
+| GOV-07 | overwrite Approved SOP content without version increment; pipeline blocks and original checksum remains                                                                                  |
+| EXC-01 | cross-Tenant incident at 3 Aug 09:00; severity forced P1, due milestones match FX-EXC-BASE                                                                                               |
+| EXC-02 | no acknowledge by 09:15:00; escalation event at/after 09:15 and Decision Authority notified                                                                                              |
+| EXC-03 | workaround expires/repeats three times; severity increases and corrective action opens                                                                                                   |
+| EXC-04 | attempt close P1 without root cause/Admin sign-off; closure blocked and status remains Resolved                                                                                          |
 
 ## Seed Order
 
@@ -203,10 +213,10 @@ payload/checksum ของตนเอง และ test run ต้อง execut
 5. Matters, parties, members, assessments, decisions and transitions
 6. Documents/files/checksums, tasks, appointments and integration connections
 7. Quotations, invoices, payments, allocations and expected report source data
-8. Payroll statutory masters, employee bindings, payroll runs, payslips, leave
-   policies/balances/requests and expected control totals
-9. Audit chain, retention rules, Legal Holds, exceptions and controlled
-   artifacts
+8. Employee masters/episodes/revisions/assignments, Payroll statutory masters,
+   payroll runs, payslips, leave policies/balances/requests and control totals
+9. Lifecycle requests/reconciliation, audit chain, retention rules, Legal Holds,
+   exceptions and controlled artifacts
 10. Generate manifest with record IDs, versions, checksums and expected totals
 
 Seed ล้มเหลวต้อง rollback ทั้ง run หรือระบุ partial run ID ที่ cleanup ได้

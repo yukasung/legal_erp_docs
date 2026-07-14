@@ -40,7 +40,7 @@ capability ที่ต้องปิด policy/control gap ก่อน
 | Retention/Disposal                    | Governance baseline                                   | SOP-AUD-001, DEC-MAT-011/CLI-005, RET UAT                                        | Conditional | validate jurisdiction/client-specific schedules before production data                    |
 | Time Tracking & Timesheets            | Scope; Architecture Time Tracking Service; P3 115-139 | no SOP/Decision/status/authority/UAT                                             | Gap         | DSC-TIM-001                                                                               |
 | Finance Foundation                    | Scope; Architecture Finance Foundation                | invoice/payment only; no chart/tax/expense/journal close control                 | Gap         | DSC-FIN-001                                                                               |
-| Personnel/HR                          | Scope; Architecture Human Resource Service            | role boundary only; employee lifecycle master remains unresolved                 | Gap         | DSC-HR-001                                                                                |
+| Personnel/HR                          | Scope; Architecture Human Resource Service            | SOP-HR-002, DEC-HR-002, IMP-HR-004/005 and HR-08 to HR-14                        | Ready       | implement employee master, privacy and effective joiner/mover/leaver reconciliation       |
 | Payroll                               | Scope HR/Payroll                                      | SOP-HR-001, DEC-HR-001, IMP-HR-001/002 and HR-01 to HR-07                        | Ready       | implement controlled calculation/approval/post/payslip/export                             |
 | Leave Management                      | Scope HR/Leave                                        | SOP-HR-001, DEC-HR-001, IMP-HR-003 and HR-05                                     | Ready       | implement policy/balance/request/approval/cancel/payroll-effect workflow                  |
 | Tenant Onboarding/Package/User Limit  | Scope; Architecture Tenant Management                 | user limit check partly in SOP-SEC-001; no onboarding/package lifecycle SOP      | Gap         | DSC-TEN-001                                                                               |
@@ -76,20 +76,21 @@ Foundation ทั้งระบบ ต้องกำหนด:
 ห้ามใช้คำว่า general ledger หรือ financial statements พร้อมใช้งานจน DSC-FIN-001
 ผ่าน Definition of Ready
 
-## Gap 3: Personnel Foundation
+## Closed Gap 3: Personnel Foundation
 
-Payroll และ Leave ปิด discovery gate แล้วด้วย DEC-HR-001, SOP-HR-001, IMP-HR-001
-to 003 และ HR-01 to HR-07 แต่ Personnel foundation ยังต้องกำหนด:
+Personnel, Payroll และ Leave ปิด discovery gate แล้วด้วย DEC-HR-001/002,
+SOP-HR-001/002, IMP-HR-001 to 005 และ HR-01 to HR-14:
 
 | Domain    | Minimum Decisions / Controls                                                                               |
 | --------- | ---------------------------------------------------------------------------------------------------------- |
-| Personnel | employee identity/status, organization assignment, sensitive fields, joiner/mover/leaver, retention        |
+| Personnel | ปิดแล้ว: identity/status, organization assignment, sensitive fields, joiner/mover/leaver, retention        |
 | Payroll   | ปิดแล้ว: earning/deduction/statutory rule snapshot, period lock, correction, maker-checker, payslip/export |
 | Leave     | ปิดแล้ว: policy/version, balance, request/approval/cancel, overlap, payroll effect                         |
 
-Personnel gap ที่เหลือคือ employee identity/status, organization assignment,
-sensitive fields, joiner/mover/leaver master, retention และ data migration ส่วน
-Finance/payroll boundary และ controlled export ถูกกำหนดใน SOP-HR-001 แล้ว
+SOP-HR-002 เป็นต้นทางของ approved employment/effective event; SOP-SEC-001
+ดำเนินการ account/session/grant, SOP-HR-001 reconcile payroll/leave และ
+SOP-AUD-001 ควบคุม retention/Legal Hold การ migrate production data ยังต้องผ่าน
+data migration plan และ release evidence แต่ไม่เป็น discovery gap ของ domain
 
 ## Gap 4: Tenant Onboarding and Package
 
@@ -122,7 +123,7 @@ control
 | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | Architecture ใช้คำว่า Platform Admin สร้าง Tenant ซึ่งอาจถูกตีความเป็น Tenant role | Platform operator ใช้ separate service/support identity; initial Tenant Admin เป็น membership ของ Tenant หลัง verification |
 | Database/API pages ยังเป็น stub                                                    | MAP-IMP-001 เป็น logical baseline; physical schema/OpenAPI ต้องสร้างจาก backlog ก่อน coding                                |
-| Modules pages ยังเป็น stub และไม่มี Time/Personnel foundation                      | ใช้ gap items สร้าง domain docs; Payroll/Leave ใช้ SOP-HR-001 และ IMP-HR set ได้แล้ว                                       |
+| Modules pages ยังเป็น stub และไม่มี Time foundation                                | ใช้ DSC-TIM-001 สร้าง domain docs; Personnel/Payroll/Leave ใช้ SOP-HR-001/002 และ IMP-HR set ได้แล้ว                       |
 | Invoice/Payment อาจถูกตีความเท่ากับ Finance Foundation                             | จำกัด current readiness เป็น AR/payment collection จน DSC-FIN-001 เสร็จ                                                    |
 
 ## Closure Plan
@@ -132,8 +133,7 @@ control
 | 1     | DSC-TIM-001 | decisions + SOP + mapping/RBAC/workflow + UAT     | billable time can flow to invoice with audit                  |
 | 2     | DSC-TEN-001 | onboarding/package SOP + security/retention + UAT | Tenant created/changed/terminated without cross-boundary risk |
 | 3     | DSC-FIN-001 | accounting boundary + SOP/control + UAT           | posting/reconciliation/period controls approved               |
-| 4     | DSC-HR-001  | personnel lifecycle + privacy/retention + UAT     | employee data boundary approved                               |
-| 5     | DSC-ESG-001 | provider contract/stub conformance/security test  | production signing evidence meets SOP-DOC-001                 |
+| 4     | DSC-ESG-001 | provider contract/stub conformance/security test  | production signing evidence meets SOP-DOC-001                 |
 
 ## Gap Control Rules
 

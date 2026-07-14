@@ -115,6 +115,20 @@ reason/impact Notification retry ห้ามสร้าง duplicate reminder 
 | Payment   | Received → Unallocated/Partially Allocated/Allocated | confirmed reference, currency and balance guard                            |
 | Payment   | Allocated → Reversed/Refunded                        | Manager approval, destination/reconciliation evidence                      |
 
+## Personnel Workflow
+
+| Workflow            | State / Command                                   | Authority / Guard                                                                  |
+| ------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Employee Joiner     | Draft → Preboarding → Active                      | HR prepare, Manager approve, System state/Admin access execute; start/readiness    |
+| Employee Mover      | Active → Active with new assignment revision      | HR request; current/new Manager approve when cross-team; expected version/time     |
+| Employment Leave    | Active → On Leave → Active                        | HR request, Manager approve, System effective transition and access reconciliation |
+| Suspension          | Active/On Leave → Suspended → Active/Terminated   | approved reason/period; urgent access revoke may precede completed exception       |
+| Employee Leaver     | Active/On Leave/Suspended → Terminated → Archived | Manager approval; ownership/access/payroll/leave/retention reconciliation          |
+| Employee Correction | any non-Archived status → new employee revision   | own/HR request, Manager approval for sensitive/master field; original immutable    |
+
+ทุก transition ใช้ expected version, approved effective time และ idempotency key
+SOP-HR-002 เป็น business event owner ส่วน SOP-SEC-001 เป็น access executor
+
 ## Payroll and Leave Workflow
 
 | Workflow       | State / Command                                     | Authority / Guard                                                                  |

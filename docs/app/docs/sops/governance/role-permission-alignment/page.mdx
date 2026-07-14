@@ -83,6 +83,8 @@ alternate เมื่อเป็นผู้จัดทำ artifact ที่
 | Quotation prepare/revise           | Finance, Lawyer                                 | Manager                                                   | Creator ห้าม approve quotation ของตนเอง                          |
 | Invoice/payment post               | Finance                                         | Manager เมื่อ adjustment/exception                        | Posting period, reconciliation and audit                         |
 | Refund/write-off/void              | Finance                                         | Manager                                                   | Reason, amount, before/after and maker-checker                   |
+| Employee master/correction         | HR prepare; System execute                      | Manager for sensitive/master change                       | HR_DOMAIN; immutable revision and field-level privacy            |
+| Joiner/mover/leaver                | HR/Manager request; Admin executes access       | alternate/scoped Manager                                  | Effective event; access/ownership/payroll/leave reconciliation   |
 | Payroll run                        | HR prepare; System post                         | Manager A1; privileged/org-wide ใช้ Manager A1 + Admin A2 | Finance excluded; maker/A1/A2 แยกคน; Posted immutable            |
 | Payroll correction/export          | HR request; System execute                      | Manager A1; Restricted/individual ใช้ Admin A2            | Original immutable; aggregate Finance export ไม่มี employee data |
 | Payslip self-service               | Active employee account                         | ไม่ต้องอนุมัติ                                            | BUNDLE_EMPLOYEE_SELF_SERVICE; OWN_RECORD เท่านั้น                |
@@ -99,8 +101,8 @@ alternate เมื่อเป็นผู้จัดทำ artifact ที่
 
 - Requester, approver และ executor ต้องเก็บเป็นคนละ audit field
   แม้บางกรณีบุคคลซ้ำได้ตาม matrix
-- ผู้สร้างห้ามเป็นผู้อนุมัติรายการ High risk, privileged access,
-  refund/write-off หรือ disposal ของตนเอง
+- ผู้สร้างห้ามเป็นผู้อนุมัติรายการ High risk, privileged access, personnel
+  lifecycle/sensitive correction, refund/write-off หรือ disposal ของตนเอง
 - Admin เป็น executor ด้านระบบ ห้ามแทน Business Approver
 - Acting Role ต้องแสดง role ที่ใช้ในธุรกรรมและเก็บ role ปกติของผู้ใช้ไว้ด้วย
 - Emergency Access ห้ามใช้อนุมัติ business decision และต้องมี post-use review

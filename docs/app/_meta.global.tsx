@@ -31,6 +31,7 @@ export default {
           'time-tracking': 'Time Tracking & Timesheet Approval',
           'quotation-engagement': 'Quotation & Engagement Approval',
           'invoice-payment': 'Invoice, Payment & Adjustment',
+          'finance-foundation': 'Finance Foundation & Period Control',
           'personnel-lifecycle': 'Personnel Lifecycle & Employee Data',
           'payroll-leave': 'Payroll & Leave Management',
           'tenant-onboarding': 'Tenant Onboarding & Package',

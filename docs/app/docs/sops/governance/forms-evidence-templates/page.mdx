@@ -51,6 +51,7 @@ fields/authority/evidence ต้องเพิ่ม Version ในแถวท
 | FRM-TIM-001 | Time Entry & Timesheet Approval   | Manager        | 1.0     | Approved | 14 July 2026 | SOP-TIM-001  | Source/timezone, scope, duration, classification, decision, lock and correction            |
 | FRM-BIL-001 | Quotation & Engagement Approval   | Finance        | 1.0     | Approved | 14 July 2026 | SOP-BIL-001  | Pricing version, discount, terms, Manager decision                                         |
 | FRM-BIL-002 | Billing Transaction & Adjustment  | Finance        | 1.0     | Approved | 14 July 2026 | SOP-BIL-002  | Posting/allocation, before/after, approval/reconciliation                                  |
+| FRM-FIN-001 | Finance Posting & Period Control  | Finance        | 1.0     | Approved | 14 July 2026 | SOP-FIN-001  | Master/rate snapshot, journal, tax, reconciliation, close/reopen and report controls       |
 | FRM-HR-001  | Payroll Run & Leave Request       | HR             | 1.0     | Approved | 14 July 2026 | SOP-HR-001   | Calculation snapshot, A1/A2/post, correction/export, payslip and leave balance events      |
 | FRM-HR-002  | Personnel Lifecycle Record        | HR             | 1.0     | Approved | 14 July 2026 | SOP-HR-002   | Employee identity, assignment, effective event, approval, revision and reconciliation      |
 | FRM-ADM-001 | Tenant Lifecycle & Package Change | Platform Owner | 1.0     | Approved | 14 July 2026 | SOP-ADM-001  | Organization/domain verification, package/seat entitlement, approval, status and retention |
@@ -218,6 +219,23 @@ fields/authority/evidence ต้องเพิ่ม Version ในแถวท
 - Supporting documents, reconciliation impact and linked client communication
 - Finance maker, Manager approver, executor and posting/reversal IDs
 - Refund destination verification or write-off authority where applicable
+
+## FRM-FIN-001 Finance Posting & Period Control
+
+- Legal entity, fiscal period/status, transaction currency and base currency
+- Chart of Accounts, tax, budget and exchange-rate IDs, versions and effective
+  dates
+- Source type/record/reference, attachment checksum and duplicate-check result
+- Journal lines, account, cost center, tax code, FX rate, transaction/base
+  amount and balanced control totals
+- Maker, checker, A1/A2, System executor and idempotency key
+- Posting/reversal IDs, original reference, reason and before/after balances
+- Bank/cash statement reference/checksum, matched items, variance, owner and
+  reconciliation result
+- Soft Close/Close/Reopen decision, checklist, unresolved exceptions and report
+  snapshots
+- Provider/import/export batch, schema/version, row/control totals, retry result
+  and rejected-record evidence
 
 ## FRM-HR-001 Payroll Run & Leave Request
 

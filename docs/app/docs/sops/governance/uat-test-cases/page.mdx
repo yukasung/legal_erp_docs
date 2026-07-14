@@ -56,20 +56,21 @@ screen/API result, record IDs และ audit event reference ไม่ใช้
 
 ## Execution Profiles
 
-| Case Prefix | Actor / Preconditions                                                 | Required Test Inputs                                                                  |
-| ----------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| CLI         | Lawyer/Assistant + Manager; Client candidates ใน Tenant A/B           | Client type, identity fields, duplicate score band and dependencies                   |
-| MAT         | Lawyer + Manager + Manager A2; Client Active                          | Matter type, conflict parties, risk band, SLA clock and transition                    |
-| DOC         | Assistant/Lawyer + Manager A1 + Admin A2                              | Matter access, document/version/checksum, classification and recipient                |
-| TSK/CAL     | Assigned user + Manager; timezone/sync sandbox พร้อม                  | owner, deadline, recurrence, conflict and sync response                               |
-| TIM         | Timekeeper + alternate Manager; active/closed Matter and Billing stub | timer/manual fields, timezone, work type, overlap, rate rule and lock state           |
-| BIL         | Finance maker + Manager approver; pricing/tax master พร้อม            | quotation/invoice/payment amounts, currency, tax and posting reference                |
-| HR          | HR maker + Manager/Admin approvers; employee self-service accounts    | personnel identity/assignment/lifecycle plus payroll, leave, privacy and routing      |
-| ADM         | Applicant/Operator + Platform Owner/Admin; unverified/active Tenant   | legal/domain identity, verification, package/modules, seats, lifecycle and hold       |
-| SEC         | Admin executor + Manager A1/Admin A2 approvers; Tenant A/B users      | role/action/scope, expiry, MFA and session/token                                      |
-| REP/AUD     | Report owner/Admin executor + Manager A1/Admin A2                     | source population, filters/as-of, expected totals and event chain                     |
-| RET         | Data Owner + dual approvers; expired/non-expired/held records         | retention rule, trigger, hold and disposal population                                 |
-| GOV/EXC     | QA Lead + document/control owners                                     | controlled document set, broken/valid samples, severity clock and escalation contacts |
+| Case Prefix | Actor / Preconditions                                                 | Required Test Inputs                                                                    |
+| ----------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| CLI         | Lawyer/Assistant + Manager; Client candidates ใน Tenant A/B           | Client type, identity fields, duplicate score band and dependencies                     |
+| MAT         | Lawyer + Manager + Manager A2; Client Active                          | Matter type, conflict parties, risk band, SLA clock and transition                      |
+| DOC         | Assistant/Lawyer + Manager A1 + Admin A2                              | Matter access, document/version/checksum, classification and recipient                  |
+| TSK/CAL     | Assigned user + Manager; timezone/sync sandbox พร้อม                  | owner, deadline, recurrence, conflict and sync response                                 |
+| TIM         | Timekeeper + alternate Manager; active/closed Matter and Billing stub | timer/manual fields, timezone, work type, overlap, rate rule and lock state             |
+| BIL         | Finance maker + Manager approver; pricing/tax master พร้อม            | quotation/invoice/payment amounts, currency, tax and posting reference                  |
+| FIN         | Finance maker + Manager A1/A2 + Admin/System; Open/Closed periods     | COA/tax/rate/budget versions, balanced/unbalanced journals, statement and close package |
+| HR          | HR maker + Manager/Admin approvers; employee self-service accounts    | personnel identity/assignment/lifecycle plus payroll, leave, privacy and routing        |
+| ADM         | Applicant/Operator + Platform Owner/Admin; unverified/active Tenant   | legal/domain identity, verification, package/modules, seats, lifecycle and hold         |
+| SEC         | Admin executor + Manager A1/Admin A2 approvers; Tenant A/B users      | role/action/scope, expiry, MFA and session/token                                        |
+| REP/AUD     | Report owner/Admin executor + Manager A1/Admin A2                     | source population, filters/as-of, expected totals and event chain                       |
+| RET         | Data Owner + dual approvers; expired/non-expired/held records         | retention rule, trigger, hold and disposal population                                   |
+| GOV/EXC     | QA Lead + document/control owners                                     | controlled document set, broken/valid samples, severity clock and escalation contacts   |
 
 ## Fixture Reference Rule
 
@@ -88,12 +89,13 @@ screen/API result, record IDs และ audit event reference ไม่ใช้
 | FX-TSK/CAL     | Matter UAT-MAT-1001; task UAT-TSK-1001 due 2026-08-05T17:00:00+07:00; appointment UAT-CAL-1001 at 2026-08-04T10:00:00+07:00; timezone Asia/Bangkok                           |
 | FX-TIM         | UAT-MAT-1001 Active; lawyer-a@example.test; 4 Aug 2026 09:00-10:30 +07:00; Advisory; Billable; rate rule RATE-A-v1; Manager-A; Billing stub                                  |
 | FX-BIL         | Quotation UAT-QUO-1001; service fee THB 100,000; discount 10%; VAT 7%; invoice UAT-INV-1001; payment UAT-PAY-1001 amount THB 53,500                                          |
+| FX-FIN         | UAT-LE-A; period 2026-08 Open; THB base; COA-v1; VAT7-v1/WHT3-v1; FX USDTHB 35.00; bank balance/source; Manager A1/A2                                                        |
 | FX-HR          | EMP-A-1001 Active LEGAL-A under Manager-A; joiner EMP-J-1002; mover LEGAL-A to LEGAL-B; UAT-PR-1001 net 33,850; UAT-LV-1001 Annual 2 days                                    |
 | FX-ADM         | UAT Legal New Co., Ltd.; UAT-REG-ADM-1001; uat-new.example.test; PKG-TEAM-v1 modules MAT/DOC/TSK; user limit 2; applicant/operator/approver distinct                         |
 | FX-SEC         | Tenant UAT-A and UAT-B; user-a@example.test; Admin admin-a@example.test; Manager manager-a@example.test; A2 admin-a2@example.test; expiry 2026-08-04T17:00:00+07:00          |
 | FX-REP/AUD     | Report UAT-REP-1001; as-of 2026-08-03T17:00:00+07:00; three invoices; expected gross THB 107,000; immutable events EVT-1001 to EVT-1005                                      |
 | FX-RET         | Records REC-EXPIRED-01, REC-ACTIVE-01 and REC-HOLD-01; retention expiry 2026-07-31; Legal Hold HOLD-001 on REC-HOLD-01                                                       |
-| FX-GOV/EXC     | Controlled docs 21; form templates 15; valid ID SOP-MAT-001; duplicate test ID SOP-MAT-001-DUP; P1 detected 2026-08-03T09:00:00+07:00                                        |
+| FX-GOV/EXC     | Controlled docs 22; form templates 16; valid ID SOP-MAT-001; duplicate test ID SOP-MAT-001-DUP; P1 detected 2026-08-03T09:00:00+07:00                                        |
 
 Test seed ต้องใช้ reserved test identifiers และ example.test เท่านั้น
 ห้ามใช้ข้อมูล บุคคลจริง แต่ละ FX-CASE-ID clone Base Fixture แล้วใช้ delta ใน
@@ -117,6 +119,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 | BIL-01 to BIL-04 | STP-BIL-QUO     | 1) Open Client quotation 2) enter FX fee/discount/tax/terms 3) calculate and submit 4) Manager approves or system blocks self/limit 5) record client response/revision 6) verify totals/version/events                                                                                                                                                              |
 | BIL-05 to BIL-08 | STP-BIL-POST    | 1) Open approved commercial basis 2) create/post FX invoice 3) record payment/deposit 4) allocate per Scenario 5) reconcile invoice/payment/receipt 6) verify balances/status/posting events                                                                                                                                                                        |
 | BIL-09 to BIL-10 | STP-BIL-ADJ     | 1) Open posted FX transaction 2) enter void/reverse/refund/write-off reason and amount 3) submit as Finance maker 4) Manager or self-actor attempts approval 5) execute compensating entry when approved 6) verify before/after and reconciliation                                                                                                                  |
+| FIN-01 to FIN-12 | STP-FIN         | 1) Finance opens master/period/source fixture 2) apply journal/expense/tax/FX/reconciliation Scenario delta 3) validate source/balance/period/budget/authority 4) Manager A1/A2 decide and System posts/reverses/closes 5) reconcile/report/import/export 6) verify ledger, snapshots, checksums and immutable events                                               |
 | HR-01 to HR-07   | STP-HR          | 1) HR opens payroll/leave fixture 2) calculate/submit Scenario variation 3) Manager A1 and required Admin A2 decide 4) System posts/applies atomically 5) exercise self-access/correction/export boundary 6) verify checksums, balances and immutable events                                                                                                        |
 | HR-08 to HR-14   | STP-HR-PER      | 1) HR opens employee/lifecycle fixture 2) validate identity, fields, assignment and effective time 3) Manager(s) decide 4) System changes status/revision and Admin executes access 5) reconcile access/ownership/payroll/leave/retention 6) verify privacy and immutable events                                                                                    |
 | ADM-01 to ADM-10 | STP-ADM         | 1) Applicant/Operator opens onboarding or lifecycle request 2) apply identity/domain/package/seat/status Scenario delta 3) verify uniqueness, authority, dependencies and hold 4) Platform Owner/Manager/Admin decide as required 5) System provisions/changes/revokes idempotently 6) verify isolation, entitlement, counts, export/retention and immutable events |
@@ -208,6 +211,23 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 | BIL-08 | REQ-BIL-002 | Duplicate payment/reference                   | block/review โดยไม่เพิ่มยอดซ้ำ                   |
 | BIL-09 | REQ-BIL-003 | Void/reverse/refund พร้อม Manager approval    | before/after, reason และ compensating entry ครบ  |
 | BIL-10 | REQ-BIL-003 | Write-off/refund โดย Finance self-approve     | ปฏิเสธ ไม่มี posting และมี denied event          |
+
+## Finance Foundation Cases
+
+| ID     | Requirement | Scenario                                                                   | Expected Result / Evidence                                                              |
+| ------ | ----------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| FIN-01 | REQ-FIN-001 | สร้าง COA/finance master version ใหม่                                      | unique code, hierarchy, effective date และ Manager approval ครบ                         |
+| FIN-02 | REQ-FIN-001 | ส่ง balanced journal ใน Open period ให้ A1 อนุมัติและ System post          | debit=credit, actor แยกกัน, posting เกิดครั้งเดียวและ ledger trace กลับ source ได้      |
+| FIN-03 | REQ-FIN-001 | ส่ง unbalanced, duplicate หรือ Closed-period journal                       | block ก่อน post, GL ไม่เปลี่ยนและมี validation/denied evidence                          |
+| FIN-04 | REQ-FIN-001 | ลง USD ด้วยอัตรา USDTHB 35.00 และลอง override โดยผู้ไม่มีสิทธิ์            | transaction/base amount และ rate snapshot คงที่; unauthorized override ถูกปฏิเสธ        |
+| FIN-05 | REQ-FIN-002 | บันทึก expense/AP พร้อม budget, source และ tax evidence                    | source ไม่ซ้ำ, budget/tax ผ่าน, A1 อนุมัติและ posting ถูกบัญชี                          |
+| FIN-06 | REQ-FIN-002 | Finance maker self-approve หรือรายการเกิน approval threshold               | ปฏิเสธ self-approval หรือ route ไป A2 โดยยังไม่ post                                    |
+| FIN-07 | REQ-FIN-002 | ทำ outgoing payment พร้อม unique reference, VAT/WHT                        | AP, cash/bank และ tax balances reconcile พร้อม payment/tax evidence                     |
+| FIN-08 | REQ-FIN-002 | แก้ Posted transaction และ retry reversal ด้วย idempotency key เดิม        | original immutable, reversal เชื่อมกลับและ retry ไม่สร้างรายการซ้ำ                      |
+| FIN-09 | REQ-FIN-003 | reconcile bank/cash statement ทั้ง exact match และ mismatch                | exact match เป็น Reconciled; mismatch เป็น Exception พร้อม variance และห้าม force match |
+| FIN-10 | REQ-FIN-003 | Soft Close/Close เมื่อ Trial Balance, bank/cash, AR/AP, tax และ FX ครบ/ขาด | A1/A2 ปิดได้เมื่อ reconcile ครบ; unresolved item block Close พร้อม exception            |
+| FIN-11 | REQ-FIN-003 | Reopen Closed period เพื่อ correction แล้ว reconcile/reclose               | A1/A2 และ Admin/System ครบ; old report superseded และ correction trail ไม่ขาด           |
+| FIN-12 | REQ-FIN-003 | Trial/P&L/BS/CF/compliance report และ provider import/export ซ้ำ           | totals reconcile; duplicate input ไม่ auto-post; export มี filter/as-of/checksum        |
 
 ## HR and Payroll Cases
 

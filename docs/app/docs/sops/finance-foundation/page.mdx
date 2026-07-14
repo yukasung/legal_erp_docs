@@ -1,0 +1,304 @@
+# Finance Foundation & Period Control
+
+| Document Control        | Value                   |
+| ----------------------- | ----------------------- |
+| SOP ID                  | SOP-FIN-001             |
+| Status                  | Approved                |
+| Version                 | 1.0                     |
+| Process Owner           | Finance                 |
+| System Owner            | Admin                   |
+| Approver                | Manager A1 + Manager A2 |
+| Effective Date          | 14 July 2026            |
+| Last Requirement Review | 14 July 2026            |
+
+> **Approval notice:** Chart of Accounts, General Ledger, expense/AP, tax,
+> multi-currency, bank/cash reconciliation และ fiscal period close/reopen
+> ได้รับการอนุมัติเป็น baseline เมื่อ 14 July 2026
+
+## Purpose
+
+กำหนดวิธีควบคุมข้อมูลตั้งต้นและธุรกรรมการเงินของสำนักงาน ตั้งแต่ผังบัญชี
+รายการรายรับ/รายจ่าย Journal, ภาษี, สกุลเงิน, reconciliation ไปจนถึงการปิดงวด
+และรายงาน โดยใช้ maker-checker, balanced posting และ immutable correction
+
+## Scope
+
+ครอบคลุม Chart of Accounts, General Ledger, Trial Balance, fiscal period,
+budget, expense, Accounts Payable, outgoing payment, VAT, Withholding Tax,
+multi-currency/exchange rate, bank/cash reconciliation, period close/reopen,
+Profit and Loss, Balance Sheet, Cash Flow, tax/compliance report และ controlled
+bank/tax data import/export
+
+Client quotation, invoice, deposit, incoming payment, receipt, allocation,
+refund/write-off และ aging operation อยู่ใน SOP-BIL-001/002 แต่เมื่อ Posted แล้ว
+ต้องส่ง accounting event เข้าขอบเขต SOP นี้ การเชื่อมต่อ production bank/tax
+provider และการยื่นแบบอัตโนมัติไม่ถือว่าพร้อมใช้จน provider/security contract
+ได้รับอนุมัติ
+
+## Roles
+
+| Role                | Responsibility                                                                                    |
+| ------------------- | ------------------------------------------------------------------------------------------------- |
+| Finance Maker       | จัดทำ master request, Journal, expense/AP/payment, reconciliation และ period-close package        |
+| Manager A1          | ตรวจ business purpose, source document, budget, tax, account/rate และ approve                     |
+| Manager A2          | อนุมัติแยกสำหรับ high-risk Journal, fiscal close/reopen และ exception ตาม authority               |
+| Admin               | ดำเนินการ config/post/reopen หลัง approval; ไม่เป็น Finance maker หรือ business approver          |
+| Budget/Record Owner | ยืนยัน expense/business evidence และ budget responsibility                                        |
+| Auditor             | อ่าน ledger, evidence, reconciliation และ integrity result; แก้/approve source transaction ไม่ได้ |
+| System              | ตรวจ debit=credit/period/duplicate, post/reverse, calculate totals และบันทึก immutable events     |
+
+## Approved Status Baseline
+
+### Fiscal Period
+
+Draft, Open, Soft Closed, Closed และ Reopened
+
+### Journal Entry
+
+Draft, Pending Approval, Approved, Posted และ Reversed
+
+### Expense / Accounts Payable
+
+Draft, Submitted, Approved, Rejected, Posted, Paid และ Cancelled
+
+### Reconciliation
+
+Draft, In Progress, Exception, Reconciled และ Closed
+
+- Posted/Closed ห้ามแก้ต้นฉบับ
+- Reopened ต้องอ้างอิง Closed period, reason, A1/A2 และ executor
+- Cancelled ใช้ก่อน posting; หลัง Posted ใช้ reversal/adjustment เท่านั้น
+
+## Approved Control Decision
+
+| Decision ID | Approved Outcome                                                                                                                                                                                                                                                               |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| DEC-FIN-001 | Finance maker, Manager A1/A2 และ Admin/System executor แยก actor; Journal debit=credit และ post เฉพาะ Open period; Posted immutable แก้ด้วย reversal; master/tax/rate versioned; close ต้อง trial balance/reconciliation ครบ; reopen/Bank-Tax import controlled และ idempotent |
+
+## Required Information
+
+- Legal entity, Tenant, base/transaction/reporting currency และ fiscal period
+- Account code/name/type/parent, normal balance, tax mapping, status, version
+  และ effective date
+- Journal/expense/AP/payment ID, source type/reference/checksum, document date,
+  posting date, description และ business purpose
+- debit/credit lines, cost center/Matter, budget reference, tax
+  code/rate/version, exchange-rate source/value/date/version และ base-currency
+  amount
+- payee/vendor, payment method/reference, due/paid date, VAT/Withholding
+  evidence
+- requester/maker, A1/A2, executor, expected version, idempotency key และ status
+- bank statement/balance, matched/unmatched items, variance, reconciliation
+  owner
+- close/reopen checklist, trial balance/control totals, open exceptions, report
+  filter/as-of/checksum และ original/reversal link
+
+## Procedure
+
+### 1. Configure Finance Masters
+
+**Responsible:** Finance Maker, Manager A1, Admin
+
+1. Finance สร้าง Chart of Accounts/tax/currency/rate/budget master request
+2. ตรวจ account code unique ต่อ legal entity, hierarchy, account type/normal
+   balance, tax mapping และ effective date
+3. Manager A1 อนุมัติ exact version; high-risk mapping ใช้ Manager A2 ตาม
+   authority
+4. Admin/System activate version ใหม่ ห้ามเขียนทับ version ที่มีธุรกรรมอ้างอิง
+5. แจ้ง affected owner และเก็บ before/after/master version event
+
+**Expected result:** master ที่ใช้ post มี version/effective date และ authority
+ครบ
+
+### 2. Open Fiscal Period and Budget
+
+**Responsible:** Finance Maker, Manager A1, System
+
+1. สร้าง fiscal calendar/period พร้อม legal entity, start/end และ base currency
+2. ตรวจ period ไม่ซ้อนและ previous-period dependency ตาม policy
+3. ผูก approved budget/version และ responsible owner เมื่อใช้ budget control
+4. Manager A1 อนุมัติเปิดงวด; System เปลี่ยน Draft → Open
+
+**Expected result:** มี Open period ที่ชัดเจนสำหรับ posting และ budget check
+
+### 3. Prepare Journal, Expense or Accounts Payable
+
+**Responsible:** Finance Maker, Budget/Record Owner
+
+1. ระบุ source document/reference/checksum เพื่อป้องกัน duplicate
+2. บันทึก Journal lines หรือ expense/AP พร้อม account, cost center/Matter,
+   payee, due date, currency, tax และ evidence
+3. System ตรวจ debit=credit, Open period, active account/tax/rate version,
+   budget/threshold และ required fields
+4. Budget/Record Owner ยืนยัน business purpose และ receipt/supporting document
+5. Submit exact version เป็น Pending Approval/Submitted
+
+**Expected result:** รายการพร้อมอนุมัติมียอดสมดุลและ source/evidence ครบ
+
+### 4. Approve and Post
+
+**Responsible:** Manager A1/A2, Admin/System
+
+1. Manager A1 ตรวจ source, account, amount, tax, budget และ duplicate result
+2. maker/record owner ห้าม approve รายการของตนเอง; high-risk ตาม authority
+   ต้องมี Manager A2 คนละบัญชี
+3. System เปลี่ยนเป็น Approved เมื่อ approval ครบ
+4. Admin/System post exact version ด้วย idempotency key และสร้าง immutable
+   ledger entries/control totals
+5. retry ต้องคืน posting เดิมและไม่เพิ่ม GL/tax/budget amount ซ้ำ
+
+**Expected result:** Posted transaction มี balanced ledger และ actor แยกกันครบ
+
+### 5. Record Outgoing Payment and Tax
+
+**Responsible:** Finance Maker, Manager A1, System
+
+1. เปิด Approved/Posted AP/expense และยืนยัน payee/payment destination
+2. คำนวณ VAT/Withholding Tax ตาม active code/rate/version และเก็บ taxable base
+3. บันทึก payment method/reference/date; duplicate reference ถูก block/review
+4. Manager A1 อนุมัติ payment ตาม amount authority; System post cash/bank/AP
+   clearing และ tax entries
+5. เก็บ receipt/certificate/tax evidence และ reconcile remaining payable
+
+**Expected result:** payment/tax entries ถูกต้องและ trace กลับ source ได้
+
+### 6. Process Multi-Currency Transaction
+
+**Responsible:** Finance Maker, Manager A1, System
+
+1. ระบุ transaction currency และ approved exchange-rate source/date/type
+2. System snapshot rate/version และคำนวณ base/reporting amount
+3. manual rate override ต้องมี reason/evidence และ authority ตาม threshold
+4. posting เก็บทั้ง transaction/base amount; ห้ามคำนวณย้อนหลังด้วย rate ใหม่
+5. period-end revaluation/correction สร้าง Journal แยกและอ้าง original
+
+**Expected result:** จำนวนเงินข้ามสกุลตรวจย้อนกลับได้และไม่เปลี่ยนตาม master
+ใหม่
+
+### 7. Reconcile Bank, Cash and Subledgers
+
+**Responsible:** Finance Maker, Manager A1
+
+1. นำเข้า bank/cash statement ผ่าน approved file/adapter พร้อม source checksum
+2. match ด้วย entity/account/currency/amount/date/reference และเก็บ rule version
+3. duplicate import คืน result เดิม; unmatched/variance เป็น Exception มี owner
+4. reconcile AR จาก SOP-BIL-002, AP/expense, cash/bank, tax และ GL control
+   totals
+5. Manager A1 review และเปลี่ยน Reconciled → Closed เมื่อ variance ถูกปิด/ยอมรับ
+
+**Expected result:** source balance ตรง ledger หรือมี documented exception
+
+### 8. Soft Close and Close Fiscal Period
+
+**Responsible:** Finance Maker, Manager A1 + Manager A2, Admin/System
+
+1. Soft Close เพื่อ block routine posting ใหม่และสร้าง close checklist
+2. ตรวจ debit=credit Trial Balance, bank/cash, AR/AP, tax, budget, FX, open
+   Journal และ reconciliation exceptions
+3. สร้าง P&L, Balance Sheet, Cash Flow และ compliance/tax report snapshot
+4. Finance Maker submit close package; Manager A1 และ Manager A2 อนุมัติแยกกัน
+5. Admin/System เปลี่ยนเป็น Closed และ lock postings/reports ด้วย checksum
+
+**Expected result:** Closed period มี control totals/reports/approval ครบ
+
+### 9. Correct, Reverse or Reopen
+
+**Responsible:** Finance Maker, Manager A1/A2, Admin/System
+
+1. Draft/Submitted แก้หรือ reject ได้ตาม authority ก่อน posting
+2. Posted error ต้องสร้าง reversal/adjusting Journal พร้อม reason/original link
+3. Closed-period correction ให้ post ใน Open period ตาม policy หรือขอ reopen
+4. Reopen ต้องระบุ impact, exact period/version, A1/A2 และ Admin/System
+   execution
+5. หลัง correction ให้ rerun reconciliation/reports และ close ใหม่; original
+   report คงอยู่เป็น superseded snapshot
+
+**Expected result:** correction ไม่ทำลาย ledger/history และ report versions
+reconcile
+
+### 10. Produce and Export Finance Reports
+
+**Responsible:** Finance, Manager, Auditor ตาม scope
+
+1. สร้าง Trial Balance, P&L, Balance Sheet, Cash Flow, aging/tax/budget report
+   จาก selected period/as-of และ approved definitions
+2. reconcile report totals กลับ GL/subledger/control totals
+3. รายงานเป็น system-generated management/compliance output จนกว่าจะผ่าน
+   authority/assurance ที่ใช้เรียกว่า audited/statutory statement
+4. export ใช้ SOP-REP-001 พร้อม purpose/recipient/filter/as-of/checksum
+5. Bank/Tax provider response เป็น evidence/input เท่านั้น ห้าม auto-post/submit
+   โดยไม่มี validation, approval และ idempotency
+
+**Expected result:** รายงานตรวจย้อนกลับได้และไม่อ้างสถานะรับรองเกินหลักฐาน
+
+## Control Points
+
+| Control                   | Requirement                                                             | Evidence                                              |
+| ------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------- |
+| Master version            | account/tax/rate/budget ใช้ approved version/effective date             | master decision and before/after event                |
+| Balanced/open-period gate | debit=credit, active accounts และ Open period ก่อน post                 | validation/control totals and period status           |
+| Maker-checker-executor    | Finance maker, A1/A2 ตาม risk และ Admin/System executor แยก actor       | request, approvals and posting event                  |
+| Posting immutability      | Posted/Closed ห้ามแก้; correction ใช้ reversal/adjustment/reopen        | original/reversal/reopen/reclose links                |
+| Tax/FX snapshot           | taxable base/code/rate และ exchange-rate source/date/version ถูก freeze | calculation snapshot and override evidence            |
+| Reconciliation/close      | Trial Balance, bank/cash, AR/AP, tax/FX และ exceptions ครบก่อน Closed   | close checklist, reconciliations and report checksums |
+| Import/export idempotency | bank/tax/source file/job retry ไม่ duplicate posting/submission         | source checksum, idempotency key and original result  |
+| Finance access boundary   | role/legal entity/scope และ sensitive export control                    | authorization/export/access event                     |
+
+## Exceptions
+
+- **Journal ไม่สมดุล/period ปิด:** block posting ไม่มี override; ใช้ Open period
+  หรือ approved reopen
+- **Source/payment reference ซ้ำ:** block/review และ reconcile candidate ก่อน
+  post
+- **Budget/approval threshold เกิน:** route authority ที่สูงขึ้นพร้อม reason;
+  maker ห้าม self-approve
+- **Tax/rate master ไม่พร้อม:** ห้ามเดาหรือใช้ค่าใหม่ย้อนหลัง; เปิด exception
+  และ activate approved version ก่อน
+- **Bank mismatch:** คง Reconciliation = Exception พร้อม owner; ห้าม force match
+  หรือ close period
+- **Integration outage/duplicate callback:** ใช้ manual controlled import หรือ
+  retry idempotently; ห้าม auto-post จาก response ที่ยังไม่ validate
+- **Closed-period error:** reversal/adjustment ใน Open period หรือ A1/A2 reopen;
+  ห้ามแก้ Posted entry/report snapshot
+
+## Completion Checklist
+
+- [ ] legal entity, account/tax/rate/budget version และ Open period ถูกต้อง
+- [ ] source/reference/checksum ไม่ซ้ำและ supporting evidence ครบ
+- [ ] debit/credit และ transaction/base currency totals สมดุล
+- [ ] maker, A1/A2 ตาม risk และ executor แยก actor
+- [ ] Posted/Closed original immutable และ retry ไม่ post ซ้ำ
+- [ ] VAT/Withholding และ FX snapshot มี source/date/version
+- [ ] bank/cash/AR/AP/tax/GL reconciliation ผ่านหรือ exception ได้รับอนุมัติ
+- [ ] close/reopen/reclose มี checklist, control totals และ report checksums
+- [ ] report/export trace กลับ ledger/period/as-of ได้
+- [ ] provider integration ไม่ auto-post/submit โดยไม่มี validation/approval
+
+## Related Documents
+
+- [Quotation & Engagement Approval](/docs/sops/quotation-engagement)
+- [Invoice, Payment & Adjustment](/docs/sops/invoice-payment)
+- [Time Tracking & Timesheet Approval](/docs/sops/time-tracking)
+- [Reports, Export & Audit Review](/docs/sops/reports-audit)
+- [User, Role & Access Management](/docs/sops/access-management)
+- [Retention and Disposal of Audit Evidence](/docs/sops/retention-disposal)
+- [Role & Permission Alignment](/docs/sops/governance/role-permission-alignment)
+- [Exception & Escalation Matrix](/docs/sops/governance/exception-escalation)
+- [SOP UAT Scenarios & Test Cases](/docs/sops/governance/uat-test-cases)
+
+## Requirement Traceability
+
+| SOP Area                                                 | Source                                                               |
+| -------------------------------------------------------- | -------------------------------------------------------------------- |
+| Chart of Accounts, GL, Trial Balance and multi-currency  | ALT Pro - P3 (MatterSolv).xlsx, sheet Lawyer-Finance, แถว 5-9, 39-44 |
+| Revenue/expense/AP/payment and credit                    | ไฟล์เดียวกัน, แถว 10-21, 35-38                                       |
+| P&L, Balance Sheet, Cash Flow and aging                  | ไฟล์เดียวกัน, แถว 22-26, 52-56; sheet Sub-Module แถว 288-293         |
+| VAT, Withholding Tax, budget, audit and expense approval | sheet Lawyer-Finance, แถว 27-34                                      |
+| Access, encryption and user boundary                     | ไฟล์เดียวกัน, แถว 45-51; SOP-SEC-001                                 |
+| Bank and Tax Authority integration boundary              | ไฟล์เดียวกัน, แถว 57-61; Architecture Integration Strategy           |
+| Finance Foundation and period/reconciliation baseline    | Scope, Finance Foundation                                            |
+
+## Approval Record
+
+- Manager A1 และ Manager A2 อนุมัติ
+- Effective Date: 14 July 2026

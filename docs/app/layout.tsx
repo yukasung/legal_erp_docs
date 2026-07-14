@@ -5,15 +5,12 @@ import { Head } from 'nextra/components'
 import type { FC } from 'react'
 import './globals.css'
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  process.env.SITE_URL ||
-  'https://legal-erp-docs.vercel.app'
+const productionUrl = 'https://legal-erp-docs.vercel.app'
 
 export const metadata: Metadata = {
   description:
     'Documentation for Legal ERP workflows, modules, and administration.',
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(productionUrl),
   keywords: [
     'Legal ERP',
     'legal operations',

@@ -63,6 +63,7 @@ screen/API result, record IDs และ audit event reference ไม่ใช้
 | DOC         | Assistant/Lawyer + Manager A1 + Admin A2                         | Matter access, document/version/checksum, classification and recipient                |
 | TSK/CAL     | Assigned user + Manager; timezone/sync sandbox พร้อม             | owner, deadline, recurrence, conflict and sync response                               |
 | BIL         | Finance maker + Manager approver; pricing/tax master พร้อม       | quotation/invoice/payment amounts, currency, tax and posting reference                |
+| HR          | HR maker + Manager A1/Admin A2 approvers; employee self-service accounts | payroll amounts, tax/insurance/fund rates, leave balance and approval routing |
 | SEC         | Admin executor + Manager A1/Admin A2 approvers; Tenant A/B users | role/action/scope, expiry, MFA and session/token                                      |
 | REP/AUD     | Report owner/Admin executor + Manager A1/Admin A2                | source population, filters/as-of, expected totals and event chain                     |
 | RET         | Data Owner + dual approvers; expired/non-expired/held records    | retention rule, trigger, hold and disposal population                                 |
@@ -84,6 +85,7 @@ screen/API result, record IDs และ audit event reference ไม่ใช้
 | FX-DOC         | Matter UAT-MAT-1001; Document UAT-DOC-1001; version 1.0; classification Internal; recipient reviewer-a@example.test; share expiry 2026-08-10T17:00:00+07:00                  |
 | FX-TSK/CAL     | Matter UAT-MAT-1001; task UAT-TSK-1001 due 2026-08-05T17:00:00+07:00; appointment UAT-CAL-1001 at 2026-08-04T10:00:00+07:00; timezone Asia/Bangkok                           |
 | FX-BIL         | Quotation UAT-QUO-1001; service fee THB 100,000; discount 10%; VAT 7%; invoice UAT-INV-1001; payment UAT-PAY-1001 amount THB 53,500                                          |
+| FX-HR          | Employee EMP-A-1001; Payroll Run UAT-PAYRUN-1001 period 2026-08; base pay THB 30,000; tax/ประกันสังคม/กองทุน per master data; Leave Request UAT-LV-1001 type Annual balance 10 days |
 | FX-SEC         | Tenant UAT-A and UAT-B; user-a@example.test; Admin admin-a@example.test; Manager manager-a@example.test; A2 admin-a2@example.test; expiry 2026-08-04T17:00:00+07:00          |
 | FX-REP/AUD     | Report UAT-REP-1001; as-of 2026-08-03T17:00:00+07:00; three invoices; expected gross THB 107,000; immutable events EVT-1001 to EVT-1005                                      |
 | FX-RET         | Records REC-EXPIRED-01, REC-ACTIVE-01 and REC-HOLD-01; retention expiry 2026-07-31; Legal Hold HOLD-001 on REC-HOLD-01                                                       |
@@ -110,6 +112,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 | BIL-01 to BIL-04 | STP-BIL-QUO     | 1) Open Client quotation 2) enter FX fee/discount/tax/terms 3) calculate and submit 4) Manager approves or system blocks self/limit 5) record client response/revision 6) verify totals/version/events                                             |
 | BIL-05 to BIL-08 | STP-BIL-POST    | 1) Open approved commercial basis 2) create/post FX invoice 3) record payment/deposit 4) allocate per Scenario 5) reconcile invoice/payment/receipt 6) verify balances/status/posting events                                                       |
 | BIL-09 to BIL-10 | STP-BIL-ADJ     | 1) Open posted FX transaction 2) enter void/reverse/refund/write-off reason and amount 3) submit as Finance maker 4) Manager or self-actor attempts approval 5) execute compensating entry when approved 6) verify before/after and reconciliation |
+| HR-01 to HR-05   | STP-HR          | 1) HR opens new payroll run or leave request with FX-HR values 2) calculate/submit as Scenario variation 3) Manager A1 decides, Admin A2 decides when privileged/org-wide 4) HR or self-actor attempts self-approval 5) post/execute or system blocks 6) verify payslip access, leave balance and before/after events |
 | SEC-01 to SEC-06 | STP-SEC         | 1) Admin opens access request 2) load FX user/role/scope 3) submit SoD/MFA validation 4) required approver decides 5) Admin grants/revokes or attempts Scenario access 6) verify Tenant denial, expiry, sessions and snapshots                     |
 | REP-01 to REP-04 | STP-REP         | 1) Generate FX report 2) set filters/as-of 3) reconcile expected rows/totals 4) request export as Scenario actor 5) required authority decides/delivers 6) verify checksum, recipient and access log                                               |
 | AUD-01 to AUD-03 | STP-AUD         | 1) Load EVT-1001 to EVT-1005 2) verify sequence/hash 3) introduce correction/integrity delta 4) run review 5) escalate failure or link correction 6) verify original remains immutable                                                             |
@@ -182,6 +185,16 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 | BIL-08 | REQ-BIL-002 | Duplicate payment/reference                   | block/review โดยไม่เพิ่มยอดซ้ำ                   |
 | BIL-09 | REQ-BIL-003 | Void/reverse/refund พร้อม Manager approval    | before/after, reason และ compensating entry ครบ  |
 | BIL-10 | REQ-BIL-003 | Write-off/refund โดย Finance self-approve     | ปฏิเสธ ไม่มี posting และมี denied event          |
+
+## HR and Payroll Cases
+
+| ID    | Requirement | Scenario                                        | Expected Result / Evidence                              |
+| ----- | ----------- | ------------------------------------------------ | --------------------------------------------------------- |
+| HR-01 | REQ-HR-001  | คำนวณ payroll run พร้อม OT/เบี้ยขยัน/โบนัส/ภาษี  | ตัวเลขถูกต้องตาม master data และสถานะ Calculated ครบ      |
+| HR-02 | REQ-HR-001  | HR ส่งอนุมัติและพยายาม approve payroll ของตนเอง  | ปฏิเสธ self-approve และมี denied event                    |
+| HR-03 | REQ-HR-001  | Payroll run แบบ privileged/org-wide ผ่าน A1 + A2 | Manager A1 และ Admin A2 คนละบัญชีจาก HR ผู้จัดทำ ครบก่อน Posted |
+| HR-04 | REQ-HR-001  | พนักงานเข้าดู payslip ของตนเองและของผู้อื่น      | เห็นเฉพาะของตนเอง ปฏิเสธการเข้าถึง payslip ผู้อื่น         |
+| HR-05 | REQ-HR-001  | ยื่นและอนุมัติ/ปฏิเสธคำขอลาพร้อมตรวจ balance     | balance ถูกหัก/คืนถูกต้อง และ requester/approver แยกกัน   |
 
 ## Security and Access Cases
 

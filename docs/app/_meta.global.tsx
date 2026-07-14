@@ -30,6 +30,7 @@ export default {
           'task-calendar': 'Task & Calendar Management',
           'quotation-engagement': 'Quotation & Engagement Approval',
           'invoice-payment': 'Invoice, Payment & Adjustment',
+          'payroll-leave': 'Payroll & Leave Management',
           'access-management': 'User, Role & Access Management',
           'reports-audit': 'Reports, Export & Audit Review',
           'retention-disposal': 'Retention & Disposal',

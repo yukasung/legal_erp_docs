@@ -1,0 +1,178 @@
+# Payroll & Leave Management
+
+| Document Control        | Value           |
+| ------------------------ | --------------- |
+| SOP ID                   | SOP-HR-001      |
+| Status                   | Approved        |
+| Version                  | 1.0             |
+| Process Owner            | HR              |
+| System Owner             | Admin           |
+| Approver                 | Manager + Admin |
+| Effective Date           | 14 July 2026    |
+| Last Requirement Review  | 14 July 2026    |
+
+> **Approval notice:** Payroll calculation, payslip issuance และ leave
+> management ได้รับการอนุมัติเป็น baseline เมื่อ 14 July 2026
+
+## Purpose
+
+กำหนดวิธีจัดทำและอนุมัติรอบเงินเดือน คำนวณภาษี ประกันสังคม และกองทุน ออก
+payslip ออนไลน์ ส่งออกข้อมูลให้ทีมบัญชี และจัดการระบบลาออนไลน์ของบุคลากร
+โดยแยกข้อมูลเงินเดือนรายบุคคลออกจากข้อมูล billing ของลูกค้าที่ Finance ดูแล
+
+## Scope
+
+ครอบคลุม Payroll Run (base pay, OT, เบี้ยขยัน, โบนัส, ภาษีหัก ณ ที่จ่าย,
+ประกันสังคม, กองทุนสำรองเลี้ยงชีพ), Payslip generation, Export ข้อมูลเงินเดือน
+ให้ทีมบัญชี และ Leave Request/Approval/Balance tracking ไม่ครอบคลุมข้อมูล
+Matter, Client billing หรือ legal content ใด ๆ
+
+## Roles
+
+| Role                    | Responsibility                                                                |
+| ------------------------ | ------------------------------------------------------------------------------ |
+| HR                       | จัดทำรอบเงินเดือน คำนวณภาษี/ประกันสังคม/กองทุน ออก payslip และดูแล leave request |
+| Manager                  | อนุมัติรอบเงินเดือน (A1) และคำขอลาของทีมตนเอง                                  |
+| Admin                    | อนุมัติ A2 สำหรับ payroll run แบบ privileged/ทั้งองค์กร (คนละบัญชีจาก HR) และตั้งค่า master data ภาษี/ประกันสังคม/กองทุน |
+| ผู้ใช้งานทุก role (self-service) | ยื่นคำขอลาและดู payslip ของตนเองผ่านบัญชีที่มีอยู่ ไม่ใช่ role แยก              |
+
+Finance ไม่มีสิทธิ์เข้าถึงข้อมูลเงินเดือนรายบุคคลหรือ payroll run ตาม
+[Role & Permission Alignment](/docs/sops/governance/role-permission-alignment)
+
+## Approved Status Baseline
+
+### Payroll Run
+
+Draft, Calculated, Pending Approval, Approved, Posted และ Cancelled
+
+### Leave Request
+
+Draft, Submitted, Approved, Rejected, Cancelled และ Taken
+
+Draft ห้ามส่งอนุมัติหรือหักยอดวันลาจนกว่า required fields จะครบ
+
+## Required Information
+
+### Payroll Run
+
+- Payroll Run ID, period, pay date และ status
+- Employee ID, base pay, OT hours/rate, เบี้ยขยัน และโบนัส
+- ภาษีหัก ณ ที่จ่าย, เงินสมทบประกันสังคม และกองทุนสำรองเลี้ยงชีพ
+- Net pay, payslip reference และ export batch ID
+
+### Leave Request
+
+- Leave Request ID, Employee ID, leave type, start/end date และ balance
+  ก่อน/หลัง
+- Requester, approver, เหตุผล และ attachment เมื่อจำเป็น (เช่น ใบรับรองแพทย์)
+- Status และ approval timestamp
+
+## Procedure
+
+### 1. Prepare and Calculate Payroll Run
+
+**Responsible:** HR
+
+1. เปิดรอบเงินเดือนใหม่ตาม pay period
+2. ดึงข้อมูล base pay, OT, เบี้ยขยัน และโบนัสของพนักงานที่ active
+3. คำนวณภาษีหัก ณ ที่จ่าย ประกันสังคม และกองทุนตาม master data ที่ Admin
+   ตั้งค่าไว้
+4. ตรวจผลรวมก่อนส่งอนุมัติ (dry-run reconciliation)
+5. บันทึกสถานะ Calculated พร้อม snapshot ตัวเลขก่อนอนุมัติ
+
+**Expected result:** Payroll run มีตัวเลขครบและพร้อมส่งอนุมัติ
+
+### 2. Approve and Post Payroll Run
+
+**Responsible:** Manager (A1), Admin (A2 สำหรับ privileged/ทั้งองค์กร)
+
+1. Manager ตรวจยอดรวมเทียบกับ budget/headcount
+2. รอบเงินเดือนแบบ privileged หรือทั้งองค์กรต้องมี Admin A2 อนุมัติเพิ่ม
+   โดยเป็นคนละบัญชีจาก HR ผู้จัดทำ
+3. อนุมัติแล้วเปลี่ยนสถานะเป็น Approved และ lock ตัวเลข
+4. Post เข้าสถานะ Posted พร้อมสร้าง payslip และ export batch ให้ทีมบัญชี
+5. การแก้ไขหลัง Posted ต้องสร้าง correction run แยกต่างหาก ห้ามเขียนทับ
+
+**Expected result:** Payroll run ผ่านการอนุมัติแยกจากผู้จัดทำ และมี audit
+trail ครบ
+
+### 3. Issue Payslip
+
+**Responsible:** ระบบ (อัตโนมัติหลัง Posted), HR (แก้ไขกรณีข้อผิดพลาด)
+
+1. สร้าง payslip ออนไลน์ต่อพนักงานหลัง payroll run เป็น Posted
+2. พนักงานเข้าดู payslip ของตนเองเท่านั้นผ่านบัญชีของตน
+3. ข้อผิดพลาดใน payslip ต้องแก้ผ่าน correction run ห้ามแก้ไฟล์โดยตรง
+
+**Expected result:** พนักงานเข้าถึง payslip ของตนเองได้ และข้อมูลตรงกับ
+payroll run ที่ Posted
+
+### 4. Submit and Approve Leave Request
+
+**Responsible:** ผู้ยื่นคำขอ (self-service) หรือ HR, Manager หรือ HR
+(Approver)
+
+1. พนักงานยื่นคำขอลาระบุประเภท ช่วงเวลา และเหตุผล
+2. ระบบตรวจ leave balance คงเหลือก่อนส่งอนุมัติ
+3. Manager อนุมัติคำขอของทีมตนเอง หรือ HR อนุมัติเมื่อไม่มี Manager
+   โดยตรงหรือเป็นคำขอมาตรฐาน
+4. อนุมัติแล้วหักยอดวันลาคงเหลือทันทีและบันทึก event
+5. ยกเลิกคำขอที่อนุมัติแล้วต้องคืนยอดวันลาและมี audit trail
+
+**Expected result:** คำขอลาผ่านการอนุมัติที่แยกจากผู้ยื่น และยอดวันลาถูกต้อง
+
+### 5. Export Payroll Data to Accounting
+
+**Responsible:** HR
+
+1. สร้าง export batch หลัง payroll run เป็น Posted
+2. ส่งออกเป็น Excel/PDF/CSV ตามรูปแบบที่ทีมบัญชีต้องการ
+3. บันทึก export log พร้อมผู้ส่งออกและเวลา
+
+**Expected result:** ข้อมูลเงินเดือนถึงทีมบัญชีครบถ้วนและตรวจสอบย้อนหลังได้
+
+## Control Points
+
+| Control               | Requirement                                                          | Evidence                                |
+| ---------------------- | --------------------------------------------------------------------- | ---------------------------------------- |
+| Payroll maker-checker | HR จัดทำ, Manager A1 อนุมัติ, Admin A2 เมื่อ privileged/ทั้งองค์กร (คนละบัญชีจาก HR) | Prepare/approve/post events แยกกัน       |
+| Payslip access        | พนักงานเห็นเฉพาะ payslip ของตนเอง                                     | Access log ตาม Employee ID               |
+| Leave approval        | ผู้ยื่นคำขอห้ามอนุมัติของตนเอง                                        | Requester/approver แยกกัน                |
+| Finance isolation     | Finance ไม่เห็นข้อมูลเงินเดือนรายบุคคล                                | Permission scope ตาม HR & Payroll area   |
+| Posted immutability   | แก้ไขหลัง Posted ต้องใช้ correction run                               | Original/correction event เชื่อมกัน      |
+
+## Exceptions
+
+- **Payroll ผิดพลาดหลัง Posted:** สร้าง correction run แยก ห้ามเขียนทับรอบเดิม
+- **Leave balance ไม่พอ:** ปฏิเสธ หรือส่งขออนุมัติพิเศษพร้อมเหตุผล
+- **พนักงานลาออก/สถานะเปลี่ยนกลางรอบ:** คำนวณตามสัดส่วนวันทำงานจริงและปิดยอด
+  วันลาคงเหลือ
+- **Manager ไม่ acknowledge คำขอลาในเวลา:** ยกระดับให้ HR อนุมัติแทนตาม policy
+
+## Completion Checklist
+
+- [ ] Payroll run มี prepare/approve/post แยกคนตาม maker-checker
+- [ ] Privileged/ทั้งองค์กร payroll run มี Admin A2 คนละบัญชีจาก HR
+- [ ] Payslip เข้าถึงได้เฉพาะเจ้าของ
+- [ ] Leave request มีการตรวจ balance และผู้อนุมัติแยกจากผู้ยื่น
+- [ ] Export batch มี log ผู้ส่งออกและเวลา
+- [ ] Finance ไม่มีสิทธิ์เข้าถึงข้อมูลเงินเดือนรายบุคคล
+
+## Related Documents
+
+- [User, Role & Access Management](/docs/sops/access-management)
+- [Reports, Export & Audit Review](/docs/sops/reports-audit)
+- [Role & Permission Alignment](/docs/sops/governance/role-permission-alignment)
+
+## Requirement Traceability
+
+| SOP Area                                                | Source                                                                                |
+| --------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Payroll calculation, ภาษี/ประกันสังคม/กองทุน, payslip, export | ALT Pro - P3 (MatterSolv).xlsx, sheet Sub-Module, แถว 217-222                            |
+| Leave management system                                   | ไฟล์เดียวกัน, แถว 223                                                                    |
+| HR module timeline (Milestone 4)                           | Manao Software Project Proposal-Alt Pro-Legal ERP-Phase_1_V1_20260525.pdf, หน้า 14, 53-61 |
+
+## Approval Record
+
+- Manager และ Admin อนุมัติ
+- Effective Date: 14 July 2026

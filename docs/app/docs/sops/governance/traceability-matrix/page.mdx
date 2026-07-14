@@ -39,6 +39,7 @@ Decision IDs ชุดนี้แยก policy decision ออกจาก SOP 
 | DEC-TSK-001 | Manager               | Manager                         | Canonical task/calendar status, assignment, deadline exception and sync evidence                       |
 | DEC-BIL-001 | Finance               | Manager                         | Quotation version, pricing/discount validation, maker-checker and client response evidence             |
 | DEC-BIL-002 | Finance               | Manager                         | Posting immutability, allocation/reconciliation and Manager-approved adjustment/refund/write-off       |
+| DEC-HR-001  | HR                    | Manager + Admin                 | Payroll maker-checker, privileged/org-wide A2 on a distinct account, payslip self-access and leave requester/approver separation |
 | DEC-SEC-001 | Admin | Manager + Admin | Tenant-scoped least privilege, MFA, standard/privileged authority, expiry and recertification          |
 | DEC-REP-001 | Manager               | Manager + Admin | Report reconciliation, sensitive export and dual approval for Restricted/Privileged data               |
 | DEC-GOV-001 | Manager               | Manager + Admin | Controlled register, traceability, role alignment, template, terminology and UAT release evidence      |
@@ -61,6 +62,7 @@ Decision IDs ชุดนี้แยก policy decision ออกจาก SOP 
 | REQ-BIL-001    | Finance               | Quotation/service fee/approval; MAN 23-30, P3 48-69       | DEC-BIL-001                | SOP-BIL-001                | Version, price validation, Manager approval                    | BIL-01 to BIL-04 |
 | REQ-BIL-002    | Finance               | Invoice/deposit/payment/receipt; P3 186-216               | DEC-BIL-002                | SOP-BIL-002                | Posting lock, allocation and reconciliation                    | BIL-05 to BIL-08 |
 | REQ-BIL-003    | Finance               | Adjustment/refund/write-off; BASE approval matrix         | DEC-BIL-002                | SOP-BIL-002                | Reason, before/after amount and approval                       | BIL-09 to BIL-10 |
+| REQ-HR-001     | HR                    | Payroll calculation/payslip/export and leave management; P3 217-223, MAN 14, 53-61 | DEC-HR-001                  | SOP-HR-001                  | Payroll run events, payslip access log, leave balance/approval event | HR-01 to HR-05    |
 | REQ-SEC-001    | Admin | User/role/MFA/access/audit; MAN 63-67, P3 225-271         | DEC-SEC-001                | SOP-SEC-001, CTRL-RBAC-001 | RBAC, tenant scope, MFA, grant/revoke events                   | SEC-01 to SEC-06 |
 | REQ-REP-001    | Manager               | Reports/dashboard/export; MAN 30, 36, 43, 50, 58          | DEC-REP-001                | SOP-REP-001                | Filter snapshot, reconciliation and export log                 | REP-01 to REP-04 |
 | REQ-AUD-001    | Admin | Audit review/correction; P3 225-271, 288-293              | DEC-MAT-008, DEC-REP-001   | SOP-REP-001, CTRL-MAT-001  | Immutable event, correction link, integrity check              | AUD-01 to AUD-03 |

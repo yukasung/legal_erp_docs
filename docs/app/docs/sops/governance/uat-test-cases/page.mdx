@@ -1,7 +1,7 @@
 # SOP UAT Scenarios & Test Cases
 
 | Document Control        | Value        |
-| ----------------------- | ------------ |
+| ----------------------- | :------------: |
 | Document ID             | UAT-SOP-001  |
 | Status                  | Approved     |
 | Version                 | 1.0          |
@@ -57,7 +57,7 @@ screen/API result, record IDs และ audit event reference ไม่ใช้
 ## Execution Profiles
 
 | Case Prefix | Actor / Preconditions                                                 | Required Test Inputs                                                                    |
-| ----------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| :-----------: | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | CLI         | Lawyer/Assistant/Client Service + Manager/Admin A2; Tenant A/B        | Client identity/duplicate plus portal contact, membership, publication and feedback     |
 | MAT         | Lawyer + Manager + Manager A2; Client Active                          | Matter type, conflict parties, risk band, SLA clock and transition                      |
 | DOC         | Assistant/Lawyer + Manager A1 + Admin A2                              | Matter access, document/version/checksum, classification and recipient                  |
@@ -85,7 +85,7 @@ screen/API result, record IDs และ audit event reference ไม่ใช้
 ## Base Fixture Catalog
 
 | Fixture Prefix | Fixed Synthetic Data                                                                                                                                                           |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| :--------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | FX-CLI         | Tenant UAT-A; Client CLI-A-1001; contact portal-a@example.test verified; Matter UAT-MAT-1001; publication DOC-1001 v1 checksum; feedback survey v1                          |
 | FX-MAT         | Client CLI-A-1001 Active; Matter UAT-MAT-1001; type Advisory; Responsible Lawyer lawyer-a@example.test; counterparty UAT Counterparty 1; SLA start 2026-08-03T09:00:00+07:00   |
 | FX-DOC         | Matter UAT-MAT-1001; Document UAT-DOC-1001; version 1.0; classification Internal; recipient reviewer-a@example.test; share expiry 2026-08-10T17:00:00+07:00                    |
@@ -111,7 +111,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Authored Step Sets
 
 | Case Range       | Step Set        | Ordered Actions                                                                                                                                                                                                                                                                                                                                                     |
-| ---------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| :----------------: | :---------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | CLI-01 to CLI-03 | STP-CLI-REG     | 1) Sign in as Assistant 2) search legal name/identifier 3) start Organization Client with FX values 4) apply Scenario field/duplicate delta 5) submit validation and Manager review when routed 6) reopen Client/audit history                                                                                                                                      |
 | CLI-04 to CLI-05 | STP-CLI-MAINT   | 1) Open source/surviving Clients and dependency count 2) submit merge/deactivate request 3) apply Scenario actor/authority 4) A1/A2 or Manager decides 5) Admin executes when approved 6) verify redirect/status/before-after events                                                                                                                                |
 | CLI-06           | STP-CLI-VIP-RET | 1) Open active Client 2) enter VIP/Retainer eligibility, period and terms 3) submit owner/approval 4) activate/renew 5) advance clock to review/expiry 6) verify lifecycle and evidence                                                                                                                                                                             |
@@ -145,7 +145,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Client Cases
 
 | ID     | Requirement | Scenario                                          | Expected Result / Evidence                                  |
-| ------ | ----------- | ------------------------------------------------- | ----------------------------------------------------------- |
+| :------: | :-----------: | ------------------------------------------------- | ----------------------------------------------------------- |
 | CLI-01 | REQ-CLI-001 | สร้าง Client เมื่อ required fields ครบ            | ได้ Pending Verification/Active ตาม gate และมี create event |
 | CLI-02 | REQ-CLI-001 | ส่งข้อมูลขาด conditional field                    | ระบบ block และระบุ field/rule ที่ไม่ผ่าน                    |
 | CLI-03 | REQ-CLI-001 | สร้าง Client ที่ตรง duplicate threshold           | ระบบ block/route review พร้อม candidates และ score          |
@@ -165,7 +165,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Matter Cases
 
 | ID     | Requirement | Scenario                                               | Expected Result / Evidence                            |
-| ------ | ----------- | ------------------------------------------------------ | ----------------------------------------------------- |
+| :------: | :-----------: | ------------------------------------------------------ | ----------------------------------------------------- |
 | MAT-01 | REQ-MAT-001 | Intake ผ่าน duplicate/conflict/risk Low                | Manager approve และ transition ตาม lifecycle          |
 | MAT-02 | REQ-MAT-001 | Conflict Status เป็น Escalated/Prohibited              | หยุด gate และส่ง authority พร้อม assessment           |
 | MAT-03 | REQ-MAT-001 | High risk acceptance                                   | ต้องมี Manager A1 + Manager A2 แยกคน                  |
@@ -181,7 +181,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Document Cases
 
 | ID     | Requirement | Scenario                                   | Expected Result / Evidence                            |
-| ------ | ----------- | ------------------------------------------ | ----------------------------------------------------- |
+| :------: | :-----------: | ------------------------------------------ | ----------------------------------------------------- |
 | DOC-01 | REQ-DOC-001 | Generate/upload พร้อม metadata             | Document ID, source/template version และ checksum ครบ |
 | DOC-02 | REQ-DOC-001 | สร้าง version ใหม่จาก Approved/Signed      | version chain ใหม่ ไม่เขียนทับต้นฉบับ                 |
 | DOC-03 | REQ-DOC-001 | Review/approve โดย role ที่ถูกต้อง         | reviewer/approver/time/decision ถูกบันทึก             |
@@ -193,7 +193,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Task and Calendar Cases
 
 | ID     | Requirement | Scenario                                   | Expected Result / Evidence                         |
-| ------ | ----------- | ------------------------------------------ | -------------------------------------------------- |
+| :------: | :-----------: | ------------------------------------------ | -------------------------------------------------- |
 | TSK-01 | REQ-TSK-001 | Create/assign task พร้อม due date/reminder | owner, scope, status และ assignment event ครบ      |
 | TSK-02 | REQ-TSK-001 | Complete/cancel task พร้อม reason          | terminal status และ history ถูกต้อง                |
 | TSK-03 | REQ-TSK-001 | Task overdue/escalation                    | warning/escalation ตาม SLA ไม่มี status เปลี่ยนเอง |
@@ -204,7 +204,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Time Tracking Cases
 
 | ID     | Requirement | Scenario                                                        | Expected Result / Evidence                                                                       |
-| ------ | ----------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| :------: | :-----------: | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | TIM-01 | REQ-TIM-001 | Start/pause/resume/stop Live Timer บน Active Matter             | server timestamps/event chain ครบ และ Draft duration 90 นาที                                     |
 | TIM-02 | REQ-TIM-001 | เริ่ม timer ซ้ำและ retry stop ด้วย key เดิม                     | block active timer ที่สอง; retry คืน Time Entry เดิมโดยไม่เพิ่ม duration/entry                   |
 | TIM-03 | REQ-TIM-001 | บันทึก Manual duration และ Start/End พร้อม classification       | source mode, timezone, reason, work type/category/tag และ calculated duration ถูกต้อง            |
@@ -220,7 +220,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Billing and Payment Cases
 
 | ID     | Requirement | Scenario                                      | Expected Result / Evidence                       |
-| ------ | ----------- | --------------------------------------------- | ------------------------------------------------ |
+| :------: | :-----------: | --------------------------------------------- | ------------------------------------------------ |
 | BIL-01 | REQ-BIL-001 | สร้าง quotation พร้อม pricing/terms           | totals, currency, tax และ version คำนวณถูกต้อง   |
 | BIL-02 | REQ-BIL-001 | Maker submit และ Manager approve              | maker-checker และ approval event แยกกัน          |
 | BIL-03 | REQ-BIL-001 | Self-approve หรือ discount เกิน authority     | ปฏิเสธ/route alternate approver                  |
@@ -235,7 +235,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Finance Foundation Cases
 
 | ID     | Requirement | Scenario                                                                   | Expected Result / Evidence                                                              |
-| ------ | ----------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| :------: | :-----------: | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | FIN-01 | REQ-FIN-001 | สร้าง COA/finance master version ใหม่                                      | unique code, hierarchy, effective date และ Manager approval ครบ                         |
 | FIN-02 | REQ-FIN-001 | ส่ง balanced journal ใน Open period ให้ A1 อนุมัติและ System post          | debit=credit, actor แยกกัน, posting เกิดครั้งเดียวและ ledger trace กลับ source ได้      |
 | FIN-03 | REQ-FIN-001 | ส่ง unbalanced, duplicate หรือ Closed-period journal                       | block ก่อน post, GL ไม่เปลี่ยนและมี validation/denied evidence                          |
@@ -252,7 +252,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## HR and Payroll Cases
 
 | ID    | Requirement | Scenario                                                       | Expected Result / Evidence                                                                  |
-| ----- | ----------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| :-----: | :-----------: | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | HR-01 | REQ-HR-001  | คำนวณ payroll run พร้อม OT/เบี้ยขยัน/โบนัส/ภาษี                | ตัวเลขถูกต้องตาม master data และสถานะ Calculated ครบ                                        |
 | HR-02 | REQ-HR-001  | HR ส่งอนุมัติและพยายาม approve payroll ของตนเอง                | ปฏิเสธ self-approve และมี denied event                                                      |
 | HR-03 | REQ-HR-001  | Payroll run แบบ privileged/org-wide ผ่าน A1 + A2               | HR maker, Manager A1 และ Admin A2 เป็นสามบัญชีแยกกันครบก่อน System post                     |
@@ -271,7 +271,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Tenant Administration Cases
 
 | ID     | Requirement | Scenario                                                            | Expected Result / Evidence                                                                  |
-| ------ | ----------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| :------: | :-----------: | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | ADM-01 | REQ-ADM-001 | Self-Service Signup พร้อม legal/domain evidence ถูกต้อง             | Pending Verification → Provisioning → Active; Tenant/BU/domain และ actor events ครบ         |
 | ADM-02 | REQ-ADM-001 | legal identifier หรือ domain/sub-domain ซ้ำ                         | block ก่อน provisioning พร้อม candidates/reason และไม่สร้าง Tenant ซ้ำ                      |
 | ADM-03 | REQ-ADM-001 | verification token/evidence ไม่ผ่านหรือหมดอายุ                      | คง Pending Verification/Reject; ไม่มี BU, entitlement หรือ business access                  |
@@ -292,7 +292,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Platform Operations Cases
 
 | ID     | Requirement | Scenario                                                          | Expected Result / Evidence                                                                 |
-| ------ | ----------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| :------: | :-----------: | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | OPS-01 | REQ-OPS-001 | metric/log สดอยู่ใน threshold และ dashboard query ตาม fixed as-of | Healthy พร้อม source/rule version/watermark; totals ตรงและ trace กลับ signal ได้           |
 | OPS-02 | REQ-OPS-001 | metric ขาด/stale แต่ค่าล่าสุดเคย Healthy                          | แสดง No Data/monitoring impaired และสร้าง alert; ห้ามคง Healthy                            |
 | OPS-03 | REQ-OPS-001 | threshold breach ซ้ำหลาย event ใน correlation window              | สร้าง incident หลักครั้งเดียวพร้อม first/last/count; ไม่สูญ original signal                |
@@ -305,7 +305,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## API and Integration Cases
 
 | ID     | Requirement | Scenario                                                        | Expected Result / Evidence                                                    |
-| ------ | ----------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| :------: | :-----------: | --------------------------------------------------------------- | ----------------------------------------------------------------------------- |
 | INT-01 | REQ-INT-001 | เรียก API ตาม contract/schema/rate/timeout ที่อนุมัติ           | response/correlation, contract version, usage และ audit scope ครบ              |
 | INT-02 | REQ-INT-001 | unauthorized/cross-Tenant หรือเกิน rate limit                   | ปฏิเสธโดยไม่รั่ว metadata พร้อม denial/quota evidence                          |
 | INT-03 | REQ-INT-001 | retry, duplicate หรือ out-of-order message                      | idempotent result, ไม่มีรายการ/ยอดซ้ำ และ correlation ครบ                     |
@@ -318,7 +318,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Security and Access Cases
 
 | ID     | Requirement | Scenario                                     | Expected Result / Evidence                             |
-| ------ | ----------- | -------------------------------------------- | ------------------------------------------------------ |
+| :------: | :-----------: | -------------------------------------------- | ------------------------------------------------------ |
 | SEC-01 | REQ-SEC-001 | Invite/activate standard user พร้อม MFA      | Tenant/role/scope ถูกต้องและ activation event ครบ      |
 | SEC-02 | REQ-SEC-001 | ข้าม Tenant หรือ Matter scope                | ปฏิเสธทั้ง view/update/export และไม่รั่ว metadata      |
 | SEC-03 | REQ-SEC-001 | Grant privileged permission                  | A1/A2, expiry, snapshot และ executor แยกกัน            |
@@ -337,7 +337,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Service Support and Communication Cases
 
 | ID     | Requirement | Scenario                                                    | Expected Result / Evidence                                                |
-| ------ | ----------- | ----------------------------------------------------------- | ------------------------------------------------------------------------- |
+| :------: | :-----------: | ----------------------------------------------------------- | ------------------------------------------------------------------------- |
 | SUP-01 | REQ-SUP-001 | ส่ง approved/minimized template ตาม preference             | message/version/recipient และ delivery truth ครบ                          |
 | SUP-02 | REQ-SUP-001 | recipient/scope ผิดหรือถูก suppress                         | ไม่ส่งและไม่รั่ว content/metadata พร้อม suppression reason                |
 | SUP-03 | REQ-SUP-001 | broadcast ไป fixed audience แล้ว retry partial failure      | audience/control totals ตรงและผู้รับเดิมไม่ซ้ำ                            |
@@ -350,7 +350,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Report, Audit and Retention Cases
 
 | ID     | Requirement | Scenario                                 | Expected Result / Evidence                              |
-| ------ | ----------- | ---------------------------------------- | ------------------------------------------------------- |
+| :------: | :-----------: | ---------------------------------------- | ------------------------------------------------------- |
 | REP-01 | REQ-REP-001 | Generate report ด้วย filters/as-of       | result, metadata, row count และ filter snapshot ครบ     |
 | REP-02 | REQ-REP-001 | Reconcile report กับ source sample       | variance อยู่ในเกณฑ์หรือเปิด exception                  |
 | REP-03 | REQ-REP-001 | Sensitive export พร้อม approval/expiry   | checksum, recipient, delivery และ access log ครบ        |
@@ -368,7 +368,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Governance and Escalation Cases
 
 | ID     | Requirement | Scenario                                      | Expected Result / Evidence                              |
-| ------ | ----------- | --------------------------------------------- | ------------------------------------------------------- |
+| :------: | :-----------: | --------------------------------------------- | ------------------------------------------------------- |
 | GOV-01 | REQ-GOV-001 | ตรวจ controlled document ID ซ้ำ/field ขาด     | block register approval และระบุ ID/field ที่ผิด         |
 | GOV-02 | REQ-GOV-001 | เปิด URL ทุกแถวใน Master Register             | canonical URL ตอบสำเร็จและ H1/ID ตรง register           |
 | GOV-03 | REQ-GOV-001 | Requirement ไม่มี controlled policy/UAT       | coverage check fail และสร้าง owner/action               |
@@ -384,7 +384,7 @@ Scenario เช่น FX-CLI-02 ลบ conditional field, FX-MAT-03 เปลี
 ## Result Status
 
 | Status  | Meaning                                                    |
-| ------- | ---------------------------------------------------------- |
+| :-------: | ---------------------------------------------------------- |
 | Not Run | ยังไม่เริ่ม                                                |
 | Passed  | Actual ตรง expected และ evidence ครบ                       |
 | Failed  | Actual ไม่ตรง expected หรือ control/evidence ขาด           |

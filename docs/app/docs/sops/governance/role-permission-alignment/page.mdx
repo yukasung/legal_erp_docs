@@ -1,7 +1,7 @@
 # Role & Permission Alignment
 
 | Document Control        | Value           |
-| ----------------------- | --------------- |
+| ----------------------- | :---------------: |
 | Document ID             | CTRL-RBAC-001   |
 | Status                  | Approved        |
 | Version                 | 1.0             |
@@ -68,7 +68,7 @@ responsibility ต้องได้รับ runtime role/grant แยกตา
 ## Permission Alignment Matrix
 
 | Capability / Action                 | Prepare / Execute                                    | Approve / Confirm                                         | Scope / Control                                                    |
-| ----------------------------------- | ---------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------ |
+| ----------------------------------- | :----------------------------------------------------: | :---------------------------------------------------------: | ------------------------------------------------------------------ |
 | Client create/update                | Lawyer, Assistant                                    | Manager เมื่อเป็น exception                               | Assigned team/Tenant, duplicate gate                               |
 | Client merge/reverse merge          | Lawyer/Assistant/Manager request, Admin execute      | Manager A1 + Admin A2                                     | DEC-CLI-003, before/after and surviving ID                         |
 | Client deactivate/reactivate        | Lawyer/Assistant request, Admin execute              | Manager                                                   | DEC-CLI-003, dependency and status event                           |
@@ -131,7 +131,7 @@ responsibility ต้องได้รับ runtime role/grant แยกตา
 ## Alignment Findings and Resolution
 
 | Finding                                                              | Resolution                                                                    | Status   |
-| -------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------- |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------------------- | :--------: |
 | Permission baseline เดิมให้ Admin อนุมัติ permission change ได้กว้าง | ใช้ Admin เป็น executor; privileged change ใช้ Manager A1 + Admin A2 แยกคน    | Resolved |
 | Senior Lawyer ยังไม่เป็น role แยก                                    | ใช้ Lawyer + scoped approve permission                                        | Resolved |
 | Client external role ไม่ควรปะปนกับ internal baseline                | ใช้ Portal Membership แยก พร้อม verified identity, scope, expiry และ revoke    | Resolved |

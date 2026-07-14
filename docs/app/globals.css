@@ -24,6 +24,16 @@ code.text-\[\.9em\] {
   font-size: 14px;
 }
 
+/* Keep SOP tables scannable without centering long-form operational text. */
+article main table th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+article main table td {
+  vertical-align: middle;
+}
+
 @media screen and (max-width: 1200px) {
   .home-content .hide-medium {
     display: none;

@@ -63,7 +63,17 @@ export default {
         items: {
           index: 'Overview',
           roles: 'User Roles',
+          'role-mapping': 'Role Mapping',
           permissions: 'Permissions'
+        }
+      },
+      plans: {
+        title: 'Plans & Pricing',
+        items: {
+          index: 'Overview',
+          pricing: 'Pricing',
+          'feature-comparison': 'Feature Comparison',
+          'plan-rules': 'Plan Rules'
         }
       },
       modules: {

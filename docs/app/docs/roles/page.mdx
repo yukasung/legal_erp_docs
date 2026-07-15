@@ -1,91 +1,102 @@
 # Roles
 
-หน้านี้สรุปแนวทางแบ่งกลุ่มผู้ใช้งานหลักของ Legal ERP Platform สำหรับรอบเริ่มต้น
-โดยระบบต้องรองรับผู้ใช้งานหลายระดับ หลายฝ่าย และต้องควบคุมการเข้าถึงด้วย RBAC,
-audit trail และมาตรฐานด้านความปลอดภัย
+หน้านี้กำหนดแบบจำลองผู้ใช้งานของ Legal ERP Platform โดยแยกตำแหน่งและหน้าที่,
+Runtime Role, Permission Bundle และ Plan Entitlement ออกจากกัน เพื่อไม่ให้
+ตำแหน่งงานหรือแผนราคากลายเป็นสิทธิ์เข้าถึงข้อมูลโดยอัตโนมัติ
 
-เป้าหมายของหน้านี้คือกำหนด role baseline ที่อ่านเข้าใจง่ายก่อนลงรายละเอียด
-permission ในหน้าถัดไป
-
-## Role Design Principles
-
-แนวทางแบ่ง role ใช้หลักต่อไปนี้:
-
-- ระบบต้องรองรับผู้ใช้งานหลายกลุ่ม เช่น ลูกความ, ทนาย/พนักงานกฎหมาย,
-  ทนายอาวุโส/หุ้นส่วน, ผู้จัดการคดี, ฝ่ายขาย, ฝ่ายการเงินและบัญชี, HR, ผู้บริหาร
-  และผู้ดูแลระบบ
-- ผู้ใช้งานแต่ละกลุ่มต้องเห็นข้อมูลและฟังก์ชันตามบทบาทของตนเอง
-- ระบบต้องควบคุมสิทธิ์ด้วย RBAC และต้องมี audit trail สำหรับการตรวจสอบย้อนหลัง
-- เอกสารทางกฎหมายต้องมีขั้นตอน review/approval โดยทนายอาวุโสหรือผู้มีอำนาจ
-- ข้อมูลการเงินต้องจำกัดสิทธิ์เฉพาะผู้เกี่ยวข้อง เช่น finance, manager
-  หรือผู้บริหาร
-- dashboard และรายงานต้องช่วยให้ manager เห็นภาระงาน รายได้ ต้นทุน
-  และประสิทธิภาพของทีมแบบภาพรวม
-
-## Role Baseline
-
-เพื่อให้เอกสารเริ่มต้นไม่ซับซ้อนเกินไป รอบนี้กำหนดกลุ่มผู้ใช้งานหลัก 6 กลุ่ม:
+## Role Model
 
 ```mermaid
 flowchart LR
-  subgraph UserGroups["User Groups"]
-    Client["Client / ลูกความ"]
-    LegalTeam["ทนาย / พนักงานกฎหมาย / ทนายอาวุโส"]
-    CaseManager["ผู้จัดการคดี / ทีมงาน"]
-    Sales["ฝ่ายขาย"]
-    Accounting["ฝ่ายการเงินและบัญชี"]
-    HR["HR"]
-    Executive["ผู้บริหาร"]
-    SystemAdmin["ผู้ดูแลระบบ"]
-  end
+  Group["Business User Group<br/>ตำแหน่งและความรับผิดชอบ"]
+  Role["Runtime Role<br/>ชุดสิทธิ์พื้นฐาน"]
+  Bundle["Permission Bundle<br/>สิทธิ์เสริมแบบมี scope"]
+  Entitlement["Tenant Entitlement<br/>Module/Feature ที่ Plan เปิด"]
+  Scope["Record Scope<br/>Tenant / Team / Matter / Own"]
+  Decision["Authorization Decision"]
 
-  subgraph Baseline["Primary Roles"]
-    Admin["Admin"]
-    Lawyer["Lawyer"]
-    Assistant["Assistant"]
-    Finance["Finance"]
-    HRRole["HR"]
-    Manager["Manager"]
-    Future["Future External Roles"]
-  end
-
-  SystemAdmin --> Admin
-  LegalTeam --> Lawyer
-  CaseManager --> Assistant
-  Accounting --> Finance
-  HR --> HRRole
-  Executive --> Manager
-  LegalTeam --> Manager
-  Client -. "client portal later" .-> Future
-  Sales -. "not separated yet" .-> Lawyer
-  Sales -. "quotation support" .-> Finance
+  Group -->|"map โดย policy"| Role
+  Group -->|"มอบหมายเมื่อจำเป็น"| Bundle
+  Role --> Decision
+  Bundle --> Decision
+  Entitlement --> Decision
+  Scope --> Decision
 ```
 
-| Role      | ครอบคลุมกลุ่มผู้ใช้งาน                               | จุดประสงค์หลัก                                                          |
-| --------- | ---------------------------------------------------- | ----------------------------------------------------------------------- |
-| Admin     | Tenant Admin / ผู้ดูแลระบบขององค์กร                  | ตั้งค่าระบบ ผู้ใช้งาน role, permission, master data, security และ audit |
-| Lawyer    | ทนาย, พนักงานกฎหมาย, ทนายอาวุโสบางกรณี               | ทำงานกฎหมายหลักกับ Matter (แฟ้มงานกฎหมาย), เอกสาร, task และนัดหมาย      |
-| Assistant | ผู้จัดการคดี, ทีมงาน, legal operation, staff support | ช่วยเตรียมข้อมูล ติดตามงาน นัดหมาย เอกสาร และประสานงานในแฟ้มงานกฎหมาย   |
-| Finance   | ฝ่ายการเงินและบัญชี                                  | ดูแล quotation, invoice, payment, billing และข้อมูลการเงินที่เกี่ยวข้อง |
-| HR        | ฝ่ายบุคคล (HR)                                       | ดูแลเงินเดือน (Payroll), ภาษี, ประกันสังคม, การลา และข้อมูลบุคลากร      |
-| Manager   | ผู้บริหาร, partner, senior lawyer, practice manager  | ดูภาพรวม อนุมัติ ตรวจสอบ performance และตัดสินใจจาก dashboard/report    |
+ระบบจะอนุญาตให้ใช้งานเมื่อแผนขององค์กรเปิดฟีเจอร์ ผู้ใช้มีสิทธิ์ดำเนินการ
+และข้อมูลอยู่ในขอบเขตที่ผู้ใช้เข้าถึงได้
 
-## Current Boundary
+Plan ที่เปิด Feature ไม่ได้ให้สิทธิ์ผู้ใช้โดยอัตโนมัติ และผู้ใช้ที่มี Permission
+ไม่สามารถใช้ Feature ที่ Tenant ไม่มี entitlement
 
-- Client หรือ external customer ยังไม่ถูกนับเป็น primary internal role ในรอบนี้
-  เพราะต้องแยกเป็น client portal หรือ external access model ภายหลัง
-- Sales ยังไม่แยกเป็น role หลักในรอบเริ่มต้น งาน quotation ที่เกี่ยวข้องกับขาย
-  จะอยู่ระหว่าง Lawyer, Finance และ Manager ก่อน
-- HR แยกเป็น role หลักของตัวเอง (ไม่รวมกับ Finance) เพื่อรักษาความลับของข้อมูล
-  เงินเดือนพนักงาน แยกจากข้อมูล billing ของลูกค้าที่ Finance ดูแล
-- Senior Lawyer ยังไม่แยกเป็น role หลัก แต่บาง permission เช่น review/approve
-  document อาจถูกกำหนดเป็นสิทธิ์เพิ่มเติมของ Lawyer หรือ Manager
-- Platform support ไม่ใช้ Admin role ของ Tenant และต้องผ่าน controlled
-  service/support access หรือ Emergency Access ที่มีขอบเขตและเวลา
+## Canonical Concepts
 
-## Next Step
+| Concept | Meaning | Example |
+| --- | --- | --- |
+| Business User Group | ตำแหน่งหรือความรับผิดชอบทางธุรกิจ | Partner, Senior Lawyer, Accounting |
+| Runtime Role | กลุ่ม permission พื้นฐานที่ระบบบังคับใช้ | Admin, Lawyer, Assistant, Finance, HR, Manager |
+| Permission Bundle | สิทธิ์เสริมที่ผูก action/scope/expiry | Document Approver, Manager A2, Sensitive Export |
+| Plan Entitlement | Module/Feature ที่ Tenant เปิดตาม Plan/version | PRO เปิด Time Tracking |
+| Record Scope | ขอบเขตข้อมูลที่ permission ใช้ได้ | Tenant, team, assigned Matter, own record |
+| Acting Role | role/bundle ที่ผู้ใช้เลือกใช้กับธุรกรรมหนึ่ง | Lawyer ทำงานและ Manager อนุมัติ |
 
-จาก role baseline นี้ หน้า [User Roles](/docs/roles/roles)
-ลงรายละเอียดหน้าที่ของแต่ละ role ส่วนหน้า [Permissions](/docs/roles/permissions)
-ใช้เป็น matrix เริ่มต้นว่าแต่ละ role ดู เพิ่ม แก้ไข อนุมัติ ส่งออก
-หรือลบข้อมูลใดได้บ้าง
+## Runtime Role Baseline
+
+Legal ERP ใช้ runtime role หลัก 6 กลุ่ม โดยหนึ่งบัญชีอาจได้รับมากกว่าหนึ่ง role
+เมื่อหน้าที่จำเป็นและผ่าน separation-of-duties review
+
+| Role | ครอบคลุมกลุ่มผู้ใช้งาน | จุดประสงค์หลัก |
+| --- | --- | --- |
+| Admin | Tenant Admin / ผู้ดูแลระบบขององค์กร | ตั้งค่า Tenant, user, role, permission, master data, security และ audit |
+| Lawyer | ทนายและพนักงานกฎหมาย | ทำงานกับ Client, Matter, Document, Task และ Calendar ตาม assignment |
+| Assistant | Legal assistant, case coordinator และทีมสนับสนุน | เตรียมข้อมูล เอกสาร งาน นัดหมาย และติดตาม workflow โดยไม่อนุมัติขั้นสุดท้าย |
+| Finance | ฝ่ายการเงินและบัญชี | ดูแล quotation, billing, payment, finance records และ reconciliation |
+| HR | ฝ่ายทรัพยากรบุคคล | ดูแล personnel, payroll, leave และข้อมูลบุคลากรที่เป็นความลับ |
+| Manager | ผู้บริหาร หุ้นส่วน หรือผู้กำกับงาน | ดูภาพรวม มอบหมาย ทบทวน และอนุมัติตาม authority/scope |
+
+## Business User Groups
+
+ระบบใช้กลุ่มผู้ใช้งานทางธุรกิจ 7 กลุ่มสำหรับเชื่อมตำแหน่งและความรับผิดชอบเข้ากับ
+runtime role โดยไม่สร้าง runtime role ใหม่ตามชื่อตำแหน่งทุกชื่อ
+
+| Business User Group | Role Mapping Direction |
+| --- | --- |
+| Owner | map ไป Manager และ bundle ด้าน oversight ตามขอบเขตที่อนุมัติ |
+| Admin | map ไป Admin; ไม่มี business approval authority โดยอัตโนมัติ |
+| Partner | map ไป Lawyer และอาจเพิ่ม Manager ตาม responsibility |
+| Managing Partner | map ตาม authority ที่อนุมัติ โดยไม่อนุมานสิทธิ์จากชื่อตำแหน่ง |
+| Senior Lawyer | map ไป Lawyer; review/approve ต้องเป็น scoped bundle |
+| Junior Lawyer | map ไป Lawyer โดยไม่ให้ approval bundle อัตโนมัติ |
+| Accounting | map ไป Finance และจำกัดจาก legal/HR content ที่ไม่จำเป็น |
+
+Assistant และ HR ยังคงเป็น runtime roles เพราะกระบวนการทำงานต้องใช้บทบาทเหล่านี้
+
+## Role Design Principles
+
+- ใช้ least privilege และ deny by default
+- ทุก permission ต้องมี action, resource และ scope ชัดเจน
+- approval authority แยกจาก create/update และ executor เมื่อ control กำหนด
+- ตำแหน่งและหน้าที่ไม่เพิ่ม permission จนกว่าจะผ่าน mapping และ approval
+- Plan/Package ไม่เปลี่ยน role หรือ approval authority
+- Tenant, team, Matter, assigned record และ own-record scope ต้องถูกตรวจทุกครั้ง
+- Permission สำคัญต้องมี expiry, recertification และ immutable audit event
+- Platform support ไม่ใช้ Tenant Admin role และต้องผ่าน controlled support หรือ
+  Emergency Access
+
+## Current Boundaries
+
+- Client Contact ใช้ Portal Membership ภายใต้ SOP-CLI-002 แยกจาก internal role
+- Senior Lawyer และ Managing Partner ยังเป็นตำแหน่งที่ต้อง map กับ role/bundle ไม่ใช่
+  primary runtime role
+- Sales ยังไม่แยกเป็น runtime role งาน quotation ใช้ Lawyer/Finance/Manager
+  ตามหน้าที่และ authority
+- Admin หมายถึง Tenant Admin ส่วน platform operator ใช้ service/support access
+- Manager ไม่ได้เห็นทุก Tenant/team/Matter โดยอัตโนมัติ
+- HR แยกจาก Finance เพื่อป้องกันการเปิดเผย payroll และ personnel data
+
+## Related Documents
+
+- [User Roles](/docs/roles/roles)
+- [Permissions](/docs/roles/permissions)
+- [User, Role & Access Management](/docs/sops/access-management)
+- [Role & Permission Alignment](/docs/sops/governance/role-permission-alignment)

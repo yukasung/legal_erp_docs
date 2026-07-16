@@ -1,106 +1,68 @@
 # Roles
 
-หน้านี้กำหนดแบบจำลองผู้ใช้งานของ Legal ERP Platform โดยแยกตำแหน่งและหน้าที่,
-Runtime Role, Permission Bundle และ Plan Entitlement ออกจากกัน เพื่อไม่ให้
-ตำแหน่งงานหรือแผนราคากลายเป็นสิทธิ์เข้าถึงข้อมูลโดยอัตโนมัติ
+Roles ใช้กำหนดว่าสมาชิกแต่ละคนเข้าถึงข้อมูลและทำอะไรใน Workspace ได้บ้าง
+โดยแยกออกจากแผนราคาอย่างชัดเจน
 
-## Role Model
+## Access Model
 
 ```mermaid
 flowchart LR
-  Group["Business User Group<br/>ตำแหน่งและความรับผิดชอบ"]
-  Role["Runtime Role<br/>ชุดสิทธิ์พื้นฐาน"]
-  Bundle["Permission Bundle<br/>สิทธิ์เสริมแบบมี scope"]
-  Entitlement["Tenant Entitlement<br/>Module/Feature ที่ Plan เปิด"]
-  Scope["Record Scope<br/>Tenant / Team / Matter / Own"]
-  Decision["Authorization Decision"]
+  Plan["Plan<br/>กำหนดโมดูลที่ Workspace ใช้ได้"]
+  Profile["Access Profile<br/>กำหนดสิทธิ์พื้นฐานของสมาชิก"]
+  Permission["Individual Permission<br/>ปรับสิทธิ์เฉพาะบุคคล"]
+  Scope["Data Scope<br/>กำหนดข้อมูลที่เข้าถึงได้"]
+  Access["Member Access"]
 
-  Group -->|"map โดย policy"| Role
-  Group -->|"มอบหมายเมื่อจำเป็น"| Bundle
-  Role --> Decision
-  Bundle --> Decision
-  Entitlement --> Decision
-  Scope --> Decision
+  Plan --> Access
+  Profile --> Access
+  Permission --> Access
+  Scope --> Access
 ```
 
-ระบบจะอนุญาตให้ใช้งานเมื่อแผนขององค์กรเปิดฟีเจอร์ ผู้ใช้มีสิทธิ์ดำเนินการ
-และข้อมูลอยู่ในขอบเขตที่ผู้ใช้เข้าถึงได้
+สมาชิกเข้าใช้งานได้เมื่อแผนเปิดโมดูลนั้น และสิทธิ์ของสมาชิกอนุญาตให้ดำเนินการ
+กับข้อมูลที่อยู่ในขอบเขตของตน
 
-Plan ที่เปิด Feature ไม่ได้ให้สิทธิ์ผู้ใช้โดยอัตโนมัติ และผู้ใช้ที่มี Permission
-ไม่สามารถใช้ Feature ที่ Tenant ไม่มี entitlement
+## Default Access Profiles
 
-## Canonical Concepts
+Legal ERP มี Access Profile พื้นฐาน 6 กลุ่มสำหรับเริ่มต้นใช้งาน:
 
-| Concept | Meaning | Example |
-| --- | --- | --- |
-| Business User Group | ตำแหน่งหรือความรับผิดชอบทางธุรกิจ | Partner, Senior Lawyer, Accounting |
-| Runtime Role | กลุ่ม permission พื้นฐานที่ระบบบังคับใช้ | Admin, Lawyer, Assistant, Finance, HR, Manager |
-| Permission Bundle | สิทธิ์เสริมที่ผูก action/scope/expiry | Document Approver, Manager A2, Sensitive Export |
-| Plan Entitlement | Module/Feature ที่ Tenant เปิดตาม Plan/version | PRO เปิด Time Tracking |
-| Record Scope | ขอบเขตข้อมูลที่ permission ใช้ได้ | Tenant, team, assigned Matter, own record |
-| Acting Role | role/bundle ที่ผู้ใช้เลือกใช้กับธุรกรรมหนึ่ง | Lawyer ทำงานและ Manager อนุมัติ |
+| Access Profile | เหมาะสำหรับ              | หน้าที่หลัก                                 |
+| :------------: | ------------------------ | ------------------------------------------- |
+|     Admin      | ผู้ดูแล Workspace        | จัดการสมาชิก กลุ่มสิทธิ์ และการตั้งค่าระบบ  |
+|     Lawyer     | ทนายและพนักงานกฎหมาย     | จัดการลูกความ แฟ้มงาน เอกสาร งาน และนัดหมาย |
+|   Assistant    | ผู้ช่วยและผู้ประสานงาน   | เตรียมข้อมูล เอกสาร และติดตามงาน            |
+|    Finance     | ฝ่ายการเงินและบัญชี      | ดูแลใบเสนอราคา การเรียกเก็บ และการชำระเงิน  |
+|       HR       | ฝ่ายทรัพยากรบุคคล        | ดูแลบุคลากร เงินเดือน และการลา              |
+|    Manager     | ผู้บริหารหรือผู้กำกับงาน | ดูภาพรวม มอบหมาย ตรวจสอบ และอนุมัติ         |
 
-## Runtime Role Baseline
+Access Profile ทั้ง 6 กลุ่มมีให้ใช้กับทุกแผน และไม่จำกัดจำนวนสมาชิกตามข้อมูล
+Pricing ปัจจุบัน แต่สมาชิกจะใช้ได้เฉพาะโมดูลที่แผนของ Workspace เปิดไว้
 
-Legal ERP ใช้ runtime role หลัก 6 กลุ่ม โดยหนึ่งบัญชีอาจได้รับมากกว่าหนึ่ง role
-เมื่อหน้าที่จำเป็นและผ่าน separation-of-duties review
+## Assignment Rules
 
-| Role | ครอบคลุมกลุ่มผู้ใช้งาน | จุดประสงค์หลัก |
-| --- | --- | --- |
-| Admin | Tenant Admin / ผู้ดูแลระบบขององค์กร | ตั้งค่า Tenant, user, role, permission, master data, security และ audit |
-| Lawyer | ทนายและพนักงานกฎหมาย | ทำงานกับ Client, Matter, Document, Task และ Calendar ตาม assignment |
-| Assistant | Legal assistant, case coordinator และทีมสนับสนุน | เตรียมข้อมูล เอกสาร งาน นัดหมาย และติดตาม workflow โดยไม่อนุมัติขั้นสุดท้าย |
-| Finance | ฝ่ายการเงินและบัญชี | ดูแล quotation, billing, payment, finance records และ reconciliation |
-| HR | ฝ่ายทรัพยากรบุคคล | ดูแล personnel, payroll, leave และข้อมูลบุคลากรที่เป็นความลับ |
-| Manager | ผู้บริหาร หุ้นส่วน หรือผู้กำกับงาน | ดูภาพรวม มอบหมาย ทบทวน และอนุมัติตาม authority/scope |
+- ผู้สมัครคนแรกเป็น Workspace Admin
+- ผู้สมัครคนเดียวใช้ Workspace เดียวกับบริษัทที่มีสมาชิกคนเดียว
+- Workspace Admin เลือก Access Profile ให้สมาชิกแต่ละคน
+- สมาชิกหนึ่งคนมีได้มากกว่าหนึ่ง Access Profile เมื่อมีหน้าที่หลายด้าน
+- Workspace Admin ปรับสิทธิ์รายบุคคลเพิ่มเติมหรือลดจากค่าพื้นฐานได้
+- ตำแหน่งงานไม่ให้สิทธิ์โดยอัตโนมัติ ต้องเลือกตามหน้าที่จริง
+- การอนุมัติและข้อมูลสำคัญต้องกำหนดขอบเขตให้ชัดเจน
 
-## Business User Groups
+## Relationship to Plans
 
-ระบบใช้กลุ่มผู้ใช้งานทางธุรกิจ 7 กลุ่มสำหรับเชื่อมตำแหน่งและความรับผิดชอบเข้ากับ
-runtime role โดยไม่สร้าง runtime role ใหม่ตามชื่อตำแหน่งทุกชื่อ
-
-| Business User Group | Role Mapping Direction |
-| --- | --- |
-| Owner | map ไป Manager และ bundle ด้าน oversight ตามขอบเขตที่อนุมัติ |
-| Admin | map ไป Admin; ไม่มี business approval authority โดยอัตโนมัติ |
-| Partner | map ไป Lawyer และอาจเพิ่ม Manager ตาม responsibility |
-| Managing Partner | map ตาม authority ที่อนุมัติ โดยไม่อนุมานสิทธิ์จากชื่อตำแหน่ง |
-| Senior Lawyer | map ไป Lawyer; review/approve ต้องเป็น scoped bundle |
-| Junior Lawyer | map ไป Lawyer โดยไม่ให้ approval bundle อัตโนมัติ |
-| Accounting | map ไป Finance และจำกัดจาก legal/HR content ที่ไม่จำเป็น |
-
-Assistant และ HR ยังคงเป็น runtime roles เพราะกระบวนการทำงานต้องใช้บทบาทเหล่านี้
-
-## Role Design Principles
-
-- ใช้ least privilege และ deny by default
-- ทุก permission ต้องมี action, resource และ scope ชัดเจน
-- approval authority แยกจาก create/update และ executor เมื่อ control กำหนด
-- ตำแหน่งและหน้าที่ไม่เพิ่ม permission จนกว่าจะผ่าน mapping และ approval
-- Plan/Package ไม่เปลี่ยน role หรือ approval authority
-- Tenant, team, Matter, assigned record และ own-record scope ต้องถูกตรวจทุกครั้ง
-- Permission สำคัญต้องมี expiry, recertification และ immutable audit event
-- Platform support ไม่ใช้ Tenant Admin role และต้องผ่าน controlled support หรือ
-  Emergency Access
-
-## Current Boundaries
-
-- Client Contact ใช้ Portal Membership ภายใต้ SOP-CLI-002 แยกจาก internal role
-- Senior Lawyer และ Managing Partner ยังเป็นตำแหน่งที่ต้อง map กับ role/bundle ไม่ใช่
-  primary runtime role
-- Sales ยังไม่แยกเป็น runtime role งาน quotation ใช้ Lawyer/Finance/Manager
-  ตามหน้าที่และ authority
-- Admin หมายถึง Tenant Admin ส่วน platform operator ใช้ service/support access
-- Manager ไม่ได้เห็นทุก Tenant/team/Matter โดยอัตโนมัติ
-- HR แยกจาก Finance เพื่อป้องกันการเปิดเผย payroll และ personnel data
+- แผนกำหนดว่า Workspace เปิดใช้โมดูลหรือฟีเจอร์ใด
+- Access Profile กำหนดว่าสมาชิกทำอะไรในโมดูลที่เปิดแล้วได้บ้าง
+- หากแผนไม่รองรับโมดูล สมาชิกจะเข้าโมดูลนั้นไม่ได้แม้มีสิทธิ์อยู่
+- การ Upgrade หรือ Downgrade ไม่เปลี่ยน Access Profile และสิทธิ์รายบุคคล
+  โดยอัตโนมัติ
+- เมื่อเปิดโมดูลใหม่ Workspace Admin ควรตรวจสิทธิ์สมาชิกก่อนเริ่มใช้งาน
 
 ## Related Documents
 
-- [Signup, Subscription & Access](/docs/plans/subscription-access)
+- [Signup & Access](/docs/plans/subscription-access)
 - [User Roles](/docs/roles/roles)
 - [Role Mapping](/docs/roles/role-mapping)
 - [Permissions](/docs/roles/permissions)
 - [Plans & Pricing](/docs/plans)
 - [Plan Rules](/docs/plans/plan-rules)
 - [User, Role & Access Management](/docs/sops/access-management)
-- [Role & Permission Alignment](/docs/sops/governance/role-permission-alignment)

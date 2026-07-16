@@ -18,6 +18,16 @@ export default {
     items: {
       index: 'Overview',
       scope: 'Scope',
+      plans: {
+        title: 'Plans & Pricing',
+        items: {
+          index: 'Overview',
+          pricing: 'Pricing',
+          'subscription-access': 'Signup & Access',
+          'feature-comparison': 'Feature Comparison',
+          'plan-rules': 'Plan Rules'
+        }
+      },
       sops: {
         title: 'SOPs',
         items: {
@@ -65,16 +75,6 @@ export default {
           roles: 'User Roles',
           'role-mapping': 'Role Mapping',
           permissions: 'Permissions'
-        }
-      },
-      plans: {
-        title: 'Plans & Pricing',
-        items: {
-          index: 'Overview',
-          pricing: 'Pricing',
-          'subscription-access': 'Signup & Access',
-          'feature-comparison': 'Feature Comparison',
-          'plan-rules': 'Plan Rules'
         }
       },
       modules: {

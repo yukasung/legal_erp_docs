@@ -93,7 +93,13 @@ export default {
         type: 'separator',
         title: <Section>Technical</Section>
       },
-      architecture: 'Architecture',
+      architecture: {
+        title: 'Architecture',
+        items: {
+          index: 'Overview',
+          'development-rules': 'Development Rules'
+        }
+      },
       database: {
         title: 'Database'
       },

@@ -1,0 +1,117 @@
+# Development Rules
+
+หน้านี้กำหนดกฎที่ Developer และ AI Coding Agent ต้องตรวจสอบก่อนสร้างหรือแก้ไข
+Backend, API, Background Job, Export และการเข้าถึงข้อมูลของ Legal ERP
+
+## Before Coding
+
+ก่อนเริ่มแก้โค้ด ต้องดำเนินการดังนี้:
+
+1. อ่านหน้านี้และเอกสารที่เกี่ยวข้องกับงาน
+2. สรุปกฎด้าน Authentication, Workspace และ Permission ที่มีผลกับงาน
+3. ตรวจสอบรูปแบบที่มีอยู่ใน Codebase ก่อนเพิ่มวิธีใหม่
+4. หากอ่านเอกสารไม่ได้หรือกฎขัดกับ Requirement ให้หยุดและแจ้งก่อน
+
+## Django Authentication
+
+- ใช้ Authentication ที่ Django และ Project มีอยู่ก่อนเสมอ
+- ตรวจผู้ใช้ที่เข้าสู่ระบบจาก `request.user` ก่อนเข้าถึงข้อมูลสมาชิก
+- ใช้ระบบ User, Session, Password Hashing, Group และ Permission ที่มีอยู่
+- ห้ามสร้างระบบ Password, Session หรือ Authentication ขึ้นเอง
+- ห้ามรับ `user_id` จาก Request แล้วใช้แทนผู้ใช้ที่เข้าสู่ระบบ
+- หากระบบที่มีอยู่ไม่รองรับ Requirement ให้แจ้งข้อจำกัด ผลกระทบ
+  และทางเลือกก่อนแก้โค้ด
+- การเพิ่ม Authentication Package หรือ Custom Authentication ต้องได้รับอนุมัติ
+  ก่อนเริ่มทำ
+
+## Workspace Isolation
+
+ข้อมูลที่เป็นของบริษัทต้องถูกจำกัดด้วย Workspace หรือ Company ทุกครั้ง
+
+- Query ข้อมูลธุรกิจต้องใช้ `workspace_id` หรือ `company_id` ร่วมกับรหัสรายการ
+- ห้ามค้นหาข้อมูลของ Workspace ด้วย `id` เพียงอย่างเดียว
+- หา Workspace จากผู้ใช้ที่เข้าสู่ระบบและ Membership ที่ตรวจสอบแล้วฝั่ง Server
+- ห้ามเชื่อถือ `workspace_id`, `company_id` หรือ `user_id` จาก Request โดยตรง
+- ตอนสร้างข้อมูล ระบบต้องกำหนด Workspace ฝั่ง Server
+- สมาชิกทั่วไปห้ามเปลี่ยน Workspace ของข้อมูลเดิม
+- Query ของข้อมูลที่เกี่ยวข้อง, Aggregate, Bulk Update, Export และ Report
+  ต้องใช้ขอบเขต Workspace เดียวกัน
+- Background Job และ Event Handler ต้องรับขอบเขต Workspace ที่ตรวจสอบได้
+  และตรวจความเป็นเจ้าของข้อมูลอีกครั้งก่อนทำงาน
+- Cache Key และชื่อไฟล์ที่ส่งออกต้องไม่ทำให้ข้อมูลข้าม Workspace ปะปนกัน
+- การเข้าถึงข้าม Workspace ต้องใช้ช่องทางพิเศษ จำกัดเวลา และมี Audit Log
+- ตารางข้อมูลกลางที่ทุก Workspace ใช้ร่วมกันได้เป็นข้อยกเว้น
+  แต่ต้องระบุไว้ชัดเจน
+
+ใช้ QuerySet หรือ Service กลางของ Project เพื่อบังคับขอบเขต Workspace:
+
+```python
+matter = Matter.objects.for_workspace(workspace).get(id=matter_id)
+```
+
+ห้ามค้นหาด้วยรหัสรายการเพียงอย่างเดียว:
+
+```python
+matter = Matter.objects.get(id=matter_id)
+```
+
+## Access Order
+
+การเข้าถึงข้อมูลต้องตรวจตามลำดับ:
+
+1. ผู้ใช้เข้าสู่ระบบแล้ว
+2. ผู้ใช้เป็นสมาชิกของ Workspace
+3. แผนของ Workspace เปิดโมดูลหรือฟีเจอร์นั้น
+4. Access Profile หรือสิทธิ์รายบุคคลอนุญาตให้ทำรายการ
+5. ข้อมูลอยู่ใน Workspace ทีม แฟ้มงาน หรือขอบเขตที่ได้รับมอบหมาย
+6. สถานะรายการและระดับอนุมัติรองรับการดำเนินการ
+
+การผ่านเงื่อนไขหนึ่งไม่สามารถใช้แทนเงื่อนไขอื่นได้
+
+## Required Tests
+
+งานที่เข้าถึงข้อมูลของ Workspace ต้องมี Test อย่างน้อยดังนี้:
+
+- ผู้ที่ยังไม่เข้าสู่ระบบถูกปฏิเสธ
+- สมาชิก Workspace A เข้าถึงข้อมูลที่ได้รับอนุญาตใน Workspace A ได้
+- สมาชิก Workspace A เข้าถึงข้อมูล Workspace B ไม่ได้
+- การแก้ `workspace_id`, `company_id`, `user_id` หรือรหัสรายการใน Request
+  ไม่ทำให้เข้าถึงข้อมูลอื่นได้
+- สมาชิกที่เข้าสู่ระบบแล้วแต่ไม่มีสิทธิ์ถูกปฏิเสธ
+- Create, Update, Delete, Export และ Bulk Operation ไม่ทำงานข้าม Workspace
+- Background Job และ Report ไม่รวมข้อมูลจาก Workspace อื่น
+- ข้อมูลกลางที่เป็นข้อยกเว้นยังทำงานได้ตามที่กำหนด
+
+## Stop and Report
+
+Developer หรือ AI Coding Agent ต้องหยุดและแจ้งก่อน Coding เมื่อพบว่า:
+
+- ไม่สามารถเปิดหรืออ่าน Development Rules ได้
+- ไม่สามารถระบุ Workspace จากผู้ใช้ที่เข้าสู่ระบบได้อย่างปลอดภัย
+- Model หรือ Query ไม่มีวิธีจำกัดข้อมูลตาม Workspace
+- Django Authentication ที่มีอยู่ไม่รองรับ Requirement
+- Requirement ขอให้สร้าง Custom Authentication หรือข้าม Permission Check
+- กฎในเอกสารขัดกับโค้ดเดิมหรือ Requirement
+
+รายงานต้องระบุปัญหา ผลกระทบ ทางเลือกที่เสนอ และส่วนที่ต้องได้รับอนุมัติ
+
+## Completion Checklist
+
+ก่อนส่งงาน ต้องยืนยันว่า:
+
+- ใช้ Django Authentication ที่มีอยู่
+- Query ข้อมูลธุรกิจทั้งหมดมีขอบเขต Workspace
+- ไม่เชื่อถือรหัสผู้ใช้หรือ Workspace จาก Request
+- ตรวจ Plan, Permission และขอบเขตข้อมูลครบ
+- เพิ่ม Test ป้องกันการเข้าถึงข้าม Workspace
+- ไม่สร้าง Custom Authentication โดยไม่ได้รับอนุมัติ
+
+## Related Documents
+
+- [Architecture](/docs/architecture)
+- [Database](/docs/database)
+- [API](/docs/api)
+- [Roles](/docs/roles)
+- [Permissions](/docs/roles/permissions)
+- [Plans & Pricing](/docs/plans)
+- [Security & Privacy Compliance](/docs/sops/security-privacy)

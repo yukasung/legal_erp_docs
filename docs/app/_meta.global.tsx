@@ -28,6 +28,15 @@ export default {
           'plan-rules': 'Plan Rules'
         }
       },
+      roles: {
+        title: 'Roles',
+        items: {
+          index: 'Overview',
+          roles: 'User Roles',
+          'role-mapping': 'Role Mapping',
+          permissions: 'Permissions'
+        }
+      },
       sops: {
         title: 'SOPs',
         items: {
@@ -66,15 +75,6 @@ export default {
               'uat-test-cases': 'UAT Scenarios & Test Cases'
             }
           }
-        }
-      },
-      roles: {
-        title: 'Roles',
-        items: {
-          index: 'Overview',
-          roles: 'User Roles',
-          'role-mapping': 'Role Mapping',
-          permissions: 'Permissions'
         }
       },
       modules: {

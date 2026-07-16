@@ -4,13 +4,53 @@
 
 ## Plan Inheritance
 
-STANDARD → ESSENTIALS → PRO → ADVANCED → ENTERPRISE
+<div aria-label="Plan inheritance diagram" style={{ overflowX: 'auto' }}>
+  <div style={{ minWidth: 720 }}>
+
+```mermaid
+flowchart LR
+  Standard["STANDARD<br/>เริ่มต้นใช้งาน"]
+  Essentials["ESSENTIALS<br/>ทำงานร่วมกัน"]
+  Pro["PRO<br/>ควบคุมความเสี่ยงและเวลา"]
+  Advanced["ADVANCED<br/>Billing และ HR"]
+  Enterprise["ENTERPRISE<br/>Accounting และ Insight"]
+
+  Standard --> Essentials --> Pro --> Advanced --> Enterprise
+```
+
+  </div>
+</div>
 
 - แผนที่สูงกว่ารวมความสามารถของแผนก่อนหน้า
 - Not Included จะเปิดได้เมื่อแผนถัดไประบุเป็น Included
 - View Only ดูข้อมูลได้ แต่ไม่สามารถสร้าง แก้ไข ลบ หรืออนุมัติ
 - Baseline เป็นความสามารถพื้นฐานของทุกแผน
 - TBD ยังไม่เปิดใช้งานจนกว่าจะได้รับการอนุมัติ
+
+## Plan Change Flow
+
+<div aria-label="Plan change flow diagram" style={{ overflowX: 'auto' }}>
+  <div style={{ minWidth: 720 }}>
+
+```mermaid
+flowchart TD
+  Start["เลือกแผนใหม่"] --> Change{"ประเภทการเปลี่ยนแผน"}
+
+  Change -->|Upgrade| Preview["แสดงส่วนต่างและวันที่มีผล"]
+  Preview --> Payment["ชำระเงิน"]
+  Payment --> Result{"ชำระเงินสำเร็จ?"}
+  Result -->|ไม่สำเร็จ| Current["ใช้แผนเดิมต่อไป"]
+  Result -->|สำเร็จ| Activate["เปิดแผนใหม่ทันที"]
+  Activate --> Renewal["ใช้วันครบรอบบิลเดิม"]
+
+  Change -->|Downgrade| Schedule["กำหนดให้เปลี่ยนรอบถัดไป"]
+  Schedule --> Continue["ใช้แผนเดิมจนสิ้นสุดรอบบิล"]
+  Continue --> Apply["เริ่มแผนใหม่ในรอบถัดไป"]
+  Apply --> Preserve["รักษาข้อมูลเดิม"]
+```
+
+  </div>
+</div>
 
 ## Upgrade
 

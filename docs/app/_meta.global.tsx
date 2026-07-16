@@ -72,6 +72,7 @@ export default {
         items: {
           index: 'Overview',
           pricing: 'Pricing',
+          'subscription-access': 'Signup & Access',
           'feature-comparison': 'Feature Comparison',
           'plan-rules': 'Plan Rules'
         }

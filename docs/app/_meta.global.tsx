@@ -97,6 +97,7 @@ export default {
         title: 'Architecture',
         items: {
           index: 'Overview',
+          'technology-stack': 'Technology Stack',
           'development-rules': 'Development Rules'
         }
       },

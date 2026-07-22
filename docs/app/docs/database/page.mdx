@@ -1,3 +1,118 @@
 # Database
 
-รอจัดทำรายละเอียดในขั้นถัดไป
+ระบบใช้ Cloud SQL for PostgreSQL เป็นฐานข้อมูลหลัก ข้อมูลธุรกิจต้องแยกตาม
+Workspace และต้องตรวจสอบย้อนหลังได้ การออกแบบฐานข้อมูลต้องใช้ร่วมกับ
+Authentication, Permission และกฎใน Development Rules
+
+## Database Principles
+
+- ใช้ PostgreSQL เป็นแหล่งข้อมูลหลักของรายการธุรกิจ
+- ทุกตารางที่เป็นของบริษัทต้องมี `workspace_id` และ foreign key ที่ถูกต้อง
+- เงิน จำนวน เวลา สถานะ และข้อมูลที่ใช้อนุมัติต้องใช้ชนิดข้อมูลกับ constraint
+  ที่ชัดเจน
+- เอกสารจริงเก็บใน Cloud Storage ส่วน metadata, version และ permission เก็บใน
+  PostgreSQL
+- การเปลี่ยนแปลงข้อมูลสำคัญต้องสร้าง audit record ที่แก้ย้อนหลังไม่ได้
+- Migration ต้องรองรับข้อมูลเดิมและมีวิธีตรวจสอบผลก่อนเปิดใช้ production
+
+## Workspace Isolation
+
+ทุก query ของข้อมูลธุรกิจต้องจำกัดด้วย Workspace ที่ตรวจสอบจากผู้ใช้หรือ system
+identity ฝั่ง server ห้ามเชื่อถือ `workspace_id`, `company_id` หรือ `user_id`
+ที่ส่งมาจาก request โดยตรง
+
+- ใช้ Django QuerySet หรือ service กลางบังคับ `workspace_id`
+- ตรวจ Workspace กับรายการหลักและข้อมูลที่เกี่ยวข้องทุกครั้ง
+- Aggregate, report, export, bulk operation และ background job ต้องใช้ขอบเขต
+  Workspace เดียวกัน
+- Unique constraint ของข้อมูลที่ไม่จำเป็นต้องซ้ำข้ามบริษัทควรรวม `workspace_id`
+- ตารางข้อมูลกลางที่ไม่เป็นของ Workspace ต้องระบุเป็นข้อยกเว้นอย่างชัดเจน
+
+## PostgreSQL Row-Level Security
+
+ใช้ PostgreSQL Row-Level Security (RLS) เป็นชั้นป้องกันเพิ่มเติมสำหรับตาราง
+ข้อมูลของ Workspace โดยไม่ใช้แทน Django permission หรือ Workspace filter
+
+- เปิด RLS และกำหนด policy แบบ default deny สำหรับตารางข้อมูลของ Workspace
+- ตรวจทั้งการอ่านและการเขียนด้วย `USING` และ `WITH CHECK`
+- กำหนด Workspace context ฝั่ง server จาก Membership ที่ตรวจสอบแล้ว
+- ใช้ transaction-scoped context เพื่อไม่ให้ค่าของ request หนึ่งค้างไปยัง
+  connection ที่ request อื่นนำกลับมาใช้
+- Application database role ต้องไม่เป็น table owner, superuser หรือมีสิทธิ์
+  `BYPASSRLS`
+- แยก migration/administration role ออกจาก application runtime role
+- Background job, report และ command ต้องกำหนด Workspace context ก่อน query
+- การทำงานข้าม Workspace ใช้เฉพาะ controlled service พร้อม approval และ audit
+
+RLS เป็น defense in depth หาก application ลืมกรอง Workspace แต่ไม่สามารถแทน
+กฎระดับ module, role, Matter, record scope หรือ approval state ได้
+
+## PostgreSQL Partitioning
+
+ใช้ Declarative Partitioning เฉพาะตารางที่มีขนาดใหญ่และมีรูปแบบ query หรือ
+retention ที่ได้ประโยชน์จาก partition pruning ไม่แบ่ง partition
+ทุกตารางตั้งแต่ต้น
+
+ตารางที่ควรเตรียมรองรับ:
+
+- Audit Log และ Access Event
+- Notification Delivery Event
+- Integration/Webhook Event
+- Background Job History
+- ตาราง transaction หรือ time-series อื่นเมื่อมีผลวัดรองรับ
+
+แนวทางออกแบบ:
+
+- เริ่มจาก `RANGE` partition ตามเวลา เช่น รายเดือนหรือรายไตรมาส
+- ไม่สร้างหนึ่ง partition ต่อหนึ่ง Workspace เพราะจำนวน partition จะเพิ่มตาม
+  จำนวนบริษัท
+- Query ยังต้องมี `workspace_id`; partitioning ไม่ใช่การแยกข้อมูล tenant
+- Index ของแต่ละ partition ต้องรองรับ `workspace_id`, เวลา สถานะ และรูปแบบ query
+  ที่ใช้งานจริง
+- ตรวจผลของ partition key ต่อ primary key, unique constraint และ foreign key
+  ก่อน migration
+- สร้าง partition ล่วงหน้าและแจ้งเตือนเมื่อไม่มี partition รองรับข้อมูลใหม่
+- การ detach หรือ delete partition ต้องผ่าน retention, Legal Hold และ approval
+- เปิดใช้หลังตรวจขนาดตาราง query plan, latency, write pattern และ restore
+  process
+
+## Indexing and Query Performance
+
+- สร้าง composite index โดยเริ่มจาก `workspace_id` สำหรับ query ที่ใช้บ่อย
+- เพิ่ม index ตาม filter, ordering และ join ที่พบจาก query จริง
+- ไม่สร้าง index ทุก column เพราะเพิ่มพื้นที่และต้นทุนในการเขียนข้อมูล
+- ใช้ `EXPLAIN (ANALYZE, BUFFERS)` ใน staging กับข้อมูลที่มีขนาดใกล้เคียงจริง
+- ตรวจ slow query, connection usage, lock, dead tuple และ index usage ผ่าน
+  monitoring
+
+## Backup and Recovery
+
+- เปิด automated backup และ point-in-time recovery ของ Cloud SQL
+- กำหนด retention ตามประเภทข้อมูล สัญญา และ Legal Hold
+- ป้องกันการลบ production database โดยไม่ตั้งใจ
+- ใช้ versioning/lifecycle ที่เหมาะสมกับไฟล์ใน Cloud Storage
+- ทดสอบ restore ลง isolated environment และตรวจทั้ง schema, row count,
+  relationship, file linkage และ Workspace isolation
+- Backup ที่ไม่เคยผ่าน restore test ยังไม่ถือว่าใช้กู้คืนได้
+
+## Required Database Tests
+
+- Workspace A อ่าน สร้าง แก้ไข หรือลบข้อมูล Workspace B ไม่ได้
+- การเปลี่ยน `workspace_id` ใน request ไม่เปลี่ยนขอบเขตข้อมูล
+- RLS ปฏิเสธ query เมื่อไม่มี Workspace context หรือ context ไม่ตรง
+- `INSERT` และ `UPDATE` ไม่สามารถย้ายข้อมูลไป Workspace อื่น
+- Application role ไม่สามารถ bypass RLS
+- Background job และ report ไม่รวมข้อมูลข้าม Workspace
+- Partition routing และ partition pruning ทำงานตามช่วงที่กำหนด
+- การสร้าง partition ใหม่ไม่ทำให้ constraint หรือ index หาย
+- Restore test รักษาข้อมูล ความสัมพันธ์ audit history และขอบเขต Workspace
+
+## Related Documents
+
+- [Architecture](/docs/architecture)
+- [Technology Stack](/docs/architecture/technology-stack)
+- [Development Rules](/docs/architecture/development-rules)
+- [API](/docs/api)
+- [Permissions](/docs/roles/permissions)
+- [Platform Monitoring, Backup & Recovery](/docs/sops/platform-operations)
+- [Retention & Disposal](/docs/sops/retention-disposal)

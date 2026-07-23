@@ -37,7 +37,25 @@ flowchart TD
   H --> R["ผลลัพธ์: Workspace พร้อมใช้งาน"]
 ```
 
-รายละเอียด: [Signup, Subscription & Access](/docs/plans/subscription-access)
+### คำอธิบายขั้นตอน
+
+1. **สร้างบัญชี:** ผู้สมัครกรอกข้อมูลสำหรับเข้าสู่ระบบและยืนยันอีเมล
+   ผู้สมัครจะเป็นเจ้าของ Workspace และเป็นสมาชิกคนแรก
+2. **เลือกแผนใช้งาน:** เลือกแผนฟรีหรือแผนเสียเงินตาม Module
+   ที่ต้องการใช้
+3. **ตรวจว่าต้องชำระเงินหรือไม่:** แผนฟรีเปิดใช้งานได้โดยไม่ต้องกรอกข้อมูลบัตร
+   ส่วนแผนเสียเงินต้องชำระเงินก่อน
+4. **ชำระเงินตามแผน:** ระบบส่งผู้สมัครไปยังหน้าชำระเงินที่ปลอดภัย
+   และไม่เก็บหมายเลขบัตรหรือรหัสความปลอดภัยของบัตร
+5. **กรณีชำระเงินไม่สำเร็จ:** ระบบยังไม่เปิดแผนเสียเงิน ผู้สมัครต้องแก้ไข
+   ข้อมูลการชำระเงินแล้วลองใหม่
+6. **เปิดใช้งาน Workspace:** ผู้สมัครทุกคนจะได้รับ Workspace เหมือนกัน
+   ผู้สมัครที่เลือกใช้งานฟรีเปิดใช้งานได้ทันที ส่วนผู้สมัครแบบชำระเงิน
+   เปิดใช้งานหลังระบบยืนยันการชำระเงินสำเร็จ
+7. **เชิญทีมและกำหนดสิทธิ์:** เจ้าของ Workspace เชิญพนักงานเข้าระบบ
+   และกำหนดว่าแต่ละคนเข้า Module หรือทำรายการใดได้
+8. **ผลลัพธ์:** Workspace พร้อมใช้งาน ผู้สมัครสามารถใช้งานคนเดียว
+   หรือเพิ่มสมาชิกภายหลังได้
 
 </section>
 
@@ -56,8 +74,6 @@ flowchart TD
   D --> E
   E --> R["ผลลัพธ์: Client พร้อมเชื่อมกับ Matter"]
 ```
-
-รายละเอียด: [Client Registration & Maintenance](/docs/sops/client-registration)
 
 </section>
 
@@ -80,8 +96,6 @@ flowchart TD
   E --> R["ผลลัพธ์: พร้อมจัดทำข้อเสนอ"]
 ```
 
-รายละเอียด: [Matter Intake & Opening](/docs/sops/matter-intake)
-
 </section>
 
 <section className="workflow-mermaid-phase">
@@ -101,8 +115,6 @@ flowchart TD
   D -->|ปฏิเสธหรือหมดอายุ| G["ยุติรายการและเก็บประวัติเดิม"]
   E --> R["ผลลัพธ์: ยืนยัน Commercial Readiness"]
 ```
-
-รายละเอียด: [Quotation & Engagement Approval](/docs/sops/quotation-engagement)
 
 </section>
 
@@ -127,8 +139,6 @@ flowchart TD
   G -->|ไม่อนุมัติ| H(["สิ้นสุด: หยุดงานและส่งให้ Manager ตัดสินใจ"])
 ```
 
-รายละเอียด: [Matter Operations & Closure](/docs/sops/matter-operations)
-
 </section>
 
 <section className="workflow-mermaid-phase">
@@ -149,8 +159,6 @@ flowchart TD
   G --> C
   E --> R["ผลลัพธ์: ส่งข้อมูลที่ยืนยันแล้วไป Closure Checklist"]
 ```
-
-รายละเอียด: [Invoice, Payment & Adjustment](/docs/sops/invoice-payment)
 
 </section>
 
@@ -183,43 +191,6 @@ flowchart TD
 > ระยะเวลาจัดเก็บ ไม่มีเหตุที่ต้องเก็บต่อ และได้รับอนุมัติครบตามที่กำหนด
 > ผู้อนุมัติและผู้ดำเนินการทำลายต้องเป็นคนละบัญชี
 
-รายละเอียด: [Matter Operations & Closure](/docs/sops/matter-operations)
-
 </section>
 
 </div>
-
-## Work Execution
-
-ระหว่าง Matter เป็น Active ให้ใช้รายการเดียวกันเป็นศูนย์กลางของข้อมูลทั้งหมด:
-
-- [Document & Template Management](/docs/sops/document-management) สำหรับเอกสารและการอนุมัติ
-- [Task & Calendar Management](/docs/sops/task-calendar) สำหรับงาน ผู้รับผิดชอบ และนัดหมาย
-- [Time Tracking & Timesheet Approval](/docs/sops/time-tracking) สำหรับเวลาทำงานและข้อมูลที่ส่งต่อไป Billing
-
-Matter อาจเปลี่ยนเป็น On Hold และกลับเป็น Active ได้ตามการอนุมัติ หาก Client,
-คู่กรณี ขอบเขตงาน หรือผู้รับผิดชอบเปลี่ยน ต้องตรวจ Conflict, Risk และ Commercial
-Readiness ใหม่ตามผลกระทบ
-
-## Completion Gate
-
-ก่อนอนุมัติปิด Matter ต้องตรวจอย่างน้อย:
-
-- งานและเอกสารส่งมอบตามขอบเขตเสร็จแล้ว
-- ไม่มี Task, นัดหมาย, ลายเซ็น หรือกำหนดเวลาสำคัญที่ยังค้างโดยไม่มีผู้รับผิดชอบ
-- Time Entry, Invoice, Payment, Deposit, Retainer และยอดค้างได้รับการตรวจโดย Finance
-- Document index, final correspondence, Client property และรายชื่อผู้เข้าถึงครบ
-- ระบุ Retention Policy ที่ใช้ และตรวจ Legal Hold แล้ว
-- Manager อนุมัติการปิด โดยผู้เตรียมรายการไม่อนุมัติคำขอของตนเอง
-
-## Important Outcomes
-
-| เหตุการณ์ | ผลลัพธ์ |
-| --- | --- |
-| Client หรือ Matter ซ้ำ | ใช้รายการเดิม หรือให้ Manager อนุมัติเหตุผลก่อนสร้างใหม่ |
-| Conflict/Risk ไม่ผ่าน | ยุติการรับงานและเก็บเหตุผลกับหลักฐานการตัดสินใจ |
-| ใบเสนอราคาต้องแก้ | สร้าง Revision และผ่านการอนุมัติใหม่ก่อนส่ง Client |
-| Client ปฏิเสธหรือใบเสนอราคาหมดอายุ | ไม่เปิด Matter เป็น Active และเก็บประวัติเดิม |
-| ขอบเขตงานเปลี่ยน | ตรวจ Conflict/Risk และ Commercial Readiness ตามผลกระทบ |
-| ยอดชำระไม่ตรงหรือยังค้าง | Finance ติดตามหรือดำเนินการตามข้อยกเว้นก่อนส่งปิด Matter |
-| มี Legal Hold | ปิด Matter ได้ตามผลอนุมัติ แต่ห้ามทำลายหลักฐานจนกว่าจะยกเลิก Hold |

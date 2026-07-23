@@ -24,6 +24,76 @@ code.text-\[\.9em\] {
   font-size: 14px;
 }
 
+.workflow-mermaid-page {
+  margin-top: 2rem;
+}
+
+.workflow-timeline {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;
+  margin: 1.5rem 0 3rem;
+  padding: 0;
+  list-style: none;
+}
+
+.workflow-timeline li {
+  position: relative;
+  min-width: 0;
+}
+
+.workflow-timeline li:not(:last-child)::after {
+  position: absolute;
+  top: 1.25rem;
+  left: calc(50% + 1.25rem);
+  width: calc(100% - 2.5rem);
+  height: 2px;
+  background: color-mix(in srgb, #2563eb 42%, transparent);
+  content: '';
+}
+
+.workflow-timeline a {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.65rem;
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+}
+
+.workflow-timeline strong {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 2px solid #2563eb;
+  border-radius: 50%;
+  background: var(--nextra-bg);
+  color: #2563eb;
+  font-size: 1rem;
+  place-items: center;
+}
+
+.workflow-timeline span {
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.workflow-mermaid-phase {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+}
+
+.workflow-mermaid-page svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
 /* Keep SOP tables scannable without centering long-form operational text. */
 article main table th {
   text-align: center;
@@ -47,6 +117,36 @@ article main table td {
 
   .home-content .hide-small {
     display: none;
+  }
+
+  .workflow-timeline {
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-bottom: 2rem;
+  }
+
+  .workflow-timeline li {
+    min-height: 4.25rem;
+  }
+
+  .workflow-timeline li:not(:last-child)::after {
+    top: 2.5rem;
+    right: auto;
+    bottom: 0;
+    left: 1.2rem;
+    width: 2px;
+    height: calc(100% - 2.5rem);
+  }
+
+  .workflow-timeline a {
+    align-items: center;
+    flex-direction: row;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .workflow-timeline span {
+    font-size: 0.95rem;
   }
 }
 
@@ -84,6 +184,34 @@ article main table td {
     max-width: none !important;
     margin: 0 !important;
     padding: 0 !important;
+  }
+
+  .workflow-mermaid-page {
+    margin-top: 8mm;
+  }
+
+  .workflow-timeline {
+    margin: 5mm 0 10mm;
+  }
+
+  .workflow-timeline strong {
+    background: #fff;
+  }
+
+  .workflow-timeline span {
+    font-size: 7.5pt;
+  }
+
+  .workflow-mermaid-phase {
+    break-before: page;
+    break-inside: avoid;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .workflow-mermaid-page svg {
+    max-height: 205mm;
   }
 }
 

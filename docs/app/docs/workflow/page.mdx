@@ -1,11 +1,187 @@
-import { BusinessWorkflow } from '@components/business-workflow'
-
 # End-to-End Legal Service Workflow
 
 กระบวนการหลักของ Legal ERP ตั้งแต่สมัครใช้งาน สร้าง Workspace รับลูกความ
 เปิด Matter ออกใบเสนอราคา ดำเนินงาน วางบิล รับชำระ และปิด Matter
 
-<BusinessWorkflow />
+<div className="business-workflow-print workflow-mermaid-page">
+
+## ภาพรวมกระบวนการ
+
+<ol className="workflow-timeline" aria-label="ภาพรวมกระบวนการ 7 ขั้นตอน">
+  <li><a href="#1-สมัครและเปิดใช้งาน"><strong>1</strong><span>สมัครใช้งาน</span></a></li>
+  <li><a href="#2-จัดการ-client"><strong>2</strong><span>จัดการ Client</span></a></li>
+  <li><a href="#3-ประเมินการรับงาน"><strong>3</strong><span>ประเมินรับงาน</span></a></li>
+  <li><a href="#4-ตกลงราคาและขอบเขต"><strong>4</strong><span>เสนอราคา</span></a></li>
+  <li><a href="#5-เปิดและดำเนินงาน"><strong>5</strong><span>ดำเนินงาน</span></a></li>
+  <li><a href="#6-วางบิลและรับชำระ"><strong>6</strong><span>วางบิล</span></a></li>
+  <li><a href="#7-ปิด-matter-และเก็บรักษาหลักฐาน"><strong>7</strong><span>ปิด Matter</span></a></li>
+</ol>
+
+<section className="workflow-mermaid-phase">
+
+## 1. สมัครและเปิดใช้งาน
+
+สร้าง Workspace ที่พร้อมให้ทีมเริ่มทำงาน
+
+```mermaid
+flowchart TD
+  A["1.1 สร้างบัญชี"] --> B["1.2 เลือกแผนใช้งาน"]
+  B --> C{"แผนที่เลือกต้องชำระเงินหรือไม่"}
+  C -->|ไม่ต้องชำระ| D["เปิด Workspace"]
+  C -->|ต้องชำระ| E["ชำระเงินตามแผน"]
+  E --> F{"ชำระเงินสำเร็จหรือไม่"}
+  F -->|ไม่สำเร็จ| G["แก้ไขข้อมูลและชำระใหม่"]
+  G --> E
+  F -->|สำเร็จ| D
+  D --> H["เชิญทีมและกำหนดสิทธิ์"]
+  H --> R["ผลลัพธ์: Workspace พร้อมใช้งาน"]
+```
+
+รายละเอียด: [Signup, Subscription & Access](/docs/plans/subscription-access)
+
+</section>
+
+<section className="workflow-mermaid-phase">
+
+## 2. จัดการ Client
+
+ยืนยันข้อมูลลูกความก่อนสร้างแฟ้มงานกฎหมาย
+
+```mermaid
+flowchart TD
+  A["2.1 ค้นหาข้อมูล Client"] --> B{"พบข้อมูล Client หรือไม่"}
+  B -->|มีข้อมูล| C["เลือก Client เดิม"]
+  B -->|ไม่มีข้อมูล| D["ลงทะเบียน Client ใหม่"]
+  C --> E["ตรวจสอบข้อมูลให้พร้อมใช้งาน"]
+  D --> E
+  E --> R["ผลลัพธ์: Client พร้อมเชื่อมกับ Matter"]
+```
+
+รายละเอียด: [Client Registration & Maintenance](/docs/sops/client-registration)
+
+</section>
+
+<section className="workflow-mermaid-phase">
+
+## 3. ประเมินการรับงาน
+
+ตรวจความซ้ำซ้อน ผลประโยชน์ขัดกัน และความเสี่ยง
+
+```mermaid
+flowchart TD
+  A["3.1 สร้าง Matter เป็น Intake Draft"] --> B["3.2 ตรวจ Matter ซ้ำ"]
+  B --> C["3.3 ตรวจ Conflict และประเมิน Risk"]
+  C --> D{"Conflict และ Risk ผ่านการอนุมัติหรือไม่"}
+  D -->|ผ่าน| E["อนุมัติรับงาน"]
+  D -->|ต้องทบทวน| F["Manager ตรวจเหตุผลและมาตรการ"]
+  F --> G{"อนุมัติหรือไม่"}
+  G -->|อนุมัติ| E
+  G -->|ไม่อนุมัติ| H["ยุติการรับงานและเก็บเหตุผล"]
+  D -->|ไม่ผ่าน| H
+  E --> R["ผลลัพธ์: พร้อมจัดทำข้อเสนอ"]
+```
+
+รายละเอียด: [Matter Intake & Opening](/docs/sops/matter-intake)
+
+</section>
+
+<section className="workflow-mermaid-phase">
+
+## 4. ตกลงราคาและขอบเขต
+
+ทำให้ราคา ขอบเขต และการยอมรับของ Client ตรวจสอบย้อนหลังได้
+
+```mermaid
+flowchart TD
+  A["4.1 จัดทำใบเสนอราคา"] --> B["4.2 อนุมัติราคาและเงื่อนไข"]
+  B --> C["4.3 ส่งให้ Client"]
+  C --> D{"Client ตอบรับใบเสนอราคาอย่างไร"}
+  D -->|ยอมรับ| E["บันทึก Accepted หรือ Signed Engagement"]
+  D -->|ขอแก้ไข| F["สร้าง Revision"]
+  F --> B
+  D -->|ปฏิเสธหรือหมดอายุ| G["ยุติรายการและเก็บประวัติเดิม"]
+  E --> R["ผลลัพธ์: ยืนยัน Commercial Readiness"]
+```
+
+รายละเอียด: [Quotation & Engagement Approval](/docs/sops/quotation-engagement)
+
+</section>
+
+<section className="workflow-mermaid-phase">
+
+## 5. เปิดและดำเนินงาน
+
+ใช้ Matter เป็นศูนย์กลางของทีม งาน นัดหมาย เอกสาร และเวลา
+
+```mermaid
+flowchart TD
+  A["5.1 เปิด Matter เป็น Active"] --> B["5.2 มอบหมาย Lawyer และทีม"]
+  B --> C["5.3 ดำเนินงาน เอกสาร นัดหมาย และเวลา"]
+  C --> D{"งานตามขอบเขตเสร็จหรือไม่"}
+  D -->|เสร็จแล้ว| R["ผลลัพธ์: อนุมัติ Matter เป็น Completed"]
+  D -->|ยังไม่เสร็จ| E{"ข้อมูลสำคัญเปลี่ยนหรือต้องพักงานหรือไม่"}
+  E -->|ไม่เปลี่ยน| C
+  E -->|ข้อมูลสำคัญเปลี่ยน| F["ตรวจ Conflict, Risk และ Commercial Readiness ใหม่"]
+  F --> G{"ผ่านการอนุมัติหรือไม่"}
+  G -->|ผ่าน| C
+  G -->|ไม่ผ่าน| H["หยุดงานและส่งให้ Manager ตัดสินใจ"]
+  E -->|ต้องพักงาน| I["อนุมัติ On Hold"]
+  I --> J["แก้เงื่อนไขและอนุมัติ Resume"]
+  J --> C
+```
+
+รายละเอียด: [Matter Operations & Closure](/docs/sops/matter-operations)
+
+</section>
+
+<section className="workflow-mermaid-phase">
+
+## 6. วางบิลและรับชำระ
+
+ออกใบแจ้งหนี้ รับเงิน และยืนยันยอดก่อนส่งปิด Matter
+
+```mermaid
+flowchart TD
+  A["6.1 ออกใบแจ้งหนี้"] --> B["6.2 หักเงินมัดจำหรือ Retainer"]
+  B --> C["6.3 รับและจัดสรร Payment"]
+  C --> D{"ยอดชำระและหลักฐานครบถ้วนถูกต้องหรือไม่"}
+  D -->|ครบและถูกต้อง| E["Finance ยืนยัน Paid"]
+  D -->|ยังชำระไม่ครบ| F["ติดตามยอดค้าง"]
+  F --> C
+  D -->|ยอดหรือหลักฐานไม่ตรง| G["ตรวจสาเหตุและปรับปรุงตามสิทธิ์"]
+  G --> C
+  E --> R["ผลลัพธ์: ส่งข้อมูลที่ยืนยันแล้วไป Closure Checklist"]
+```
+
+รายละเอียด: [Invoice, Payment & Adjustment](/docs/sops/invoice-payment)
+
+</section>
+
+<section className="workflow-mermaid-phase">
+
+## 7. ปิด Matter และเก็บรักษาหลักฐาน
+
+ตรวจความครบถ้วนก่อนจำกัดการทำรายการและเริ่ม Retention
+
+```mermaid
+flowchart TD
+  A["7.1 ตรวจงาน เอกสาร เวลา และการเงิน"] --> B["7.2 ตรวจ Access, Retention และ Legal Hold"]
+  B --> C{"Closure Checklist ครบและได้รับอนุมัติหรือไม่"}
+  C -->|ยังไม่ครบ| D["แก้รายการค้าง"]
+  D --> A
+  C -->|ครบและอนุมัติ| E["เปลี่ยน Matter เป็น Closed"]
+  E --> F{"มี Legal Hold หรือไม่"}
+  F -->|ไม่มี| G["Archive ตาม Retention Policy"]
+  F -->|มี| H["บันทึกขอบเขต Hold และห้ามทำลายหลักฐาน"]
+  G --> R["ผลลัพธ์: Matter ปิดและเข้าสู่ Retention"]
+  H --> S["ผลลัพธ์: Matter ปิดและรักษาหลักฐานตาม Hold"]
+```
+
+รายละเอียด: [Matter Operations & Closure](/docs/sops/matter-operations)
+
+</section>
+
+</div>
 
 ## Work Execution
 

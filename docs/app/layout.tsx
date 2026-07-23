@@ -9,39 +9,39 @@ const productionUrl = 'https://legal-erp-docs.vercel.app'
 
 export const metadata: Metadata = {
   description:
-    'Documentation for Legal ERP workflows, modules, and administration.',
+    'Documentation for Legal Practice ERP Platform workflows, modules, and administration.',
   metadataBase: new URL(productionUrl),
   keywords: [
-    'Legal ERP',
+    'Legal Practice ERP Platform',
     'legal operations',
     'case management',
     'matter management',
     'documentation'
   ],
   generator: 'Next.js',
-  applicationName: 'Legal ERP Documentation',
+  applicationName: 'Legal Practice ERP Platform Documentation',
   appleWebApp: {
-    title: 'Legal ERP Documentation'
+    title: 'Legal Practice ERP Platform Documentation'
   },
   title: {
-    default: 'Legal ERP Documentation',
-    template: '%s | Legal ERP Documentation'
+    default: 'Legal Practice ERP Platform Documentation',
+    template: '%s | Legal Practice ERP Platform Documentation'
   },
   openGraph: {
     url: './',
-    title: 'Legal ERP Documentation',
+    title: 'Legal Practice ERP Platform Documentation',
     description:
-      'Documentation for Legal ERP workflows, modules, and administration.',
-    siteName: 'Legal ERP Documentation',
+      'Documentation for Legal Practice ERP Platform workflows, modules, and administration.',
+    siteName: 'Legal Practice ERP Platform Documentation',
     images: ['/opengraph-image'],
     locale: 'th_TH',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Legal ERP Documentation',
+    title: 'Legal Practice ERP Platform Documentation',
     description:
-      'Documentation for Legal ERP workflows, modules, and administration.',
+      'Documentation for Legal Practice ERP Platform workflows, modules, and administration.',
     images: ['/opengraph-image']
   },
   other: {
@@ -55,8 +55,8 @@ export const metadata: Metadata = {
 const navbar = (
   <Navbar
     logo={
-      <span className="x:font-semibold x:tracking-normal">
-        Legal ERP Documentation
+      <span className="x:text-sm x:font-semibold x:tracking-normal x:sm:text-base">
+        Legal Practice ERP Platform Documentation
       </span>
     }
   />
@@ -65,7 +65,7 @@ const navbar = (
 const footer = (
   <Footer>
     <p className="text-xs">
-      © {new Date().getFullYear()} Legal ERP Documentation.
+      © {new Date().getFullYear()} Legal Practice ERP Platform Documentation.
     </p>
   </Footer>
 )

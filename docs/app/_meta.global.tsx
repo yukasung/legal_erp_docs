@@ -13,7 +13,7 @@ export default {
   },
   docs: {
     type: 'page',
-    title: 'Legal ERP Platform',
+    title: 'Legal Practice ERP Platform',
     href: '/docs',
     items: {
       index: 'Overview',
@@ -36,46 +36,6 @@ export default {
           roles: 'User Roles',
           'role-mapping': 'Role Mapping',
           permissions: 'Permissions'
-        }
-      },
-      sops: {
-        title: 'SOPs',
-        items: {
-          index: 'Overview',
-          'client-registration': 'Client Registration & Maintenance',
-          'client-portal': 'Client Portal & Feedback Management',
-          'matter-lifecycle': 'Matter Lifecycle & Approvals',
-          'matter-intake': 'Matter Intake & Opening',
-          'matter-operations': 'Matter Operations & Closure',
-          'document-management': 'Document & Template Management',
-          'task-calendar': 'Task & Calendar Management',
-          'time-tracking': 'Time Tracking & Timesheet Approval',
-          'quotation-engagement': 'Quotation & Engagement Approval',
-          'invoice-payment': 'Invoice, Payment & Adjustment',
-          'finance-foundation': 'Finance Foundation & Period Control',
-          'personnel-lifecycle': 'Personnel Lifecycle & Employee Data',
-          'payroll-leave': 'Payroll & Leave Management',
-          'tenant-onboarding': 'Tenant Onboarding & Package',
-          'shared-master-data': 'Shared Master Data Management',
-          'platform-operations': 'Platform Monitoring, Backup & Recovery',
-          'api-integration': 'API & Integration Lifecycle',
-          'access-management': 'User, Role & Access Management',
-          'security-privacy': 'Security & Privacy Compliance',
-          'service-support': 'Service Support & Communications',
-          'reports-audit': 'Reports, Export & Audit Review',
-          'retention-disposal': 'Retention & Disposal',
-          governance: {
-            title: 'Governance & Assurance',
-            items: {
-              'master-register': 'SOP Master Register',
-              'traceability-matrix': 'Requirements Traceability',
-              'role-permission-alignment': 'Role & Permission Alignment',
-              'forms-evidence-templates': 'Forms & Evidence Templates',
-              'exception-escalation': 'Exception & Escalation',
-              'terminology-status-standard': 'Terminology & Status Standard',
-              'uat-test-cases': 'UAT Scenarios & Test Cases'
-            }
-          }
         }
       },
       modules: {

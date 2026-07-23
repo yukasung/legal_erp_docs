@@ -1,6 +1,6 @@
 # Technology Stack
 
-หน้านี้สรุปเทคโนโลยีของระบบ Legal ERP และบริการที่ต้องเลือกก่อนเปิดใช้งานจริง
+หน้านี้สรุปเทคโนโลยีของระบบ Legal Practice ERP Platform และบริการที่ต้องเลือกก่อนเปิดใช้งานจริง
 ระบบใช้ Google Cloud Platform เป็น Cloud Platform หลัก
 
 ## System Overview
@@ -34,7 +34,7 @@ flowchart TB
 
 ## PostgreSQL Capabilities
 
-| ความสามารถ               | การใช้งานใน Legal ERP                                                                          |
+| ความสามารถ               | การใช้งานใน Legal Practice ERP Platform                                                                          |
 | :----------------------- | :--------------------------------------------------------------------------------------------- |
 | Row-Level Security       | บังคับขอบเขตข้อมูลตาม Workspace เป็นชั้นป้องกันเพิ่มเติมจาก Django permission และ query filter |
 | Declarative Partitioning | แบ่งเฉพาะตารางขนาดใหญ่ตามช่วงเวลาเมื่อมีผลวัดรองรับ ไม่สร้าง partition แยกตาม Workspace        |
@@ -90,7 +90,7 @@ Production**
 - Kubernetes/GKE จนกว่าจะมีข้อกำหนดที่ Cloud Run รองรับไม่ได้
 - External search engine จนกว่าจะมีผลวัดจาก PostgreSQL search
 - AI provider จนกว่าจะมี use case, data policy และ approval ที่ชัดเจน
-- Marketing automation และ marketing analytics ไม่ใช่ส่วนของระบบ Legal ERP
+- Marketing automation และ marketing analytics ไม่ใช่ส่วนของระบบ Legal Practice ERP Platform
 
 ## Related Documents
 
@@ -100,5 +100,3 @@ Production**
 - [Development Rules](/docs/development/rules)
 - [Database](/docs/database)
 - [API](/docs/api)
-- [Platform Monitoring, Backup & Recovery](/docs/sops/platform-operations)
-- [Security & Privacy Compliance](/docs/sops/security-privacy)

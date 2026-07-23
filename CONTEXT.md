@@ -1,14 +1,14 @@
-# Legal ERP Platform
+# Legal Practice ERP Platform
 
-ไฟล์นี้กำหนดภาษากลางและคำศัพท์หลักสำหรับ Legal ERP Platform เพื่อใช้อ้างอิงเมื่อ
+ไฟล์นี้กำหนดภาษากลางและคำศัพท์หลักสำหรับ Legal Practice ERP Platform เพื่อใช้อ้างอิงเมื่อ
 แปลง requirement source files เป็นเอกสารเผยแพร่ คำศัพท์ควรอ่านเข้าใจได้ทั้งทีม
 ธุรกิจ ทีมเอกสาร ทีมออกแบบ และทีมพัฒนา
 
 ## Language
 
-**Legal ERP Platform**: ชื่อระบบอย่างเป็นทางการสำหรับระบบบริหารงานกฎหมาย โดยมี
-`Matter` เป็นแฟ้มงานหลัก _Avoid_: MatterSolv, MatterSlov, Legal ERP, End-to-End
-Digital Legal Practice Management Platform
+**Legal Practice ERP Platform**: ชื่อระบบอย่างเป็นทางการสำหรับระบบบริหารงานกฎหมาย โดยมี
+`Matter` เป็นแฟ้มงานหลัก _Avoid_: MatterSolv, MatterSlov และ End-to-End Digital
+Legal Practice Management Platform
 
 **Tenant**: สำนักงานกฎหมายหรือองค์กรหนึ่งแห่งที่ใช้ระบบ ข้อมูลขององค์กรนี้ต้อง
 แยกจากองค์กรอื่น _Avoid_: BU, office account
@@ -89,7 +89,7 @@ Accounting
 **Audit Log**: ประวัติว่าใครทำอะไร กับข้อมูลใด ในองค์กรใด และทำเมื่อไร _Avoid_:
 Activity feed เมื่อหมายถึงหลักฐาน audit
 
-**External Integration**: จุดที่ Legal ERP Platform เชื่อมกับระบบอื่น เช่น
+**External Integration**: จุดที่ Legal Practice ERP Platform เชื่อมกับระบบอื่น เช่น
 e-signature, payment gateway, accounting system หรือ government service _Avoid_:
 Plugin
 

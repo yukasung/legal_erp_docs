@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 
-export const alt = 'Legal ERP Documentation'
+export const alt = 'Legal Practice ERP Platform Documentation'
 export const contentType = 'image/png'
 export const size = {
   width: 1200,
@@ -22,7 +22,7 @@ export default function OpenGraphImage() {
         width: '100%'
       }}
     >
-      <div style={{ alignItems: 'center', display: 'flex', gap: 48 }}>
+        <div style={{ alignItems: 'center', display: 'flex', gap: 36 }}>
         <div
           style={{
             alignItems: 'center',
@@ -40,17 +40,24 @@ export default function OpenGraphImage() {
         >
           LE
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 18,
+            width: 780
+          }}
+        >
           <div
             style={{
               color: '#f8fafc',
-              fontSize: 86,
+              fontSize: 58,
               fontWeight: 800,
               letterSpacing: 0,
               lineHeight: 1
             }}
           >
-            Legal ERP Documentation
+            Legal Practice ERP Platform Documentation
           </div>
           <div style={{ color: '#cbd5e1', fontSize: 34, letterSpacing: 0 }}>
             Workflows, modules, and administration

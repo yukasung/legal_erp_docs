@@ -28,6 +28,11 @@ code.text-\[\.9em\] {
   margin-top: 2rem;
 }
 
+.workflow-mermaid-page h2 {
+  border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent) !important;
+  padding-bottom: 0.2rem !important;
+}
+
 .workflow-timeline {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -84,7 +89,6 @@ code.text-\[\.9em\] {
 .workflow-mermaid-phase {
   margin-top: 3rem;
   padding-top: 1rem;
-  border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent);
 }
 
 .workflow-mermaid-page svg {
@@ -94,7 +98,14 @@ code.text-\[\.9em\] {
   margin-inline: auto;
 }
 
-/* Keep SOP tables scannable without centering long-form operational text. */
+.workflow-step-explanation-title {
+  margin-top: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Keep documentation tables scannable without centering long-form text. */
 article main table th {
   text-align: center;
   vertical-align: middle;
@@ -191,7 +202,7 @@ article main table td {
   }
 
   .workflow-timeline {
-    margin: 5mm 0 10mm;
+    margin: 5mm 0 4mm;
   }
 
   .workflow-timeline strong {
@@ -203,15 +214,57 @@ article main table td {
   }
 
   .workflow-mermaid-phase {
-    break-before: page;
     break-inside: avoid;
     margin-top: 0;
     padding-top: 0;
     border-top: 0;
   }
 
+  .workflow-mermaid-phase + .workflow-mermaid-phase {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .workflow-mermaid-phase:first-of-type {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  .workflow-mermaid-phase:first-of-type h2 {
+    margin-top: 2mm !important;
+  }
+
+  .workflow-mermaid-phase:first-of-type > p:not(.workflow-step-explanation-title) {
+    margin: 1mm 0;
+  }
+
+  .workflow-mermaid-phase:first-of-type ol {
+    margin-top: 1mm;
+    font-size: 8.5pt;
+    line-height: 1.2;
+  }
+
   .workflow-mermaid-page svg {
-    max-height: 205mm;
+    width: auto !important;
+    max-width: 100%;
+    height: 100mm !important;
+    max-height: 100mm;
+  }
+
+  .workflow-mermaid-phase:first-of-type svg {
+    height: 105mm !important;
+    max-height: 105mm;
+  }
+
+  .workflow-mermaid-phase:first-of-type .workflow-step-explanation-title {
+    margin: 1mm 0;
+    font-size: 10pt;
+  }
+
+  .workflow-step-explanation-title {
+    margin: 2mm 0 1.5mm;
+    font-size: 11pt;
+    line-height: 1.2;
   }
 }
 

@@ -5,11 +5,10 @@
 
 ## System Overview
 
-<div aria-label="Technology stack system overview" style={{ overflowX: 'auto' }}>
-  <div style={{ minWidth: 760 }}>
+<div aria-label="Technology stack system overview">
 
 ```mermaid
-flowchart LR
+flowchart TB
   User["User via Browser"] --> Frontend["Frontend<br/>React + Tailwind CSS"]
   Frontend --> Backend["Backend API<br/>Django on Cloud Run (pending)"]
 
@@ -21,7 +20,6 @@ flowchart LR
   Backend --> Monitor["Cloud Monitoring / Logging"]
 ```
 
-  </div>
 </div>
 
 ## Core Application
@@ -74,21 +72,8 @@ location และการรองรับประเทศไทยก่�
 
 ## Delivery and Security
 
-<div aria-label="Delivery flow" style={{ overflowX: 'auto' }}>
-  <div style={{ minWidth: 720 }}>
-
-```mermaid
-flowchart LR
-  GitHub["GitHub"] --> Actions["GitHub Actions<br/>Test and Build"]
-  Actions --> Registry["Artifact Registry"]
-  Registry --> Deploy{"Deployment"}
-  Deploy --> Development["Development"]
-  Deploy --> Staging["Staging"]
-  Deploy --> Production["Production"]
-```
-
-  </div>
-</div>
+**GitHub → GitHub Actions → Artifact Registry → Development / Staging /
+Production**
 
 - ใช้ GitHub Actions สำหรับ test และ deployment โดยไม่เก็บ long-lived cloud key
   ใน repository
@@ -110,7 +95,9 @@ flowchart LR
 ## Related Documents
 
 - [Architecture](/docs/architecture)
-- [Development Rules](/docs/architecture/development-rules)
+- [Development Workflow](/docs/development/workflow)
+- [Scalability & Capacity](/docs/architecture/scalability-capacity)
+- [Development Rules](/docs/development/rules)
 - [Database](/docs/database)
 - [API](/docs/api)
 - [Platform Monitoring, Backup & Recovery](/docs/sops/platform-operations)

@@ -69,6 +69,31 @@ Posted Invoice, allocated Payment และ issued Receipt ห้ามแก้
 - Record type, original record ID, amount, reason, evidence, requester, approver
   และ effective date
 
+## Workflow
+
+<div aria-label="Invoice and payment workflow">
+
+```mermaid
+flowchart TB
+  Trigger["ถึง Milestone รอบวางบิล หรืองานเสร็จ"] --> Prepare["จัดทำ Invoice จากเงื่อนไขที่อนุมัติ"]
+  Prepare --> Validate{"Client Matter รายการ ภาษี และยอดรวมถูกต้องหรือไม่"}
+  Validate -->|"ไม่ถูกต้อง"| Prepare
+  Validate -->|"ถูกต้อง"| Post["อนุมัติและ Post Invoice"]
+  Post --> Deposit{"มีเงินมัดจำหรือ Retainer ที่ใช้ได้หรือไม่"}
+  Deposit -->|"มี"| ApplyDeposit["หักและบันทึกยอดที่ใช้"]
+  Deposit -->|"ไม่มี"| Outstanding["ติดตามยอดคงเหลือ"]
+  ApplyDeposit --> Outstanding
+  Outstanding --> Payment["รับและจัดสรร Payment ให้ Invoice"]
+  Payment --> Reconcile{"ยอด เงิน สกุลเงิน และหลักฐานตรงกันหรือไม่"}
+  Reconcile -->|"ไม่ตรง"| Investigate["ตรวจสอบและทำ Adjustment Void Reverse หรือ Refund ตามสิทธิ์"]
+  Investigate --> Outstanding
+  Reconcile -->|"ตรง"| Paid{"ชำระครบหรือไม่"}
+  Paid -->|"ยังไม่ครบ"| Outstanding
+  Paid -->|"ครบ"| Confirm["Finance ยืนยัน Paid และส่งผลไป Closure Checklist"]
+```
+
+</div>
+
 ## Procedure
 
 ### 1. Prepare and Post an Invoice

@@ -50,6 +50,43 @@ article main table td {
   }
 }
 
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm;
+  }
+
+  body:has(.business-workflow-print) {
+    background: #fff;
+  }
+
+  body:has(.business-workflow-print) > header,
+  body:has(.business-workflow-print) aside,
+  body:has(.business-workflow-print) nav,
+  body:has(.business-workflow-print) footer,
+  body:has(.business-workflow-print) button {
+    display: none !important;
+  }
+
+  body:has(.business-workflow-print) article {
+    width: 100% !important;
+    max-width: none !important;
+    grid-column: 1 / -1 !important;
+    margin: 0 !important;
+  }
+
+  body:has(.business-workflow-print) article > :not(main) {
+    display: none !important;
+  }
+
+  body:has(.business-workflow-print) article main {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
 /* adds labels to the sidebar links */
 .badge-new {
   @apply dark:after:border-blue-200/30 dark:after:bg-blue-900/30 dark:after:text-blue-200;

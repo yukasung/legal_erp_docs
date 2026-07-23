@@ -17,6 +17,8 @@ Membership ตรวจว่าผู้ใช้นั้นทำอะไร
 
 ## Signup Flow
 
+<div aria-label="Signup and subscription flow">
+
 ```mermaid
 flowchart TD
   CreateUser["สร้างบัญชีและยืนยันอีเมล"]
@@ -33,6 +35,8 @@ flowchart TD
   SelectPlan -->|"แผนเสียเงิน"| Checkout --> Webhook --> Active
   Active --> Invite
 ```
+
+</div>
 
 ทุกการสมัครใช้ flow เดียวกัน ผู้สมัครเป็น Owner และสมาชิกคนแรกของ Workspace
 

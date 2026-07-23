@@ -1,0 +1,43 @@
+import { BusinessWorkflow } from '@components/business-workflow'
+
+# End-to-End Legal Service Workflow
+
+กระบวนการหลักของ Legal ERP ตั้งแต่สมัครใช้งาน สร้าง Workspace รับลูกความ
+เปิด Matter ออกใบเสนอราคา ดำเนินงาน วางบิล รับชำระ และปิด Matter
+
+<BusinessWorkflow />
+
+## Work Execution
+
+ระหว่าง Matter เป็น Active ให้ใช้รายการเดียวกันเป็นศูนย์กลางของข้อมูลทั้งหมด:
+
+- [Document & Template Management](/docs/sops/document-management) สำหรับเอกสารและการอนุมัติ
+- [Task & Calendar Management](/docs/sops/task-calendar) สำหรับงาน ผู้รับผิดชอบ และนัดหมาย
+- [Time Tracking & Timesheet Approval](/docs/sops/time-tracking) สำหรับเวลาทำงานและข้อมูลที่ส่งต่อไป Billing
+
+Matter อาจเปลี่ยนเป็น On Hold และกลับเป็น Active ได้ตามการอนุมัติ หาก Client,
+คู่กรณี ขอบเขตงาน หรือผู้รับผิดชอบเปลี่ยน ต้องตรวจ Conflict, Risk และ Commercial
+Readiness ใหม่ตามผลกระทบ
+
+## Completion Gate
+
+ก่อนอนุมัติปิด Matter ต้องตรวจอย่างน้อย:
+
+- งานและเอกสารส่งมอบตามขอบเขตเสร็จแล้ว
+- ไม่มี Task, นัดหมาย, ลายเซ็น หรือกำหนดเวลาสำคัญที่ยังค้างโดยไม่มีผู้รับผิดชอบ
+- Time Entry, Invoice, Payment, Deposit, Retainer และยอดค้างได้รับการตรวจโดย Finance
+- Document index, final correspondence, Client property และรายชื่อผู้เข้าถึงครบ
+- ระบุ Retention Policy ที่ใช้ และตรวจ Legal Hold แล้ว
+- Manager อนุมัติการปิด โดยผู้เตรียมรายการไม่อนุมัติคำขอของตนเอง
+
+## Important Outcomes
+
+| เหตุการณ์ | ผลลัพธ์ |
+| --- | --- |
+| Client หรือ Matter ซ้ำ | ใช้รายการเดิม หรือให้ Manager อนุมัติเหตุผลก่อนสร้างใหม่ |
+| Conflict/Risk ไม่ผ่าน | ยุติการรับงานและเก็บเหตุผลกับหลักฐานการตัดสินใจ |
+| ใบเสนอราคาต้องแก้ | สร้าง Revision และผ่านการอนุมัติใหม่ก่อนส่ง Client |
+| Client ปฏิเสธหรือใบเสนอราคาหมดอายุ | ไม่เปิด Matter เป็น Active และเก็บประวัติเดิม |
+| ขอบเขตงานเปลี่ยน | ตรวจ Conflict/Risk และ Commercial Readiness ตามผลกระทบ |
+| ยอดชำระไม่ตรงหรือยังค้าง | Finance ติดตามหรือดำเนินการตามข้อยกเว้นก่อนส่งปิด Matter |
+| มี Legal Hold | ปิด Matter ได้ตามผลอนุมัติ แต่ห้ามทำลายหลักฐานจนกว่าจะยกเลิก Hold |

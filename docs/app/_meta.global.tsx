@@ -18,6 +18,7 @@ export default {
     items: {
       index: 'Overview',
       scope: 'Scope',
+      workflow: 'Business Workflow',
       plans: {
         title: 'Plans & Pricing',
         items: {
@@ -98,7 +99,14 @@ export default {
         items: {
           index: 'Overview',
           'technology-stack': 'Technology Stack',
-          'development-rules': 'Development Rules'
+          'scalability-capacity': 'Scalability & Capacity'
+        }
+      },
+      development: {
+        title: 'Development',
+        items: {
+          workflow: 'Development Workflow',
+          rules: 'Development Rules'
         }
       },
       database: {

@@ -1,9 +1,11 @@
-import { getEnhancedPageMap } from '@components/get-page-map'
 import type { Metadata } from 'next'
 import { Footer, Layout, Navbar } from 'nextra-theme-docs'
 import { Head } from 'nextra/components'
+import { getPageMap } from 'nextra/page-map'
 import type { FC } from 'react'
 import './globals.css'
+
+export const dynamic = 'force-dynamic'
 
 const productionUrl = 'https://legal-erp-docs.vercel.app'
 
@@ -71,21 +73,21 @@ const footer = (
 )
 
 const RootLayout: FC<LayoutProps<'/'>> = async ({ children }) => {
-  const pageMap = await getEnhancedPageMap()
+  const resolvedChildren = await children
+  const pageMap = await getPageMap()
   return (
     <html lang="th" dir="ltr" suppressHydrationWarning>
-      <Head />
       <body>
         <Layout
           navbar={navbar}
           pageMap={pageMap}
           docsRepositoryBase="https://github.com/yukasung/legal_erp_docs/tree/main/docs"
           editLink={null}
-          feedback={{ content: null }}
+          feedback={{ content: <span hidden /> }}
           sidebar={{ defaultMenuCollapseLevel: 1 }}
           footer={footer}
         >
-          {children}
+          {resolvedChildren}
         </Layout>
       </body>
     </html>

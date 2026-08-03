@@ -5,12 +5,9 @@ on:
     branches: [main, v4-v2]
 
 jobs:
-  test:
-    name: Test (${{matrix.os}})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+  docs-build:
+    name: Build documentation
+    runs-on: ubuntu-latest
 
     steps:
       - name: Cancel Previous Runs
@@ -21,29 +18,15 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Cache turbo build setup
-        uses: actions/cache@v4
-        with:
-          path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-          cache: pnpm
+          cache: npm
+          cache-dependency-path: docs/package-lock.json
 
-      - run: pnpm i
+      - run: npm ci
+        working-directory: docs
 
-      - run: pnpm build:all
-
-      - run: pnpm test
-
-      - run: pnpm clean
-
-      - run: pnpm types:check
+      - run: npm run build
+        working-directory: docs

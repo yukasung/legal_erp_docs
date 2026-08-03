@@ -2,6 +2,7 @@
 .next/
 .tsup/
 node_modules/
+.pnpm-store/
 *.log
 dist/
 .turbo/

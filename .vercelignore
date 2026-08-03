@@ -1,13 +1,9 @@
 .git
-.turbo
 .eslintcache
 
 requirements
-examples
-
 **/node_modules
 **/.next
-**/.turbo
 **/dist
 
 docs/public/_pagefind

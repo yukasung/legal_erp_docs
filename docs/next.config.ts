@@ -8,6 +8,12 @@ const withNextra = nextra({
 
 const nextConfig = withNextra({
   reactStrictMode: true,
+  turbopack: {
+    root: process.cwd(),
+    resolveAlias: {
+      'next-mdx-import-source-file': './mdx-components.tsx'
+    }
+  },
   async redirects() {
     return [
       {
@@ -19,37 +25,13 @@ const nextConfig = withNextra({
         source: '/docs/architecture/development-rules',
         destination: '/docs/development/rules',
         permanent: true
+      },
+      {
+        source: '/docs/overview',
+        destination: '/docs',
+        permanent: true
       }
     ]
-  },
-  webpack(config) {
-    // rule.exclude doesn't work starting from Next.js 15
-    const { test: _test, ...imageLoaderOptions } = config.module.rules.find(
-      // @ts-expect-error -- fixme
-      rule => rule.test?.test?.('.svg')
-    )
-    config.module.rules.push({
-      test: /\.svg$/,
-      oneOf: [
-        {
-          resourceQuery: /svgr/,
-          use: ['@svgr/webpack']
-        },
-        imageLoaderOptions
-      ]
-    })
-    return config
-  },
-  turbopack: {
-    rules: {
-      './components/icons/*.svg': {
-        loaders: ['@svgr/webpack'],
-        as: '*.js'
-      }
-    }
-  },
-  experimental: {
-    optimizePackageImports: ['@components/icons']
   }
 })
 

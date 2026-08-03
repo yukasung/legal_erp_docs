@@ -7,10 +7,7 @@ const Section = ({ children }: { children: ReactNode }) => (
 )
 
 export default {
-  index: {
-    type: 'page',
-    display: 'hidden'
-  },
+  index: { type: 'page', display: 'hidden' },
   docs: {
     type: 'page',
     title: 'Legal Practice ERP Platform',
@@ -19,65 +16,14 @@ export default {
       index: 'Overview',
       scope: 'Scope',
       workflow: 'Business Workflow',
-      plans: {
-        title: 'Plans & Pricing',
-        items: {
-          index: 'Overview',
-          pricing: 'Pricing',
-          'subscription-access': 'Signup & Access',
-          'feature-comparison': 'Feature Comparison',
-          'plan-rules': 'Plan Rules'
-        }
-      },
-      roles: {
-        title: 'Roles',
-        items: {
-          index: 'Overview',
-          roles: 'User Roles',
-          'role-mapping': 'Role Mapping',
-          permissions: 'Permissions'
-        }
-      },
-      modules: {
-        title: 'Modules',
-        items: {
-          index: 'Overview',
-          clients: 'Clients',
-          matters: 'Matters',
-          tasks: 'Tasks',
-          documents: 'Documents',
-          billing: 'Billing',
-          finance: 'Finance'
-        }
-      },
-      _technical: {
-        type: 'separator',
-        title: <Section>Technical</Section>
-      },
-      architecture: {
-        title: 'Architecture',
-        items: {
-          index: 'Overview',
-          'technology-stack': 'Technology Stack',
-          'scalability-capacity': 'Scalability & Capacity'
-        }
-      },
-      development: {
-        title: 'Development',
-        items: {
-          workflow: 'Development Workflow',
-          rules: 'Development Rules'
-        }
-      },
-      database: {
-        title: 'Database'
-      },
-      api: {
-        title: 'API'
-      },
-      overview: {
-        display: 'hidden'
-      }
+      plans: { title: 'Plans & Pricing', items: { index: 'Overview', pricing: 'Pricing', 'subscription-access': 'Signup & Access', 'feature-comparison': 'Feature Comparison', 'plan-rules': 'Plan Rules' } },
+      roles: { title: 'Roles', items: { index: 'Overview', roles: 'User Roles', 'role-mapping': 'Role Mapping', permissions: 'Permissions' } },
+      modules: { title: 'Modules', items: { index: 'Overview', clients: 'Clients', matters: 'Matters', tasks: 'Tasks', documents: 'Documents', billing: 'Billing', finance: 'Finance' } },
+      _technical: { type: 'separator', title: <Section>Technical</Section> },
+      architecture: { title: 'Architecture', items: { index: 'Overview', 'technology-stack': 'Technology Stack', 'scalability-capacity': 'Scalability & Capacity' } },
+      development: { title: 'Development', items: { workflow: 'Development Workflow', rules: 'Development Rules' } },
+      database: { title: 'Database' },
+      api: { title: 'API' }
     }
   }
 }

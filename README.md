@@ -1,62 +1,40 @@
-# Nextra
+# Legal Practice ERP Platform Documentation
 
-Simple, powerful and flexible site generation framework with everything you love
-from Next.js.
-
-## Documentation
-
-https://nextra.site
+เอกสารกลางสำหรับทีม Product, Developer และ QA ของ Legal Practice ERP Platform
 
 ## Development
 
-### Installation
+แอปเอกสารเป็น standalone Next.js + Nextra project โดยใช้ npm dependency ที่เผยแพร่บน npm
 
-The Nextra repository uses [PNPM Workspaces](https://pnpm.io/workspaces) and
-[Turborepo](https://github.com/vercel/turborepo).
-
-1. Run `corepack enable` to enable Corepack.
-
-   > If the command above fails, run `npm install -g corepack@latest` to install
-   > the latest version of
-   > [Corepack](https://github.com/nodejs/corepack?tab=readme-ov-file#manual-installs).
-
-2. Run `pnpm install` to install the project's dependencies.
-
-### Build `nextra`
+ติดตั้ง dependency:
 
 ```bash
-pnpm --filter nextra build
+cd docs
+npm install
 ```
 
-Watch mode: `pnpm --filter nextra dev`
-
-### Build `nextra-theme-docs`
+เปิดเอกสารในโหมดพัฒนา:
 
 ```bash
-pnpm --filter nextra-theme-docs build
+npm run dev
 ```
 
-### Development
-
-You can also debug them together with a website locally. For instance, to start
-`examples/docs` locally, run
+ตรวจสอบ production build:
 
 ```bash
-pnpm --filter example-docs dev
+npm run build
 ```
 
-Any change to `example/docs` will be re-rendered instantly.
+เริ่ม production server หลัง build:
 
-If you update the core or theme packages, a rebuild is required. Or you can use
-the watch mode for both Nextra and the theme in separated terminals.
+```bash
+npm run start
+```
 
-## Sponsors
+เนื้อหาเอกสารอยู่ที่ `docs/app/docs/` และสามารถเพิ่มหรือแก้ไขหน้า `.mdx` ได้โดยตรง
 
-<div>
- <a href="https://inkeep.com?utm_source=github&utm_campaign=nextra&utm_content=logolink">
-   <img src="/docs/app/showcase/_logos/inkeep.png" alt="Inkeep - AI Agents that get real work done" width="256">
- </a>
- <a href="https://xyflow.com?utm_source=github&utm_campaign=nextra&utm_content=logolink">
-   <img src="/docs/app/showcase/_logos/xyflow.png" alt="xyflow preview" width="256">
- </a>
-</div>
+## Project Structure
+
+- `docs/` แอปเอกสาร Next.js และหน้าเผยแพร่
+- `requirements/` เอกสารต้นทางและข้อมูลอ้างอิงภายใน
+- `output/pdf/` ไฟล์ PDF ที่สร้างจากเอกสาร Workflow

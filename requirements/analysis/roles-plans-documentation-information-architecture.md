@@ -2,6 +2,29 @@
 
 วันที่กำหนดโครงสร้าง: 15 July 2026
 
+## Verification Note (4 August 2026)
+
+การนำ `Manao Software Project Proposal-Alt Pro-Legal ERP-Phase_1_V1_20260525.pdf`
+ออกจาก source set **ไม่กระทบเอกสารนี้** เพราะ IA ฉบับนี้อ้าง
+`Plans _ Pricing.jpg`, Feature Comparison และ Role & Permission เป็นหลัก
+
+อย่างไรก็ตาม การตรวจสภาพเว็บจริงเมื่อ 4 August 2026 พบว่า **route ที่ implement
+ไม่ตรงกับ DEC-IA-001** ดังนี้
+
+| Route ตาม DEC-IA-001 | สภาพจริง |
+| --- | --- |
+| `/docs/plans/feature-entitlements` | ไม่มี ใช้ `/docs/plans/feature-comparison` แทน |
+| `/docs/plans/entitlement-rules` | ไม่มี ใช้ `/docs/plans/plan-rules` แทน |
+| — | มี `/docs/plans/subscription-access` เพิ่มเข้ามาโดยไม่อยู่ใน DEC-IA-001 |
+
+นอกจากนี้ Approved Top-Level Navigation กำหนดให้มีหมวด **SOPs** เป็นลำดับที่ 3
+แต่เว็บปัจจุบัน **ไม่มีหมวด SOPs และไม่มีไฟล์ใดใน `docs/app/docs/sops/`**
+ทั้งที่เอกสาร cross-reference ในหน้านี้และ `sop-requirement-coverage-audit.md`
+อ้าง SOP-SEC-001, SOP-ADM-001 และฉบับอื่นเป็นหน้าที่เผยแพร่แล้ว
+
+บันทึกนี้เป็นการรายงานผลตรวจเท่านั้น **ยังไม่แก้ DEC-IA-001** การตัดสินว่าจะ
+เปลี่ยน route ให้ตรงเอกสาร หรือแก้เอกสารให้ตรง route เป็นหน้าที่ของ owner
+
 ## Document Control
 
 | Field | Value |

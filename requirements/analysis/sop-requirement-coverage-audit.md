@@ -2,6 +2,26 @@
 
 วันที่ตรวจ: 14 July 2026
 
+## Revision Note (4 August 2026)
+
+`Manao Software Project Proposal-Alt Pro-Legal ERP-Phase_1_V1_20260525.pdf`
+ถูกนำออกจาก `requirements/source/` แล้ว เอกสารนี้จึงถูกปรับให้อ้างเฉพาะ source
+ที่ยังมีอยู่ ผลกระทบ:
+
+- SOP-CLI-002, SOP-ADM-002, SOP-OPS-001, SOP-INT-001, SOP-SEC-002 และ SOP-SUP-001
+  **ยังคงมี source รองรับ** เพราะแต่ละฉบับอ้าง Sub-Module ควบคู่กับ Manao อยู่แล้ว
+  จึงเหลือ Sub-Module เป็น source เดียวหลังการนำออก
+- SOP-HR-003 **ไม่เป็น candidate อีกต่อไป** เนื่องจากข้อความที่ระบุ Attendance
+  Tracking และ Performance Appraisal อยู่ใน Manao เท่านั้น เมื่อนำออกแล้ว
+  ไม่มี source ใดกำหนดสองเรื่องนี้เป็น requirement
+- ข้อสรุปเรื่อง coverage และรายการ SOP ที่จัดทำแล้วไม่เปลี่ยน
+
+**ข้อควรทราบเพิ่มเติม:** การตรวจสภาพเว็บเมื่อ 4 August 2026 พบว่า
+**ไม่มีไฟล์ใดใน `docs/app/docs/sops/` และไม่มีหมวด SOPs ในเมนู** ทั้งที่เอกสารนี้
+ระบุว่า SOP ทั้ง 6 ฉบับจัดทำครบแล้ว สถานะ "เสร็จแล้ว" ในเอกสารนี้จึงยังไม่สะท้อน
+เว็บปัจจุบัน ต้องให้ owner ตัดสินว่าหน้าเหล่านั้นถูกนำออก ย้ายที่ หรือยังไม่ได้สร้าง
+ก่อนใช้เอกสารนี้เป็นหลักฐาน coverage
+
 ## Objective
 
 ตรวจ requirement ต้นทางทั้งหมดเทียบกับ SOP ที่เผยแพร่แล้ว เพื่อระบุช่องว่างโดย
@@ -13,10 +33,6 @@
   - Main-Module แถว 4-11
   - Sub-Module แถว 5-293
   - Lawyer-Finance แถว 5-61
-- `requirements/source/Manao Software Project Proposal-Alt Pro-Legal ERP-Phase_1_V1_20260525.pdf`
-  - Detailed Scope หน้า 16-67
-  - Client Portal/Feedback หน้า 36-37
-  - Administrator Service Support หน้า 62-67
 - `requirements/source/สำเนาของ 1. PMUC-proposal-Practice Management Platform_03032026_Final_DTS.pdf`
   - Client Portal หน้า 28, 31, 33 และ 35
   - Financial Intelligence/Model Governance หน้า 34-38
@@ -33,20 +49,19 @@ Task/Calendar, Time, Billing, Finance, HR, Tenant, Access, Reports/Audit แล�
 Retention แล้ว จึงไม่ควรสร้าง SOP ซ้ำใน domain เหล่านี้
 
 ผล audit ระบุ **6 SOP ใหม่ที่มีขอบเขตไม่ทับหน้าเดิม**, งานขยายหน้าเดิม 1 กลุ่ม
-และ 2 กลุ่มที่ต้องตัดสิน source precedence ก่อนสร้าง ปัจจุบัน SOP ใหม่ทั้ง 6
+และ 1 กลุ่มที่ต้องตัดสิน source precedence ก่อนสร้าง ปัจจุบัน SOP ใหม่ทั้ง 6
 ฉบับและงานขยาย SOP-REP-001 จัดทำครบแล้ว รวมถึง menu, register, decision,
 traceability, role/permission, form, status, exception และ UAT coverage
 
 สถานะหลังปิดงาน: ไม่มี SOP ที่ยืนยันจาก requirement แล้วแต่ยังไม่มีหน้า เหลือเพียง
-SOP-HR-003 และ SOP-AI-001 ซึ่งยังเป็น conditional scope และห้ามสร้างจนมี
-Product/Policy decision ตามหัวข้อด้านล่าง
+SOP-AI-001 ซึ่งยังเป็น conditional scope และห้ามสร้างจนมี Product/Policy decision
+ตามหัวข้อด้านล่าง ส่วน SOP-HR-003 ปิดรายการแล้วหลังการเปลี่ยนชุด source
 
 ## New SOPs Identified
 
 ### 1. SOP-CLI-002 Client Portal & Feedback Management
 
-**Source:** Sub-Module แถว 87-88 และ 106-110; Manao หน้า 36-37; PMUC หน้า 28,
-31, 33 และ 35
+**Source:** Sub-Module แถว 87-88 และ 106-110; PMUC หน้า 28, 31, 33 และ 35
 
 **Missing workflow:** portal invitation/identity binding, publish/unpublish
 Matter/Document/Invoice view, client-only authorization, feedback/survey,
@@ -61,8 +76,8 @@ notification, correction/escalation และ portal access evidence
 
 ### 2. SOP-ADM-002 Shared Master Data Management
 
-**Source:** Sub-Module แถว 230-231; Manao หน้า 63 และ 67; Scope ระบุ master data
-อยู่ใน Administration & SaaS Management
+**Source:** Sub-Module แถว 230-231; Scope ระบุ master data อยู่ใน
+Administration & SaaS Management
 
 **Missing workflow:** Court, jurisdiction, police station, case code/type และ
 shared reference-data request, duplicate validation, approval, version/effective
@@ -74,8 +89,7 @@ SOP แยก ส่วน finance, payroll, quotation และ module-local ma
 
 ### 3. SOP-OPS-001 Platform Monitoring, Backup & Recovery
 
-**Source:** Sub-Module แถว 232-235 และ 266-269; Manao หน้า 63-66; Google Cloud
-architecture image
+**Source:** Sub-Module แถว 232-235 และ 266-269; Google Cloud architecture image
 
 **Missing workflow:** health threshold, concurrent-user/error monitoring, alert
 triage, backup job verification, restore request, point-in-time recovery,
@@ -87,8 +101,7 @@ recovery test, RPO/RTO evidence และ failed-recovery escalation
 
 ### 4. SOP-INT-001 API & Integration Lifecycle Management
 
-**Source:** Sub-Module แถว 236-247; Manao หน้า 64 และ 67; Architecture
-Integration Strategy
+**Source:** Sub-Module แถว 236-247; Architecture Integration Strategy
 
 **Missing workflow:** connection request, provider/security review, credential
 ownership, API scope, schema/version, rate limit, sandbox test, activation,
@@ -100,8 +113,7 @@ connection/adapter เท่านั้น
 
 ### 5. SOP-SEC-002 Security & Privacy Compliance Operations
 
-**Source:** Sub-Module แถว 249-265 และ 270-271; Manao หน้า 64-67; Google Cloud
-architecture image
+**Source:** Sub-Module แถว 249-265 และ 270-271; Google Cloud architecture image
 
 **Missing workflow:** encryption/secret control review, compliance assessment,
 sensitive-data classification, privacy/data-subject request routing, security
@@ -113,7 +125,7 @@ security/privacy assurance และ remediation
 
 ### 6. SOP-SUP-001 Service Support, Communications & Notifications
 
-**Source:** Sub-Module แถว 272-287; Manao หน้า 66-67
+**Source:** Sub-Module แถว 272-287
 
 **Missing workflow:** email/notification configuration, case alert, Admin
 broadcast, communication-log linkage/search, helpdesk ticket lifecycle,
@@ -160,13 +172,15 @@ revenue-by-client และ dashboard เท่านั้น ไม่ต้�
 
 ## Source Conflicts Requiring Decision Before SOP Creation
 
-### SOP-HR-003 Attendance & Performance Management
+### SOP-HR-003 Attendance & Performance Management — ปิดรายการแล้ว (4 August 2026)
 
-Manao หน้า 4 และ 6 กล่าวถึง Attendance Tracking และ Performance Appraisal แต่
-Detailed HR Scope หน้า 53-60 และ Sub-Module แถว 217-223 ระบุเฉพาะ Payroll/Leave
-ปัจจุบัน CAL attendance หมายถึงการเข้าร่วมนัดหมาย ไม่ใช่ employee attendance
+ข้อความที่กล่าวถึง Attendance Tracking และ Performance Appraisal อยู่ใน Manao
+proposal เท่านั้น เมื่อไฟล์ถูกนำออกจาก source set แล้ว ไม่มี source ใดกำหนดสอง
+เรื่องนี้เป็น requirement โดย Sub-Module แถว 217-223 ระบุเฉพาะ Payroll/Leave และ
+CAL attendance หมายถึงการเข้าร่วมนัดหมาย ไม่ใช่ employee attendance
 
-**Decision:** ยังไม่สร้างจน Product/HR Owner ยืนยันว่าเป็น Phase 1 requirement
+**Decision:** ไม่อยู่ในขอบเขต ไม่ต้องสร้าง SOP หากภายหลังมี requirement ใหม่
+ให้เปิดรายการใหม่พร้อม source ที่อ้างอิงได้
 
 ### SOP-AI-001 AI-assisted Financial Analysis & Model Governance
 
@@ -198,8 +212,8 @@ human-review boundary, data policy และ production model/provider scope
 5. SOP-CLI-002 Client Portal & Feedback Management
 6. SOP-SUP-001 Service Support, Communications & Notifications
 7. Extend SOP-REP-001 mapping/UAT and repair the traceability source ranges
-8. Pending policy decision only: HR Attendance/Performance and AI scope; create
-   SOP only when approved
+8. Pending policy decision only: AI scope; create SOP only when approved
 
 ข้อ 1-7 เสร็จแล้วตามลำดับ โดยข้อ 8 ไม่ใช่งานค้างของชุด SOP ปัจจุบัน แต่เป็น
 conditional scope ที่ต้องได้รับ requirement/owner approval ใหม่ก่อนเริ่ม
+ส่วน HR Attendance/Performance ถูกปิดรายการใน revision 4 August 2026

@@ -2,6 +2,23 @@
 
 วันที่กำหนด baseline: 15 July 2026
 
+## Revision Note (4 August 2026) — Source Set Change
+
+`Manao Software Project Proposal-Alt Pro-Legal ERP-Phase_1_V1_20260525.pdf`
+ถูกนำออกจาก `requirements/source/` แล้ว
+
+**ผลต่อ baseline นี้: ไม่มี** เนื่องจากไฟล์ดังกล่าวไม่เคยอยู่ใน Source Inventory
+และไม่เคยเป็น authority ของ Role, Plan หรือ Entitlement
+
+ตรวจ checksum ของทั้งสามไฟล์ใน Source Inventory เมื่อ 4 August 2026 แล้ว
+**ตรงกับค่าที่บันทึกไว้ทุกไฟล์** จึงไม่ต้องทบทวน affected pages, traceability
+หรือ UAT ตามเงื่อนไขด้านล่าง
+
+**ผลต่อเอกสารเผยแพร่:** หน้า Overview และ Scope เคยอ้าง Manao เป็น source เดียว
+ในเรื่อง phase split ระดับโมดูล ขอบเขตที่ไม่รวม การเชื่อมต่อระบบภายนอก
+และข้อจำกัดด้านอุปกรณ์ เนื้อหาเหล่านั้นถูกนำออกแล้ว รายละเอียดอยู่ใน
+`sop-requirement-coverage-audit.md`
+
 ## Document Control
 
 | Field | Value |

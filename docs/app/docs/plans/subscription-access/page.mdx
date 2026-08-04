@@ -40,34 +40,19 @@ User หนึ่งบัญชีมี Membership ได้หลายรา
 หากไม่ผ่านชั้นใดชั้นหนึ่ง ระบบปฏิเสธรายการนั้น การเปลี่ยนแผนจึงไม่เปลี่ยนสิทธิ์
 ของสมาชิก และการเพิ่มสิทธิ์ให้สมาชิกไม่เปิดโมดูลที่แผนไม่รองรับ
 
-## Signup Flow
+## Workspace Model
 
-<div aria-label="Signup and subscription flow">
+ทุกการสมัครสร้าง Workspace ในรูปแบบเดียวกัน ผู้สมัครเป็น Owner
+และเป็นสมาชิกคนแรกของ Workspace นั้น
 
-```mermaid
-flowchart TD
-  CreateUser["สร้างบัญชีและยืนยันอีเมล"]
-  CreateWorkspace["สร้าง Workspace และสมาชิกคนแรก"]
-  SelectPlan["เลือกแผน"]
-  Free["STANDARD เปิดใช้งานโดยไม่รับบัตร"]
-  Checkout["แผนเสียเงินไป Hosted Checkout"]
-  Webhook["Webhook ยืนยันการชำระเงิน"]
-  Active["เปิด Workspace และ Subscription"]
-  Invite["เชิญสมาชิกและกำหนดสิทธิ์"]
-
-  CreateUser --> CreateWorkspace --> SelectPlan
-  SelectPlan -->|"STANDARD"| Free --> Active
-  SelectPlan -->|"แผนเสียเงิน"| Checkout --> Webhook --> Active
-  Active --> Invite
-```
-
-</div>
-
-ทุกการสมัครใช้ flow เดียวกัน ผู้สมัครเป็น Owner และสมาชิกคนแรกของ Workspace
-
-- หากใช้งานคนเดียว Workspace จะมีสมาชิกหนึ่งคน
-- หากเป็นสำนักงาน Owner สามารถเชิญพนักงานเพิ่มได้
+- Workspace ของผู้ใช้งานคนเดียวมีสมาชิกหนึ่งคน
+  และมีโครงสร้างเหมือน Workspace ของสำนักงานที่มีหลายคน
+- Owner เชิญสมาชิกเพิ่มได้ทุกแผน เพราะทุกแผนไม่จำกัดจำนวนสมาชิก
 - Workspace ที่เริ่มจากสมาชิกหนึ่งคนเพิ่มสมาชิกภายหลังได้โดยไม่ต้องย้ายข้อมูล
+
+ลำดับขั้นตอนตั้งแต่สร้างบัญชี เลือกแผน ชำระเงิน จนเชิญสมาชิก อยู่ใน
+[Business Workflow](/docs/workflow) ขั้นที่ 1 หน้านี้อธิบายเฉพาะกติกา
+การชำระเงินและการกำหนดสิทธิ์ที่ใช้ในขั้นตอนนั้น
 
 ## Payment Rules
 

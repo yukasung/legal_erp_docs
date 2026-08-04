@@ -21,6 +21,10 @@ code.text-\[\.9em\] {
   font-size: 14px;
 }
 
+main div[aria-label] {
+  margin-top: 1.5rem;
+}
+
 .workflow-mermaid-page {
   margin-top: 2rem;
 }

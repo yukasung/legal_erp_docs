@@ -141,12 +141,14 @@ Legal Practice ERP Platform เป็นระบบแบบ multi-tenant SaaS 
 - สำนักงานใหม่สมัครใช้งานผ่านขั้นตอน self-service signup หรือให้ platform
   onboarding service ดำเนินการผ่าน controlled support identity แล้วระบบสร้าง BU
   Account พร้อม domain/sub-domain และ initial Tenant Admin membership
-- แต่ละ tenant ผูกกับแพ็กเกจ (package) ที่กำหนดว่าเปิดใช้โมดูลใดได้บ้าง และจำนวน
-  user สูงสุดที่อนุญาต (User Limit Control)
-- ระบบต้องตรวจสอบขีดจำกัดของแพ็กเกจก่อนอนุญาตให้เชิญ user ใหม่หรือเปิดใช้
-  โมดูลเพิ่มเติม
+- แต่ละ tenant ผูกกับแพ็กเกจ (package) ที่กำหนดว่าเปิดใช้โมดูลใดได้บ้าง
+  โดยระบบรองรับการจำกัดจำนวน user สูงสุดต่อ tenant (User Limit Control)
+  เป็นกลไกของแพลตฟอร์ม
+- แผนทั้งห้าที่ใช้อยู่ปัจจุบันตั้งค่า User Limit Control เป็นไม่จำกัดทุกแผน
+  **การเชิญ user ใหม่จึงต้องไม่ถูกปฏิเสธด้วยเหตุผลเรื่องจำนวนสมาชิก**
+  ดูค่าที่ใช้จริงได้ที่ [Feature Comparison](/docs/plans/feature-comparison)
+- ระบบต้องตรวจสอบสิทธิ์ของแพ็กเกจก่อนเปิดใช้โมดูลเพิ่มเติม
 - การเปลี่ยนแพ็กเกจ (upgrade/downgrade) ควรมีผลทันทีต่อสิทธิ์การเข้าถึงโมดูล
-  และจำนวน user ที่อนุญาต
 - ระบบเรียกเก็บเงินค่าสมัครใช้งานแพลตฟอร์ม (platform subscription billing)
   จากสำนักงานลูกค้ายังไม่อยู่ในขอบเขตรอบเริ่มต้น
   แยกจาก Quotation and Billing Service ที่แต่ละสำนักงานใช้เรียกเก็บเงินจาก

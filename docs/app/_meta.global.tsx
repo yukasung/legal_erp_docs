@@ -17,7 +17,7 @@ export default {
       scope: 'Scope',
       workflow: 'Business Workflow',
       plans: { title: 'Plans & Pricing', items: { index: 'Overview', pricing: 'Pricing', 'subscription-access': 'Signup & Access', 'feature-comparison': 'Feature Comparison', 'plan-rules': 'Plan Rules' } },
-      roles: { title: 'Roles', items: { index: 'Overview', roles: 'User Roles', 'role-mapping': 'Role Mapping', permissions: 'Permissions' } },
+      roles: { title: 'Roles', items: { index: 'Overview', roles: 'User Roles', permissions: 'Permissions' } },
       modules: { title: 'Modules', items: { index: 'Overview', clients: 'Clients', matters: 'Matters', documents: 'Documents', quotations: 'Quotations', calendar: 'Calendar', tasks: 'Tasks', billing: 'Billing', finance: 'Finance', hr: 'Human Resources', reports: 'Reports', administration: 'Administration' } },
       reference: { title: 'Reference', items: { 'menu-map': 'Application Menu Map', courts: 'Courts & Court Forms', requirements: 'Requirement Register' } },
       _technical: { type: 'separator', title: <Section>Technical</Section> },

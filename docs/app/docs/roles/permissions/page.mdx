@@ -30,33 +30,6 @@ Access Profile เป็นชุดสิทธิ์เริ่มต้น�
 - assign: มอบหมายงานหรือเปลี่ยนผู้รับผิดชอบ
 - manage: จัดการการตั้งค่า สมาชิก Access Profile หรือข้อมูลตั้งต้น
 
-สิทธิ์หนึ่งรายการเขียนเป็นรหัสในรูปแบบ `resource.action` ซึ่งเป็นสิ่งที่ระบบ
-ใช้ตรวจจริงตอนทำรายการ ตัวอย่างรหัสที่ระบบกำหนดไว้
-
-```text
-case.view
-case.edit
-case.delete
-
-client.view
-
-document.upload
-
-billing.approve
-
-role.manage
-```
-
-**รหัสสิทธิ์เป็นมาตรฐานกลางของทั้งระบบ ไม่ผูกกับ Workspace ใด** Workspace
-เพิ่มรหัสใหม่เองไม่ได้ ทำได้เพียงเลือกว่า Access Profile ใดมีรหัสใดบ้าง
-
-ผลที่ตามมาสองข้อ
-
-- Business logic ต้องตรวจจากรหัสสิทธิ์ ไม่ใช่จากชื่อ Access Profile
-  ดูตัวอย่างการเขียนที่ [Development Rules](/docs/development/rules)
-- การเพิ่มความสามารถใหม่ให้ระบบคือการเพิ่มรหัสสิทธิ์ใหม่เข้า catalog
-  ไม่ใช่การเพิ่ม Access Profile
-
 ## Starting Rules
 
 - ใช้สิทธิ์เริ่มต้นจาก Access Profile ที่ตรงกับหน้าที่
@@ -158,7 +131,6 @@ permission matrix และกฎการแยกหน้าที่ใน�
 
 - [Roles Overview](/docs/roles)
 - [User Roles](/docs/roles/roles)
-- [Role Mapping](/docs/roles/role-mapping)
 - [Plans & Pricing](/docs/plans)
 - [Feature Comparison](/docs/plans/feature-comparison)
 - [Plan Rules](/docs/plans/plan-rules)

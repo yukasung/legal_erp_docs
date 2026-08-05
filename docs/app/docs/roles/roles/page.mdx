@@ -63,13 +63,6 @@ Access Profile นี้ใน Workspace และต้องใช้ช่อ
 - ตั้งค่าการเชื่อมต่อระบบภายนอกตามที่ระบบรองรับ
 - ตั้งค่าข้อมูลที่ใช้กับ e-signature หรือผู้อนุมัติ เมื่อมีการกำหนดขั้นตอนชัดเจน
 
-ขอบเขตที่ควรระวัง:
-
-- Admin ไม่ควรใช้สิทธิ์ดูหรือแก้ไขเนื้อหางานกฎหมายโดยไม่จำเป็น
-- การแก้ไข permission ต้องถูกบันทึกใน audit log
-- Platform support ต้องใช้ access แบบ time-bound ภายใต้ Emergency Access control
-  และห้ามได้รับ business approval authority
-
 ## Lawyer
 
 Lawyer คือผู้ทำงานกฎหมายหลัก เช่น ทนาย พนักงานกฎหมาย หรือทนายอาวุโส ที่ทำงานกับ
@@ -85,12 +78,6 @@ Matter (แฟ้มงานกฎหมาย), client, document, task แล�
 - ให้ข้อมูลสำหรับ quotation หรือ service fee ตามขอบเขตบริการทางกฎหมาย
 - review หรือ approve เอกสาร เฉพาะกรณีที่ได้รับ permission ระดับ senior
 
-ขอบเขตที่ควรระวัง:
-
-- Lawyer ควรเห็นเฉพาะแฟ้มงานกฎหมายที่เกี่ยวข้องกับตนหรือทีม
-- การ approve เอกสารไม่ควรให้ทุก lawyer ทำได้โดยอัตโนมัติ
-- การเข้าถึงข้อมูลการเงินควรจำกัดเฉพาะข้อมูลที่เกี่ยวข้องกับงานของตน
-
 ## Assistant
 
 Assistant คือผู้ช่วยปฏิบัติการของทีมกฎหมาย เช่น legal assistant, case
@@ -104,12 +91,6 @@ coordinator หรือทีมงานที่ช่วยเตรีย�
 - สร้าง task ย่อยหรืออัปเดตสถานะงานตามความคืบหน้าจริง
 - ประสานงานระหว่าง lawyer, finance และ manager
 - ช่วยค้นหาเอกสารหรือข้อมูลที่เกี่ยวข้องกับแฟ้มงานกฎหมาย
-
-ขอบเขตที่ควรระวัง:
-
-- Assistant ไม่ควร approve เอกสารทางกฎหมายขั้นสุดท้าย
-- ไม่ควรเข้าถึงข้อมูลการเงินเชิงลึก เว้นแต่ได้รับ permission เฉพาะ
-- การลบเอกสารหรือข้อมูลสำคัญควรถูกจำกัดหรือใช้ขั้นตอนอนุมัติ
 
 ## Finance
 
@@ -125,12 +106,6 @@ Finance คือผู้ดูแลงาน quotation, billing, invoice, pay
 - ตรวจสอบ financial control เช่น expense approval หรือวงเงินเครดิต เมื่ออยู่ใน
   scope
 - ประสานงานกับ lawyer และ manager เพื่อยืนยันข้อมูลค่าบริการ
-
-ขอบเขตที่ควรระวัง:
-
-- Finance ไม่จำเป็นต้องเห็นรายละเอียดเอกสารทางกฎหมายทั้งหมด
-- ข้อมูลการเงินควรแยก permission ระหว่าง view, create, approve และ export
-- การแก้ไข invoice, payment หรือข้อมูลภาษีต้องมี audit log ชัดเจน
 
 ## HR
 
@@ -148,13 +123,6 @@ HR คือผู้ดูแลงานบุคลากรของสำ�
 - Export ข้อมูลเงินเดือนและการลาให้ทีมบัญชีตามรอบที่กำหนด
 - จัดทำรายงานสรุปด้าน HR ให้ Manager ใช้ประกอบการตัดสินใจ
 
-ขอบเขตที่ควรระวัง:
-
-- HR ไม่ควรเห็นข้อมูล Matter, document ทางกฎหมาย หรือ billing ของลูกค้า
-- ข้อมูลเงินเดือนรายบุคคลต้องจำกัดสิทธิ์เฉพาะ HR และ Manager/Admin
-  ตามระดับที่กำหนด ไม่ควรให้ Finance เข้าถึงโดยตรง
-- การอนุมัติรอบเงินเดือนควรแยกจากคนที่จัดทำ (ผู้จัดทำกับผู้อนุมัติต้องคนละคน)
-
 ## Manager
 
 Manager คือผู้บริหาร หุ้นส่วน ทนายอาวุโส หรือ legal practice manager
@@ -169,14 +137,6 @@ Manager คือผู้บริหาร หุ้นส่วน ทนา�
 - ดู report เพื่อประเมิน performance ของทีมและ profitability ของแต่ละแฟ้มงาน
 - ติดตามความเสี่ยง เช่น deadline ใกล้ครบ งานล่าช้า หรือยอดค้างชำระสูง
 - กำกับมาตรฐานการทำงานและช่วยตัดสินใจเรื่อง resource allocation
-
-ขอบเขตที่ควรระวัง:
-
-- Manager ควรเห็นข้อมูลข้ามทีมตามระดับความรับผิดชอบ ไม่ใช่เห็นทุกอย่างเสมอไป
-- การ approve ควรแยกตามประเภทข้อมูล เช่น document, quotation, expense และ
-  permission ต้องระบุชัด
-- ถ้า Manager เป็นที่ปรึกษาภายนอกหรือ Partner บางราย ต้องจำกัดข้อมูลเฉพาะ
-  Workspace ทีม หรือกลุ่มงานที่รับผิดชอบ
 
 ## Position Mapping Overview
 
@@ -200,19 +160,6 @@ Manager คือผู้บริหาร หุ้นส่วน ทนา�
 | HR Personnel                       | HR                        | personnel/payroll/leave only; แยกจาก Finance     |
 | Client Contact                     | Portal Membership         | ใช้ข้อมูลที่ Workspace เผยแพร่ ไม่ใช่สมาชิกภายใน |
 | Platform Operator                  | Controlled support access | ไม่ใช้ Admin และต้องจำกัดเวลาและบันทึกการใช้งาน  |
-
-## Approved Baseline Decisions
-
-- Senior Lawyer ใช้ Lawyer และเพิ่มสิทธิ์ Review/Approve เฉพาะขอบเขต
-- Client Contact ใช้ Portal Membership และควบคุมการแชร์ข้อมูลให้ผู้ใช้ภายนอก
-  ตามสิทธิ์ที่ได้รับ
-- ยังไม่สร้าง Sales Access Profile แยก โดย Lawyer/Finance จัดทำ quotation และ
-  Manager อนุมัติ
-- Admin หมายถึงผู้ดูแล Workspace ส่วน Platform Support ใช้ช่องทางช่วยเหลือที่แยก
-- Manager ถูกจำกัดด้วย Workspace ทีม แฟ้มงาน และขอบเขตความรับผิดชอบ
-  ไม่ได้เห็นข้อมูล ทั้งหมดโดยอัตโนมัติ
-- Managing Partner ไม่ได้รับ authority เพิ่มจากชื่อตำแหน่งโดยอัตโนมัติ
-- Assistant และ HR คงอยู่เพราะกระบวนการทำงานต้องใช้บทบาทเหล่านี้
 
 ## Related Documents
 

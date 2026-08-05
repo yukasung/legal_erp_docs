@@ -27,6 +27,31 @@ identity ฝั่ง server ห้ามเชื่อถือ `workspace_id`
   Workspace เดียวกัน
 - Unique constraint ของข้อมูลที่ไม่จำเป็นต้องซ้ำข้ามบริษัทควรรวม `workspace_id`
 - ตารางข้อมูลกลางที่ไม่เป็นของ Workspace ต้องระบุเป็นข้อยกเว้นอย่างชัดเจน
+  โดยปัจจุบันมีตาราง `permissions` เป็นข้อยกเว้นตามหัวข้อถัดไป
+
+## Roles and Permissions Tables
+
+Access Profile ของแต่ละ Workspace เก็บแยกจากกัน ส่วนรหัสสิทธิ์เป็น catalog
+กลางที่ใช้ร่วมกันทั้งระบบ
+
+|       ตาราง       |     ขอบเขต     | คำอธิบาย                                                       |
+| ----------------- | :------------: | -------------------------------------------------------------- |
+| `permissions`     |    ทั้งระบบ    | รหัสสิทธิ์มาตรฐาน เช่น `case.edit` **ไม่มี `workspace_id`**     |
+| `roles`           | ราย Workspace  | Access Profile ของ Workspace หนึ่ง **ต้องมี `workspace_id`**    |
+| `role_permissions`| ราย Workspace  | ผูก role กับรหัสสิทธิ์ที่ได้รับ                                |
+| `user_roles`      | ราย Workspace  | ผูกสมาชิกกับ role โดยหนึ่งคนมีได้มากกว่าหนึ่ง role             |
+
+กฎการใช้งาน:
+
+- Query ตาราง `roles`, `role_permissions` และ `user_roles` ต้องกรอง
+  `workspace_id` เสมอ
+- ห้ามผูก `user_roles` ข้าม Workspace สมาชิกกับ role ต้องอยู่ Workspace เดียวกัน
+- การสร้าง Workspace ใหม่คือการคัดลอก role template มาสร้างแถวใน `roles`
+  และ `role_permissions` ของ Workspace นั้น ไม่ใช่การอ้างถึงแถวที่ใช้ร่วมกัน
+- `permissions` เพิ่มหรือแก้ได้จากการพัฒนาระบบเท่านั้น ไม่ใช่จากการตั้งค่า
+  ของ Workspace
+- ดูความหมายเชิงธุรกิจที่ [Roles](/docs/roles) และรหัสสิทธิ์ที่
+  [Permissions](/docs/roles/permissions)
 
 ## PostgreSQL Row-Level Security
 
@@ -103,6 +128,8 @@ retention ที่ได้ประโยชน์จาก partition pruning 
 - `INSERT` และ `UPDATE` ไม่สามารถย้ายข้อมูลไป Workspace อื่น
 - Application role ไม่สามารถ bypass RLS
 - Background job และ report ไม่รวมข้อมูลข้าม Workspace
+- มอบหมาย role ของ Workspace A ให้สมาชิกของ Workspace B ไม่ได้
+- ลบ Workspace แล้ว role และ role assignment ของ Workspace นั้นไม่ค้างอยู่
 - Partition routing และ partition pruning ทำงานตามช่วงที่กำหนด
 - การสร้าง partition ใหม่ไม่ทำให้ constraint หรือ index หาย
 - Restore test รักษาข้อมูล ความสัมพันธ์ audit history และขอบเขต Workspace

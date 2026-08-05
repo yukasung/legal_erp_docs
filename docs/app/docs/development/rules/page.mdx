@@ -83,6 +83,31 @@ QuerySet, Permission หรือ record scope ของ Application
 
 การผ่านเงื่อนไขหนึ่งไม่สามารถใช้แทนเงื่อนไขอื่นได้
 
+ตรวจสิทธิ์จากรหัสสิทธิ์เสมอ:
+
+```python
+if user.has_permission("case.edit"):
+```
+
+หรือประกาศที่ระดับ view:
+
+```python
+@permission_required("case.edit")
+```
+
+ห้ามตรวจจากชื่อ Access Profile:
+
+```python
+if user.role == "Lawyer":
+```
+
+เหตุผล:
+
+- Workspace เปลี่ยนชื่อ Access Profile ได้ตลอดเวลา
+- แต่ละสำนักงานตั้งชื่อไม่เหมือนกันสำหรับหน้าที่เดียวกัน
+- สมาชิกหนึ่งคนมีได้หลาย Access Profile การเทียบชื่อเดียวจึงตกกรณี
+- การเพิ่มหรือลบ Access Profile ต้องไม่ทำให้ต้องแก้โค้ด
+
 ## Required Tests
 
 งานที่เข้าถึงข้อมูลของ Workspace ต้องมี Test อย่างน้อยดังนี้:

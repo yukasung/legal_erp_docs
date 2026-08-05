@@ -25,6 +25,13 @@ main div[aria-label] {
   margin-top: 1.5rem;
 }
 
+main div[aria-label] svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
 .workflow-mermaid-page {
   margin-top: 2rem;
 }
